@@ -167,4 +167,21 @@ export class StateService {
       }
     });
   }
+
+  setBlockOverride(r: number, c: number, rows: number, cols: number) {
+    this.state.update(s => {
+      const key = `${r}_${c}`;
+      const blockOverrides = { ...(s.blockOverrides || {}), [key]: { rows, cols } };
+      return { ...s, blockOverrides };
+    });
+  }
+
+  clearBlockOverride(r: number, c: number) {
+    this.state.update(s => {
+      const key = `${r}_${c}`;
+      const blockOverrides = { ...(s.blockOverrides || {}) };
+      delete blockOverrides[key];
+      return { ...s, blockOverrides };
+    });
+  }
 }

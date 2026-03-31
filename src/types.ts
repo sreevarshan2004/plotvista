@@ -80,4 +80,5 @@ export interface GlobalState {
   selectedHalf: 'a' | 'b' | null;
   mergeGroups: string[][];
   projectMeta?: ProjectMeta;
+  blockOverrides?: Record<string, { rows: number; cols: number }>;
 }

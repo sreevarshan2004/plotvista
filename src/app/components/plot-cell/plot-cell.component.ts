@@ -101,9 +101,9 @@ import { PlotData } from '../../../types';
         }"
       >
         <!-- Truly vacant, no residents -->
-        <div *ngIf="!data?.residents?.length && (!data || data.type === 'vacant')" class="opacity-20 flex flex-col items-center">
+        <div *ngIf="!data?.residents?.length && (!data || data.type === 'vacant')" class="opacity-30 flex flex-col items-center">
           <div class="text-[8px] font-black uppercase tracking-widest text-slate-500">Vacant</div>
-          <div class="text-[10px] text-slate-600">{{ plotKey }}</div>
+          <div class="text-[10px] text-slate-400">{{ plotKey }}</div>
         </div>
 
         <!-- Typed plot (house, apt, park, etc.) -->
@@ -136,44 +136,62 @@ import { PlotData } from '../../../types';
 
         <!-- Hover Overlay for SQFT Input -->
         <div *ngIf="!data || data.type !== 'road'" 
-             class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 pointer-events-none group-hover:pointer-events-auto">
-          <label class="text-[7px] font-black uppercase tracking-widest text-accent mb-1">Area SQFT</label>
+             class="absolute inset-0 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none group-hover:pointer-events-auto border border-accent/20 rounded-xl shadow-lg">
+          <label class="text-[8px] font-black uppercase tracking-widest text-slate-800 mb-1">Area SQFT</label>
           <input type="number" 
             [ngModel]="data?.sqft" 
             (ngModelChange)="onSqftChange.emit($event)" 
             (click)="$event.stopPropagation()"
             (keydown)="$event.stopPropagation()"
-            class="text-xs bg-black/60 text-white font-black font-mono border border-white/20 rounded-lg px-1.5 py-1 w-16 text-center focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all" 
+            class="text-xs bg-slate-100 text-slate-900 font-extrabold font-mono border border-slate-200 rounded-lg px-2 py-1.5 w-20 text-center focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm transition-all" 
             placeholder="sqft" />
         </div>
 
         <!-- Road -->
-        <div *ngIf="data?.type === 'road'" class="absolute inset-0 flex items-center justify-center overflow-hidden plot-3d-road road-block">
+        <div *ngIf="data?.type === 'road'" class="absolute inset-0 flex items-center justify-center overflow-visible plot-3d-road road-block">
           <!-- Road Base layer for always-dark effect -->
-          <div class="absolute inset-0 bg-[#0a0c10]"></div>
+          <div class="absolute inset-0 bg-[#64748b]"></div>
           
           <!-- Dashed lines based on connectivity -->
           <!-- Vertical Lane lines -->
+          <!-- Vertical Lane lines (Sleek 2px, Cleaner 60px Dashes) -->
           <div *ngIf="(data?.roadDirection === 'v' || (roadConnectivity?.top || roadConnectivity?.bottom))" 
-            class="h-full w-[1px] bg-white/10 pointer-events-none z-1" 
+            class="h-full w-[2px] pointer-events-none z-[1] mx-auto" 
             [style.background-image]="'linear-gradient(to bottom, #fbbf24 50%, transparent 50%)'" 
-            [style.background-size]="'1px 20px'"></div>
+            [style.background-size]="'2px 60px'"></div>
           
-          <!-- Horizontal Lane lines -->
+          <!-- Horizontal Lane lines (Sleek 2px, Cleaner 60px Dashes) -->
           <div *ngIf="(data?.roadDirection === 'h' || !data?.roadDirection || (roadConnectivity?.left || roadConnectivity?.right))" 
-            class="w-full h-[1px] bg-white/10 pointer-events-none z-1" 
+            class="w-full h-[2px] absolute top-1/2 -translate-y-1/2 pointer-events-none z-[1]" 
             [style.background-image]="'linear-gradient(to right, #fbbf24 50%, transparent 50%)'" 
-            [style.background-size]="'20px 1px'"></div>
+            [style.background-size]="'60px 2px'"></div>
           
-          <!-- Road Name Input -->
-          <div class="absolute inset-0 flex items-center justify-center z-10 w-full h-full">
-            <input type="text" 
-              [ngModel]="data?.name" 
-              (ngModelChange)="onNameChange.emit({half: null, name: $event})" 
-              (click)="$event.stopPropagation()" 
-              (keydown)="$event.stopPropagation()" 
-              class="text-[7px] font-mono text-white font-black uppercase tracking-[0.4em] whitespace-nowrap bg-black/40 border border-white/5 px-2 py-0.5 rounded backdrop-blur-sm outline-none text-center focus:text-white focus:bg-black/60 transition-all" 
-              placeholder="STREET" />
+          <!-- Road Name Input - Mastered Auto-Growing Layout (Direction Aware) -->
+          <div *ngIf="data?.name && data?.name !== 'STREET'" 
+            [class]="'absolute inset-0 flex items-center justify-center z-[50] m-auto bg-slate-900 border border-white/20 rounded-full shadow-2xl transition-all duration-300 ' + 
+                     (data?.roadDirection === 'v' ? 'flex-col w-fit h-fit min-h-[100px] max-h-[280px] px-1.5 py-4' : 'flex-row w-fit h-fit min-w-[100px] max-w-[280px] px-4 py-1.5')">
+            
+            <div [class]="'flex items-center gap-2 w-full ' + (data?.roadDirection === 'v' ? 'flex-col grow' : 'flex-row')">
+              <!-- Constant Icon -->
+              <span class="text-[10px] opacity-80 shrink-0 pointer-events-none self-center">🛣️</span>
+              
+              <!-- Dynamic Growing Text Area -->
+              <div [class]="'relative flex-1 flex items-center justify-center ' + (data?.roadDirection === 'v' ? 'min-h-[40px] w-full' : 'min-w-[40px] h-full')">
+                <!-- Invisible measurement layer -->
+                <span class="text-[10px] font-mono font-black uppercase tracking-widest invisible px-1" 
+                  [style]="(data?.roadDirection === 'v' ? 'writing-mode: vertical-rl; overflow: hidden; width: 0;' : 'white-space: pre;') + ' color: white !important;'">{{data?.name || ''}}</span>
+                
+                <!-- Input Layer -->
+                <input type="text" 
+                  [ngModel]="data?.name" 
+                  (ngModelChange)="onNameChange.emit({half: null, name: $event})" 
+                  (click)="$event.stopPropagation()" 
+                  (keydown)="$event.stopPropagation()" 
+                  class="absolute inset-0 w-full h-full text-[10px] font-mono font-black uppercase tracking-widest bg-transparent border-none outline-none text-center focus:outline-none transition-all" 
+                  [style]="(data?.roadDirection === 'v' ? 'writing-mode: vertical-rl;' : '') + ' color: white !important; -webkit-text-fill-color: white !important; font-weight: 900; caret-color: white;'"
+                  placeholder="STREET" />
+              </div>
+            </div>
           </div>
 
           <!-- CONNECTIVITY BORDER HIDING (Simplified via CSS shadow or absolute overlays if needed) -->
@@ -247,7 +265,8 @@ export class PlotCellComponent {
       case 'hospital': return 'plot-3d-clinic';
       case 'park': return 'plot-3d-park';
       case 'road': return 'plot-3d-road';
-      default: return '';
+      case 'vacant': return 'plot-vacant';
+      default: return 'plot-vacant';
     }
   }
 }

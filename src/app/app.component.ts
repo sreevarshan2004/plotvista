@@ -37,6 +37,8 @@ export class AppComponent implements OnInit {
   isDetailModalOpen = false;
   isShopPickerOpen = false;
   isSidebarOpen = signal(true);
+  isSidebarExtended = signal(false);
+  sidebarStage = signal<0 | 1 | 2>(0); // 0=narrow, 1=wide, 2=full
   classificationOpen = signal(false);
   shopPickerKey = '';
   resModalRole: 'owner' | 'tenant' = 'owner';
@@ -261,7 +263,10 @@ export class AppComponent implements OnInit {
 
   constructor(private stateService: StateService) { }
 
-  ngOnInit() { this.loadHardcodedJson(); }
+  ngOnInit() { 
+    this.loadHardcodedJson(); 
+    document.body.classList.add('light-theme');
+  }
 
   loadHardcodedJson() {
     //json data
@@ -280,7 +285,7 @@ export class AppComponent implements OnInit {
               // Block 0,0: Luxury Apartments
               plots[key] = {
                 type: 'apartment',
-                name: `Prestige Tower ${String.fromCharCode(65 + pr * PSB + pc)}`,
+                name: `MACS Tower ${String.fromCharCode(65 + pr * PSB + pc)}`,
                 residents: [],
                 aptConfig: {
                   floors: 12,
@@ -316,7 +321,7 @@ export class AppComponent implements OnInit {
               plots[key] = {
                 type: 'shop',
                 shopType: shop.value,
-                name: `Prestige ${shop.label}`,
+                name: `MACS ${shop.label}`,
                 residents: []
               };
             } else {
@@ -667,4 +672,78 @@ export class AppComponent implements OnInit {
   isSplitCell(key: string): boolean {
     return !!this.plots()[key]?.splitDirection;
   }
+
+  // ── BLOCK CUSTOMIZATION ──────────────────────────────
+  isBlockCustomizeOpen = false;
+  blockCustomizeTarget = { r: 0, c: 0 };
+  blockCustomizeRows = 2;
+  blockCustomizeCols = 2;
+
+  blockOverrides = computed(() => this.state().blockOverrides || {});
+
+  getBlockRows(r: number, c: number): number {
+    return this.blockOverrides()[`${r}_${c}`]?.rows ?? this.plotsPerBlock;
+  }
+
+  getBlockCols(r: number, c: number): number {
+    return this.blockOverrides()[`${r}_${c}`]?.cols ?? this.plotsPerBlock;
+  }
+
+  openBlockCustomize(r: number, c: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.blockCustomizeTarget = { r, c };
+    this.blockCustomizeRows = this.getBlockRows(r, c);
+    this.blockCustomizeCols = this.getBlockCols(r, c);
+    this.isBlockCustomizeOpen = true;
+  }
+
+  applyBlockCustomize() {
+    const { r, c } = this.blockCustomizeTarget;
+    this.stateService.saveState();
+    this.stateService.setBlockOverride(r, c, this.blockCustomizeRows, this.blockCustomizeCols);
+    this.isBlockCustomizeOpen = false;
+  }
+
+  resetBlockCustomize() {
+    const { r, c } = this.blockCustomizeTarget;
+    this.stateService.saveState();
+    this.stateService.clearBlockOverride(r, c);
+    this.isBlockCustomizeOpen = false;
+  }
+
+  getBlockKeysCustom(r: number, c: number): string[] {
+    const keys = [];
+    const rows = this.getBlockRows(r, c);
+    const cols = this.getBlockCols(r, c);
+    for (let pr = 0; pr < rows; pr++)
+      for (let pc = 0; pc < cols; pc++)
+        keys.push(`r${r}c${c}pr${pr}pc${pc}`);
+    return keys;
+  }
+
+  isBlockOverridden(r: number, c: number): boolean {
+    return !!this.blockOverrides()[`${r}_${c}`];
+  }
+
+  // Vacant plot click — select and open sidebar
+  onVacantClick(key: string) {
+    this.stateService.selectPlot(key);
+    if (!this.isSidebarOpen()) this.isSidebarOpen.set(true);
+  }
+
+  toggleSidebarExtension() {
+    this.isSidebarExtended.set(!this.isSidebarExtended());
+  }
+
+  cycleSidebarStage() {
+    this.sidebarStage.update(s => ((s + 1) % 3) as 0 | 1 | 2);
+  }
+
+  sidebarWidthClass = computed(() => {
+    if (!this.isSidebarOpen()) return 'w-0 opacity-0 overflow-hidden';
+    const stage = this.sidebarStage();
+    if (stage === 0) return 'w-72';
+    if (stage === 1) return 'w-[480px]';
+    return 'w-[700px]';
+  });
 }

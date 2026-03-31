@@ -1,132 +1,77 @@
 <div class="h-screen flex flex-col bg-bg selection:bg-accent selection:text-bg overflow-hidden">
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-card px-4 py-1.5 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      <div class="flex items-center gap-3">
-        <div
-          class="w-8 h-8 bg-accent flex items-center justify-center rounded-xl shadow-[0_0_20px_rgba(56,189,248,0.3)]">
-          <span class="text-slate-900 text-sm">🗺️</span>
-        </div>
-        <div>
-          <h1 class="text-sm font-black tracking-tighter text-white">PLOTVISTA <span class="text-accent">PRESTIGE</span>
-          </h1>
-          <div class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 bg-house rounded-full animate-pulse"></span>
-            <span class="text-[8px] uppercase tracking-[0.3em] text-slate-400 font-bold">Real-Time Layout Engine</span>
-          </div>
+  <header
+    class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm px-4 py-2 flex items-center justify-between">
+
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-slate-800 flex items-center justify-center rounded-xl">
+        <span class="text-white text-sm">🗺️</span>
+      </div>
+      <div>
+        <h1 class="text-sm font-black tracking-tighter text-slate-800">MACS <span class="text-slate-500">LAYOUT</span>
+        </h1>
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+          <span class="text-[8px] uppercase tracking-[0.3em] text-slate-400 font-bold">Real-Time Layout Engine</span>
         </div>
       </div>
-
-      <!-- Theme Toggle Sun/Moon -->
-      <label class="theme-switch">
-        <input type="checkbox" class="theme-switch__input" [(ngModel)]="isNightMode" (ngModelChange)="toggleTheme()">
-        <div class="theme-switch__slider theme-switch__round">
-          <div class="theme-switch__sun-moon">
-            <svg id="tmoon-dot-1" class="theme-switch__moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tmoon-dot-2" class="theme-switch__moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tmoon-dot-3" class="theme-switch__moon-dot" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tlight-ray-1" class="theme-switch__light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tlight-ray-2" class="theme-switch__light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tlight-ray-3" class="theme-switch__light-ray" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tcloud-1" class="theme-switch__cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tcloud-2" class="theme-switch__cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tcloud-3" class="theme-switch__cloud-dark" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tcloud-4" class="theme-switch__cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tcloud-5" class="theme-switch__cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-            <svg id="tcloud-6" class="theme-switch__cloud-light" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"></circle></svg>
-          </div>
-          <div class="theme-switch__stars">
-            <svg id="tstar-1" class="theme-switch__star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-            <svg id="tstar-2" class="theme-switch__star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-            <svg id="tstar-3" class="theme-switch__star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-            <svg id="tstar-4" class="theme-switch__star" viewBox="0 0 20 20"><path d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"></path></svg>
-          </div>
-        </div>
-      </label>
     </div>
 
     <div class="flex items-center gap-4">
-      <div class="searchBox">
-        <input class="searchInput" type="text" placeholder="Search House Name..." [(ngModel)]="searchTerm" />
-        <button class="searchButton">
-          <span class="text-white">🔍</span>
-        </button>
+      <div
+        class="flex items-center bg-slate-100 border border-slate-200 rounded-full h-8 px-3 gap-2 focus-within:border-slate-400 transition-all">
+        <span class="text-slate-400 text-xs">🔍</span>
+        <input
+          class="bg-transparent border-none outline-none text-slate-700 text-xs w-36 placeholder:text-slate-400 font-medium"
+          type="text" placeholder="Search house name..." [(ngModel)]="searchTerm" />
       </div>
 
-      <div class="flex gap-6">
+      <div class="flex gap-4">
         <div class="flex flex-col">
-          <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1">H-Streets</label>
+          <label class="text-[9px] uppercase tracking-widest text-slate-950 font-black mb-1">H-Streets</label>
           <input type="number" min="1" max="8" [(ngModel)]="hStreets"
-            class="bg-slate-800 border border-white/10 px-2 py-1 text-accent rounded-lg w-14 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all" />
+            class="bg-white border border-slate-200 px-2 py-1 text-slate-900 font-black rounded-lg w-14 focus:outline-none focus:ring-2 focus:ring-slate-300 transition-all text-xs" />
         </div>
         <div class="flex flex-col">
-          <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1">V-Streets</label>
+          <label class="text-[9px] uppercase tracking-widest text-slate-950 font-black mb-1">V-Streets</label>
           <input type="number" min="1" max="8" [(ngModel)]="vStreets"
-            class="bg-slate-800 border border-white/10 px-2 py-1 text-accent rounded-lg w-14 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all" />
+            class="bg-white border border-slate-200 px-2 py-1 text-slate-900 font-black rounded-lg w-14 focus:outline-none focus:ring-2 focus:ring-slate-300 transition-all text-xs" />
         </div>
         <div class="flex flex-col">
-          <label class="text-[9px] uppercase tracking-widest text-slate-500 font-bold mb-1">Plots/Block</label>
+          <label class="text-[9px] uppercase tracking-widest text-slate-950 font-black mb-1">Plots/Block</label>
           <input type="number" min="1" max="8" [(ngModel)]="plotsPerBlock"
-            class="bg-slate-800 border border-white/10 px-2 py-1 text-accent rounded-lg w-14 focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all" />
+            class="bg-white border border-slate-200 px-2 py-1 text-slate-900 font-black rounded-lg w-14 focus:outline-none focus:ring-2 focus:ring-slate-300 transition-all text-xs" />
         </div>
       </div>
-      <div class="flex gap-1.5">
-        <button (click)="addMiddleRoadsToAll()" class="btn-secondary flex items-center gap-2 group">
-          <span class="w-4 h-4 text-accent">🛣️</span> Mid Roads
+
+      <div class="flex gap-2">
+        <button (click)="addMiddleRoadsToAll()"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 font-black text-[9px] uppercase tracking-widest rounded-lg transition-all">
+          🛣️ Mid Roads
         </button>
         <button [disabled]="!canUndo()" (click)="undo()"
-          [class]="'btn-secondary flex items-center gap-2 group ' + (!canUndo() ? 'opacity-50 cursor-not-allowed' : '')">
-          <span class="w-4 h-4 text-accent">↩️</span> Undo
+          [class]="'flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-900 font-black text-[9px] uppercase tracking-widest rounded-lg transition-all ' + (!canUndo() ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-200')">
+          ↩️ Undo
         </button>
-        <button (click)="resetLayout()" class="btn-secondary flex items-center gap-2 group">
-          <span class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500">🔄</span> Reset
+        <button (click)="resetLayout()"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 font-black text-[9px] uppercase tracking-widest rounded-lg transition-all">
+          🔄 Reset
         </button>
-        <button (click)="isProjectInfoOpen = true" class="btn-secondary flex items-center gap-2 group">
-          <span class="w-4 h-4 text-accent">📄</span> Project Info
+        <button (click)="isProjectInfoOpen = true"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-900 font-black text-[9px] uppercase tracking-widest rounded-lg transition-all">
+          📄 Project Info
         </button>
-        <div class="flex items-center gap-2 bg-white/5 px-2.5 py-1.5 rounded-xl border border-white/10">
-          <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Sidebar</span>
+        <div
+          class="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/60 shadow-sm hover:border-slate-300 transition-all">
+          <span class="text-[10px] font-black uppercase tracking-widest text-slate-900">Sidebar</span>
           <label class="switch">
             <input type="checkbox" [checked]="isSidebarOpen()" (change)="isSidebarOpen.set(!isSidebarOpen())">
             <span class="slider"></span>
           </label>
         </div>
-        <button (click)="generateLayout()" class="btn-primary">Generate Map</button>
       </div>
     </div>
   </header>
-
-  <!-- Legend Bar -->
-  <div
-    class="bg-slate-900/40 border-b border-white/5 px-4 py-1.5 flex items-center gap-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400 overflow-x-auto whitespace-nowrap custom-scrollbar">
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-house/20 border border-house/40 rounded shadow-inner"></div> House
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-apt/20 border border-apt/40 rounded shadow-inner"></div> Apartment
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-blue-500/20 border border-blue-500/40 rounded shadow-inner"></div> Tank
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-red-500/20 border border-red-500/40 rounded shadow-inner"></div> Clinic
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-green-500/20 border border-green-500/40 rounded shadow-inner"></div> Park
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-slate-700/40 border border-slate-500/40 rounded shadow-inner"></div> Road
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 bg-slate-800 border border-white/10 rounded shadow-inner"></div> Vacant
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="w-4 h-4 border-2 border-select shadow-[0_0_10px_rgba(251,191,36,0.5)] rounded"></div> Selected
-    </div>
-  </div>
-
-
-
   <!-- Merge floating bar -->
   <div *ngIf="pendingMerge.length > 0 || isCtrlHeld"
     class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[500] flex items-center gap-4 px-6 py-3 rounded-2xl shadow-2xl animate-fade-up"
@@ -153,32 +98,33 @@
   <main class="flex-1 flex overflow-hidden relative">
     <!-- Sidebar Toggle Handle (When closed) -->
     <div *ngIf="!isSidebarOpen()" (click)="isSidebarOpen.set(true)"
-      class="fixed right-0 top-1/2 -translate-y-1/2 z-[100] p-1.5 bg-accent/20 backdrop-blur-md border-y border-l border-accent/40 rounded-l-xl cursor-pointer hover:bg-accent hover:text-bg transition-all group shadow-2xl">
-      <div class="flex flex-col items-center gap-2 py-2">
-        <span class="text-xs">📚</span>
+      class="fixed right-0 top-1/2 -translate-y-1/2 z-[100] p-2 bg-white/95 backdrop-blur-xl border-y border-l border-slate-200 rounded-l-2xl cursor-pointer hover:bg-slate-50 hover:pl-4 transition-all group shadow-[0_10px_40px_rgba(0,0,0,0.1)] border-r-0">
+      <div class="flex flex-col items-center gap-3 py-4">
+        <span class="text-lg">📚</span>
         <div
-          class="[writing-mode:vertical-lr] text-[8px] font-black uppercase tracking-widest text-accent group-hover:text-bg">
-          Inspector</div>
-        <span class="text-xs">❮</span>
+          class="[writing-mode:vertical-lr] text-[9px] font-black uppercase tracking-[0.4em] text-slate-500 group-hover:text-accent transition-colors">
+          Inspector
+        </div>
+        <span class="text-xs text-slate-300 group-hover:text-accent group-hover:-translate-x-1 transition-all">❮</span>
       </div>
     </div>
 
     <!-- Map Canvas -->
     <div
-      [class]="'flex-1 overflow-auto p-16 bg-slate-950 custom-scrollbar relative ' + (isCtrlHeld ? 'cursor-crosshair' : '')"
+      [class]="'flex-1 overflow-auto p-16 bg-slate-100 custom-scrollbar relative ' + (isCtrlHeld ? 'cursor-crosshair' : '')"
       [style.--cell-size.px]="CELL()" [style.--road-size.px]="ROAD()">
 
       <!-- Zoom Controls -->
-      <div class="fixed bottom-6 right-6 z-[400] flex flex-col gap-2">
+      <div class="fixed bottom-8 right-8 z-[400] flex flex-col gap-3">
         <button (click)="zoomIn()"
-          class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-xl font-black text-white hover:bg-white/10 transition-all shadow-2xl border border-white/10">＋</button>
+          class="w-12 h-12 glass-card rounded-2xl flex items-center justify-center text-xl font-black text-slate-700 hover:bg-slate-50 transition-all shadow-xl border border-slate-200">＋</button>
         <div (click)="resetZoom()"
-          class="w-12 h-12 glass-card rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-white/10 transition-all border border-white/10">
+          class="w-12 h-12 glass-card rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-50 transition-all border border-slate-200">
           <span class="text-[10px] font-black text-accent">{{(zoom() * 100).toFixed(0)}}%</span>
-          <span class="text-[8px] text-slate-500 font-bold uppercase">Reset</span>
+          <span class="text-[8px] text-slate-400 font-bold uppercase tracking-tighter">Reset</span>
         </div>
         <button (click)="zoomOut()"
-          class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-xl font-black text-white hover:bg-white/10 transition-all shadow-2xl border border-white/10">－</button>
+          class="w-12 h-12 glass-card rounded-2xl flex items-center justify-center text-xl font-black text-slate-700 hover:bg-slate-50 transition-all shadow-xl border border-slate-200">－</button>
       </div>
 
       <div class="inline-block min-w-max animate-fade-up relative">
@@ -188,10 +134,17 @@
           <div class="flex">
             <ng-container *ngFor="let c of getRange(vStreets)">
               <div
-                [class]="'bg-bg2/30 border border-border/10 transition-all duration-500 ' + (isBlockHighlighted(r, c) ? 'bg-yellow-400/20 border-yellow-400/50 shadow-[0_0_20px_rgba(250,204,21,0.2)]' : '')">
+                [class]="'bg-bg2/30 border border-border/10 transition-all duration-500 relative group/block ' + (isBlockHighlighted(r, c) ? 'bg-yellow-400/20 border-yellow-400/50 shadow-[0_0_20px_rgba(250,204,21,0.2)]' : '')">
+
+                <!-- Per-block customize button -->
+                <button (click)="openBlockCustomize(r, c, $event)"
+                  class="absolute top-1 right-1 z-20 w-6 h-6 rounded-lg flex items-center justify-center text-[10px] opacity-0 group-hover/block:opacity-100 transition-all shadow-lg"
+                  [class]="isBlockOverridden(r, c) ? 'bg-accent text-slate-900 opacity-100' : 'bg-slate-800/90 text-slate-300 hover:bg-accent hover:text-slate-900 border border-white/10'">
+                  ⚙️
+                </button>
                 <ng-container *ngIf="isAllParks(r, c) && plotsPerBlock > 1; else individualPlots">
-                  <div class="flex items-center justify-center p-1" [style.width.px]="plotsPerBlock * CELL()"
-                    [style.height.px]="plotsPerBlock * CELL()">
+                  <div class="flex items-center justify-center p-1" [style.width.px]="getBlockCols(r,c) * CELL()"
+                    [style.height.px]="getBlockRows(r,c) * CELL()">
                     <app-plot-cell [plotKey]="getBlockKeys(r, c)[0]" [data]="plots()[getBlockKeys(r, c)[0]]"
                       [isSelected]="selectedKey() === getBlockKeys(r, c)[0]"
                       [roadConnectivity]="roadConnectivity()[getBlockKeys(r, c)[0]]"
@@ -204,11 +157,12 @@
                   </div>
                 </ng-container>
                 <ng-template #individualPlots>
-                  <!-- CSS Grid so merged cells can span rows AND columns -->
-                  <div class="grid" [style.grid-template-columns]="'repeat(' + plotsPerBlock + ',' + CELL() + 'px)'"
-                    [style.grid-template-rows]="'repeat(' + plotsPerBlock + ',' + CELL() + 'px)'">
-                    <ng-container *ngFor="let pr of getSubRange(plotsPerBlock)">
-                      <ng-container *ngFor="let pc of getSubRange(plotsPerBlock)">
+                  <!-- CSS Grid using per-block row/col overrides -->
+                  <div class="grid"
+                    [style.grid-template-columns]="'repeat(' + getBlockCols(r,c) + ',' + CELL() + 'px)'"
+                    [style.grid-template-rows]="'repeat(' + getBlockRows(r,c) + ',' + CELL() + 'px)'">
+                    <ng-container *ngFor="let pr of getSubRange(getBlockRows(r,c))">
+                      <ng-container *ngFor="let pc of getSubRange(getBlockCols(r,c))">
                         <ng-container
                           *ngIf="!isMergeSecondary('r'+r+'c'+c+'pr'+pr+'pc'+pc) && !isMergePrimary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
                           <app-plot-cell [plotKey]="'r'+r+'c'+c+'pr'+pr+'pc'+pc"
@@ -238,10 +192,13 @@
               <!-- Vertical Road -->
               <div *ngIf="c < vStreets"
                 [class]="'road-v flex items-center justify-center relative transition-all duration-500 ' + (isRoadHighlighted(r, c, 'v') ? 'bg-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.4)] z-10' : '')">
-                <input type="text" [ngModel]="vStreetNames()[c % vStreetNames().length]"
-                  (ngModelChange)="updateStreetName('v', c % vStreetNames().length, $event)"
-                  [class]="'text-[10px] font-mono uppercase tracking-[0.3em] whitespace-nowrap transition-colors bg-transparent border-none outline-none text-center h-full max-h-40 ' + (isRoadHighlighted(r, c, 'v') ? 'text-white font-black hover:bg-white/10' : 'text-gold/40 hover:bg-white/5')"
-                  style="writing-mode: vertical-rl" />
+                <div
+                  [class]="'flex items-center justify-center p-1 rounded-full border transition-all z-10 ' + (isRoadHighlighted(r, c, 'v') ? 'bg-yellow-400 border-white scale-110 shadow-xl' : 'bg-slate-900 border-white/20 shadow-lg')">
+                  <input type="text" [ngModel]="vStreetNames()[c % vStreetNames().length]"
+                    (ngModelChange)="updateStreetName('v', c % vStreetNames().length, $event)"
+                    [class]="'text-[10px] font-mono uppercase tracking-[0.3em] whitespace-nowrap transition-colors bg-transparent border-none outline-none text-center h-full max-h-40 ' + (isRoadHighlighted(r, c, 'v') ? 'text-slate-900 font-black' : 'text-white font-black')"
+                    style="writing-mode: vertical-rl; color: white !important; font-weight: 900;" />
+                </div>
               </div>
             </ng-container>
           </div>
@@ -252,17 +209,17 @@
               <div
                 [class]="'road-h flex-1 flex items-center px-4 transition-all duration-500 ' + (isRoadHighlighted(r, c, 'h') ? 'bg-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.4)] z-10' : '')">
                 <div *ngIf="c === 0"
-                  [class]="'flex items-center gap-1 px-2 py-0.5 rounded-full border whitespace-nowrap transition-all ' + (isRoadHighlighted(r, c, 'h') ? 'bg-yellow-400 text-slate-900 border-white font-black scale-110' : 'bg-gold/10 text-gold border-gold/20')">
+                  [class]="'flex items-center gap-1 px-3 py-1 rounded-full border whitespace-nowrap transition-all z-10 ' + (isRoadHighlighted(r, c, 'h') ? 'bg-yellow-400 text-slate-900 border-white font-black scale-110 shadow-xl' : 'bg-slate-900 text-white border-white/20 shadow-lg')">
                   🛣 <input type="text" [ngModel]="hStreetNames()[r % hStreetNames().length]"
                     (ngModelChange)="updateStreetName('h', r % hStreetNames().length, $event)"
-                    class="bg-transparent border-none outline-none w-24 text-[10px] font-mono uppercase tracking-widest placeholder:text-gold/40 text-center"
-                    placeholder="Street Name" />
+                    class="bg-transparent border-none outline-none w-24 text-[10px] font-mono uppercase tracking-widest placeholder:text-white/40 text-center font-black"
+                    placeholder="Street Name" style="color: white !important; font-weight: 900;" />
                 </div>
               </div>
-              <!-- Intersection -->
               <div *ngIf="c < vStreets"
-                [class]="'intersection transition-all duration-500 ' + (isIntersectionHighlighted(r, c) ? 'bg-yellow-400 text-slate-900 scale-125 z-20' : '')">
-                ◆</div>
+                [class]="'intersection transition-all duration-500 ' + (isIntersectionHighlighted(r, c) ? 'bg-yellow-400 text-slate-900 scale-125 z-20 ' : '')"
+                style="background: #64748b; border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.05);">
+              </div>
             </ng-container>
           </div>
           <ng-container *ngFor="let group of mergeGroups()">
@@ -320,8 +277,25 @@
 
     <!-- Sidebar -->
     <aside
-      [class]="'glass-card border-l border-white/5 flex flex-col shrink-0 transition-all duration-500 ease-in-out ' + (isSidebarOpen() ? 'w-72 opacity-100' : 'w-0 opacity-0 overflow-hidden')">
+      [class]="'glass-card border-l border-white/5 flex flex-col shrink-0 transition-all duration-500 ease-in-out ' + sidebarWidthClass()">
 
+      <!-- Sidebar Header with Stage Toggle -->
+      <div *ngIf="isSidebarOpen()" class="flex items-center justify-between px-4 py-2.5 border-b border-white/10 bg-slate-900/60 shrink-0">
+        <span class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-1.5">
+          <span class="text-accent">📐</span> Inspector
+        </span>
+        <div class="flex items-center gap-1">
+          <!-- Stage indicators -->
+          <span *ngFor="let i of [0,1,2]" (click)="sidebarStage.set($any(i))"
+            [class]="'w-2 h-2 rounded-full cursor-pointer transition-all ' + (sidebarStage() === i ? 'bg-accent scale-125' : 'bg-slate-600 hover:bg-slate-400')"></span>
+          <!-- Expand button -->
+          <button (click)="cycleSidebarStage()"
+            class="ml-2 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 border border-white/10 text-[9px] font-black uppercase tracking-wider text-slate-300 hover:text-accent hover:border-accent/40 transition-all">
+            <span [class]="'transition-transform duration-300 ' + (sidebarStage() === 2 ? 'rotate-180' : '')">↔</span>
+            {{ sidebarStage() === 0 ? 'Expand' : sidebarStage() === 1 ? 'Full' : 'Compact' }}
+          </button>
+        </div>
+      </div>
 
       <div class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
         <div *ngIf="selectedKey(); else emptySelection" class="space-y-4">
@@ -389,6 +363,29 @@
               </div>
             </div>
 
+            <!-- Road Info Card - Allow naming any road cell to create a sign -->
+            <div *ngIf="selectedPlot()?.type === 'road'"
+              class="bg-slate-700/40 border border-white/10 p-4 rounded-3xl space-y-3 shadow-inner animate-fade-up">
+              <div class="flex items-center gap-3">
+                <div class="bg-slate-600/30 text-slate-400 p-2 rounded-xl shrink-0 text-xl border border-white/10">🛣️
+                </div>
+                <div class="flex-1">
+                  <div class="text-[8px] text-slate-500 font-black uppercase tracking-[0.2em] mb-1">Street Landmark
+                  </div>
+                  <input type="text" [ngModel]="selectedPlot()?.name"
+                    (ngModelChange)="updatePlotDetails(selectedKey()!, { name: $event })"
+                    class="bg-white/5 border-none outline-none text-white font-black text-sm tracking-tight w-full rounded-xl px-3 py-2 focus:bg-white/10 transition-all placeholder:text-slate-600"
+                    placeholder="Enter Street Name..." />
+                </div>
+              </div>
+              <div class="bg-slate-900/40 p-3 rounded-2xl border border-white/5">
+                <p class="text-[9px] text-slate-500 font-bold leading-relaxed italic">
+                  💡 Tip: Naming a road cell creates a professional street sign. To keep the map clean, name only one
+                  cell per road block.
+                </p>
+              </div>
+            </div>
+
             <!-- House Info -->
             <div *ngIf="selectedPlot()?.type === 'house'"
               class="bg-slate-800/40 border border-white/10 p-4 rounded-3xl space-y-3 shadow-inner animate-fade-up">
@@ -399,45 +396,76 @@
                   class="bg-white/5 border-none outline-none text-white font-black text-base tracking-tight w-full rounded-xl px-3 py-2 focus:bg-white/10 transition-all"
                   placeholder="VILLA NAME" />
               </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div class="bg-slate-900/60 p-3 rounded-2xl border border-white/5">
-                  <div class="flex items-center gap-1.5 mb-1.5">
-                    <span class="text-accent text-xs">💰</span>
-                    <span class="text-[8px] uppercase text-slate-500 font-black tracking-widest">Valuation</span>
+              <div class="bg-slate-100/80 p-4 rounded-[2.5rem] border border-slate-200/40 shadow-sm space-y-4">
+                <!-- Header -->
+                <div class="flex items-center gap-3 mb-2">
+                  <div
+                    [class]="'w-12 h-12 rounded-2xl flex items-center justify-center text-2xl border transition-all ' + 
+                  (selectedPlot()?.type === 'house' ? 'bg-emerald-50 border-emerald-100/50' : 
+                   selectedPlot()?.type === 'apartment' ? 'bg-sky-50 border-sky-100/50' : 'bg-slate-200/20 border-slate-200/50')">
+                    <ng-container [ngSwitch]="selectedPlot()?.type">
+                      <span *ngSwitchCase="'house'">🏠</span>
+                      <span *ngSwitchCase="'apartment'">🏢</span>
+                      <span *ngSwitchDefault>🏗️</span>
+                    </ng-container>
                   </div>
-                  <div class="flex items-center gap-1 text-sm font-black text-white">
-                    <span class="text-slate-500">$</span>
-                    <input type="number" [ngModel]="selectedPlot()?.price"
-                      (ngModelChange)="updatePlotDetails(selectedKey()!, { price: $event })"
-                      class="bg-transparent border-none outline-none w-full min-w-0" />
+                  <div class="flex-1 min-w-0">
+                    <h2 class="text-slate-900 font-black text-lg tracking-tight truncate leading-none mb-1">
+                      {{ selectedPlot()?.name || 'Property Detail' }}
+                    </h2>
+                    <div class="text-[9px] text-slate-500 uppercase tracking-[0.2em] font-bold">
+                      {{ selectedPlot()?.type || 'UNSET' }} CONFIGURATION
+                    </div>
                   </div>
                 </div>
-                <div class="bg-slate-900/60 p-3 rounded-2xl border border-white/5">
-                  <div class="flex items-center gap-1.5 mb-1.5">
-                    <span class="text-accent text-xs">📐</span>
-                    <span class="text-[8px] uppercase text-slate-500 font-black tracking-widest">Area</span>
+
+                <div class="grid grid-cols-2 gap-3"
+                  *ngIf="selectedPlot()?.type === 'house' || !selectedPlot()?.type || selectedPlot()?.type === 'vacant'">
+                  <div
+                    class="bg-white p-3 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="text-[9px] uppercase text-slate-400 font-extrabold tracking-widest">Valuation</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
+                      <span class="text-slate-400 font-black text-sm">$</span>
+                      <input type="number" [ngModel]="selectedPlot()?.price"
+                        (ngModelChange)="updatePlotDetails(selectedKey()!, { price: $event })"
+                        class="bg-transparent border-none outline-none w-full min-w-0 text-slate-900 font-black text-xs" />
+                    </div>
                   </div>
-                  <div class="flex items-center gap-1 text-sm font-black text-white">
-                    <input type="number" [ngModel]="selectedPlot()?.sqft"
-                      (ngModelChange)="updatePlotDetails(selectedKey()!, { sqft: $event })"
-                      class="bg-transparent border-none outline-none w-full min-w-0" />
-                    <span class="text-[8px] text-slate-500 uppercase shrink-0">sqft</span>
+                  <div
+                    class="bg-white p-3 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-center gap-1.5 mb-2">
+                      <span class="text-[9px] uppercase text-slate-400 font-extrabold tracking-widest">Area SQFT</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-slate-50 rounded-xl px-2 py-1.5 border border-slate-100">
+                      <input type="number" [ngModel]="selectedPlot()?.sqft"
+                        (ngModelChange)="updatePlotDetails(selectedKey()!, { sqft: $event })"
+                        class="bg-transparent border-none outline-none w-full min-w-0 text-slate-900 font-black text-xs text-right" />
+                      <span class="text-[8px] text-slate-400 font-black uppercase shrink-0">FT²</span>
+                    </div>
                   </div>
+                </div>
+
+                <!-- Parking Toggle -->
+                <div *ngIf="selectedPlot()?.type === 'house'"
+                  class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-slate-200/60 shadow-sm">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shadow-inner">
+                      <span class="text-sm">🚗</span>
+                    </div>
+                    <span class="text-[10px] uppercase text-slate-500 font-black tracking-widest">Parking
+                      Facility</span>
+                  </div>
+                  <label class="switch" style="--w:38px; --h:22px; --brd:3px;">
+                    <input type="checkbox" [ngModel]="selectedPlot()?.parking"
+                      (ngModelChange)="updatePlotDetails(selectedKey()!, { parking: $event })">
+                    <span class="slider"></span>
+                  </label>
                 </div>
               </div>
-              <!-- Parking Toggle -->
-              <div class="flex items-center justify-between bg-slate-900/60 p-3 rounded-2xl border border-white/5">
-                <div class="flex items-center gap-2">
-                  <span class="text-base">🚗</span>
-                  <span class="text-[9px] uppercase text-slate-400 font-black tracking-widest">Parking</span>
-                </div>
-                <label class="switch" style="--w:36px; --h:20px; --brd:3px;">
-                  <input type="checkbox" [ngModel]="selectedPlot()?.parking"
-                    (ngModelChange)="updatePlotDetails(selectedKey()!, { parking: $event })">
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
+            </div> <!-- End House Info Wrap -->
 
             <!-- Apartment Config Info -->
             <div *ngIf="selectedPlot()?.type === 'apartment'"
@@ -468,8 +496,8 @@
                 class="w-full py-4 bg-accent/10 border border-accent/20 text-accent text-[11px] font-black uppercase tracking-[0.25em] hover:bg-accent/20 hover:border-accent/40 transition-all rounded-2xl flex items-center justify-center gap-3 mt-4 group">
                 🏢 View 3D Schematic
               </button>
-            </div>
-          </div>
+            </div> <!-- End Apartment Config Wrap -->
+          </div> <!-- End Identity & Details Wrap -->
 
           <!-- BOTTOM: Selection & Tools -->
           <div class="space-y-4 px-4 pb-4">
@@ -480,7 +508,8 @@
                 <span class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
                   <span class="text-accent">⚙️</span> Classification
                 </span>
-                <span class="text-slate-400 text-xs transition-transform duration-300" [class.rotate-180]="classificationOpen()">▼</span>
+                <span class="text-slate-400 text-xs transition-transform duration-300"
+                  [class.rotate-180]="classificationOpen()">▼</span>
               </button>
               <div *ngIf="classificationOpen()" class="grid grid-cols-3 gap-2 animate-fade-up">
                 <button (click)="clearPlot(selectedKey()!)" draggable="true" (dragstart)="onDragStart($event, 'vacant')"
@@ -583,9 +612,9 @@
           </div>
 
           <button (click)="clearPlot(selectedKey()!)"
-              class="w-full py-2 bg-danger/10 border border-danger/20 text-danger text-[9px] font-black uppercase tracking-[0.3em] hover:bg-danger/20 transition-all rounded-xl flex items-center justify-center gap-2">
-              🗑️ Purge Records
-            </button>
+            class="w-full py-2 bg-danger/10 border border-danger/20 text-danger text-[9px] font-black uppercase tracking-[0.3em] hover:bg-danger/20 transition-all rounded-xl flex items-center justify-center gap-2">
+            🗑️ Purge Records
+          </button>
         </div>
         <ng-template #emptySelection>
           <div class="h-full flex flex-col items-center justify-center text-center opacity-20">
@@ -705,7 +734,7 @@
   <!-- Plot Detail Popup -->
   <div *ngIf="isDetailModalOpen && selectedKey()" class="fixed inset-0 z-[150] flex items-center justify-center p-4"
     (click)="isDetailModalOpen = false">
-    <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
     <div
       class="relative glass-card w-full max-w-sm rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.6)] overflow-hidden animate-fade-up"
       (click)="$event.stopPropagation()">
@@ -732,7 +761,8 @@
               </ng-container>
             </span>
             <div>
-              <h2 class="text-lg font-black text-white tracking-tight">{{selectedPlot()?.name || selectedPlot()?.type ||
+              <h2 class="text-lg font-black text-slate-900 tracking-tight">{{selectedPlot()?.name ||
+                selectedPlot()?.type ||
                 'Vacant Plot'}}</h2>
               <div *ngIf="selectedHalf()" class="flex items-center gap-1.5 mt-0.5">
                 <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full"
@@ -747,7 +777,7 @@
           <p class="text-[10px] text-slate-400 font-mono mt-1">{{selectedKey()}}</p>
         </div>
         <button (click)="isDetailModalOpen = false"
-          class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all text-lg">✕</button>
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-900/5 hover:bg-slate-900/10 text-slate-500 hover:text-slate-900 transition-all text-lg">✕</button>
       </div>
 
       <!-- Split half switcher -->
@@ -768,28 +798,30 @@
       <div class="p-6 space-y-4">
         <!-- House stats -->
         <div *ngIf="selectedPlot()?.type === 'house'" class="grid grid-cols-2 gap-3">
-          <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5">
+          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200/50 shadow-sm">
             <div class="text-[9px] uppercase text-slate-500 font-bold mb-1">💰 Valuation</div>
-            <div class="text-white font-black">${{selectedPlot()?.price || '—'}}</div>
+            <div class="text-slate-900 font-black">${{selectedPlot()?.price || '—'}}</div>
           </div>
-          <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5">
+          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200/50 shadow-sm">
             <div class="text-[9px] uppercase text-slate-500 font-bold mb-1">📐 Area</div>
-            <div class="text-white font-black">{{selectedPlot()?.sqft || '—'}} sqft</div>
+            <div class="text-slate-900 font-black">{{selectedPlot()?.sqft || '—'}} sqft</div>
           </div>
         </div>
 
         <!-- House Parking badge -->
         <div *ngIf="selectedPlot()?.type === 'house'"
-          class="flex items-center justify-between p-3 rounded-xl border"
-          [class]="selectedPlot()?.parking ? 'bg-green-500/10 border-green-500/25' : 'bg-slate-800/60 border-white/5'">
+          class="flex items-center justify-between p-3 rounded-xl border border-slate-200/50 shadow-sm"
+          [class]="selectedPlot()?.parking ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-100 border-slate-200/50'">
           <div class="flex items-center gap-3">
             <span class="text-xl">🚗</span>
             <div>
               <div class="text-[10px] font-black uppercase tracking-widest"
-                [class]="selectedPlot()?.parking ? 'text-green-400' : 'text-slate-400'">
+                [class]="selectedPlot()?.parking ? 'text-emerald-600' : 'text-slate-500'">
                 {{ selectedPlot()?.parking ? 'Parking Available' : 'No Parking' }}
               </div>
-              <div class="text-[9px] text-slate-500">{{ selectedPlot()?.parking ? 'Dedicated slot included' : 'Toggle to enable' }}</div>
+              <div class="text-[9px] text-slate-400 font-medium">{{ selectedPlot()?.parking ? 'Dedicated slot included'
+                : 'Toggle to
+                enable' }}</div>
             </div>
           </div>
           <label class="switch">
@@ -801,11 +833,11 @@
 
         <!-- Apartment stats -->
         <div *ngIf="selectedPlot()?.type === 'apartment'" class="grid grid-cols-2 gap-3">
-          <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5">
+          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200/50 shadow-sm">
             <div class="text-[9px] uppercase text-slate-500 font-bold mb-1">🏗️ Floors</div>
             <div class="text-apt font-black">{{selectedPlot()?.aptConfig?.floors}}</div>
           </div>
-          <div class="bg-slate-800/60 p-3 rounded-xl border border-white/5">
+          <div class="bg-slate-100 p-3 rounded-xl border border-slate-200/50 shadow-sm">
             <div class="text-[9px] uppercase text-slate-500 font-bold mb-1">🚪 Units/Floor</div>
             <div class="text-apt font-black">{{selectedPlot()?.aptConfig?.unitsPerFloor}}</div>
           </div>
@@ -813,11 +845,11 @@
 
         <!-- Shop type -->
         <div *ngIf="selectedPlot()?.type === 'shop' && selectedPlot()?.shopType"
-          class="bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl flex items-center gap-3">
+          class="bg-amber-50 p-3 rounded-xl border border-amber-100 flex items-center gap-3">
           <span class="text-2xl">{{getShopOption(selectedPlot()!.shopType!)?.emoji}}</span>
           <div>
-            <div class="text-white font-black text-sm">{{getShopOption(selectedPlot()!.shopType!)?.label}}</div>
-            <div class="text-[9px] text-amber-400 uppercase tracking-wider">
+            <div class="text-slate-900 font-black text-sm">{{getShopOption(selectedPlot()!.shopType!)?.label}}</div>
+            <div class="text-[9px] text-amber-600 uppercase tracking-wider font-bold">
               {{getShopOption(selectedPlot()!.shopType!)?.category}}</div>
           </div>
         </div>
@@ -828,17 +860,18 @@
             ({{selectedPlot()?.residents?.length}})</div>
           <div class="space-y-2 max-h-40 overflow-y-auto custom-scrollbar">
             <div *ngFor="let res of selectedPlot()?.residents"
-              class="flex items-center gap-3 bg-slate-800/50 p-2.5 rounded-xl border border-white/5">
+              class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
               <div
-                [class]="'w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 ' + (res.role === 'owner' ? 'bg-house text-slate-900' : 'bg-apt text-slate-900')">
+                [class]="'w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0 ' + (res.role === 'owner' ? 'bg-house/10 text-house' : 'bg-apt/10 text-apt')">
                 {{res.role === 'owner' ? '👤' : '🏠'}}</div>
               <div class="flex-1 min-w-0">
-                <div class="text-white text-xs font-black truncate">{{res.name}}</div>
-                <div class="text-slate-400 text-[10px]">{{res.phone}}<span *ngIf="res.unit" class="text-accent ml-2">·
+                <div class="text-slate-900 text-xs font-black truncate">{{res.name}}</div>
+                <div class="text-slate-400 text-[10px] font-medium">{{res.phone}}<span *ngIf="res.unit"
+                    class="text-accent ml-2 font-bold">·
                     {{res.unit}}</span></div>
               </div>
               <span
-                [class]="'text-[8px] px-1.5 py-0.5 rounded font-black uppercase shrink-0 ' + (res.role === 'owner' ? 'bg-house/20 text-house' : 'bg-apt/20 text-apt')">{{res.role}}</span>
+                [class]="'text-[8px] px-1.5 py-0.5 rounded font-black uppercase shrink-0 ' + (res.role === 'owner' ? 'bg-house/10 text-house' : 'bg-apt/10 text-apt')">{{res.role}}</span>
             </div>
           </div>
         </div>
@@ -854,15 +887,15 @@
       <!-- Footer actions -->
       <div class="px-6 pb-6 flex gap-3">
         <button *ngIf="selectedPlot()?.type === 'apartment'" (click)="isDetailModalOpen = false; isAptDetailOpen = true"
-          class="flex-1 py-2.5 bg-apt/10 border border-apt/20 text-apt text-[10px] font-black uppercase tracking-wider rounded-xl hover:bg-apt/20 transition-all">🏢
+          class="flex-1 py-3 bg-apt/5 border border-apt/20 text-apt text-[10px] font-black uppercase tracking-wider rounded-2xl hover:bg-apt/10 transition-all shadow-sm">🏢
           View Schematic</button>
         <button *ngIf="selectedPlot()?.type === 'house' && selectedPlot()?.parking"
-          class="flex-1 py-2.5 bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 cursor-default">
-          🚗 Parking Available
+          class="flex-1 py-3 bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-black uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2 cursor-default shadow-sm font-bold">
+          🚗 Parking Set
         </button>
         <button (click)="isDetailModalOpen = false; resModalRole = 'owner'; isResModalOpen = true"
-          class="flex-1 py-2.5 bg-house/10 border border-house/20 text-house text-[10px] font-black uppercase tracking-wider rounded-xl hover:bg-house/20 transition-all">+
-          Add Resident</button>
+          class="flex-1 py-3 bg-emerald-500/5 border-2 border-emerald-500/10 text-emerald-600 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all shadow-sm">
+          + Add Resident</button>
       </div>
     </div>
   </div>
@@ -874,29 +907,119 @@
 
 </div>
 
+<!-- Block Customize Modal -->
+<div *ngIf="isBlockCustomizeOpen" class="fixed inset-0 z-[250] flex items-center justify-center p-4"
+  (click)="isBlockCustomizeOpen = false">
+  <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md"></div>
+  <div class="relative glass-card w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden animate-fade-up border border-white/10"
+    (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="px-6 py-5 border-b border-white/5 bg-accent/10 flex items-center justify-between">
+      <div>
+        <h2 class="text-base font-black text-white tracking-tight">⚙️ Block Customize</h2>
+        <p class="text-[10px] text-accent font-bold uppercase tracking-widest mt-0.5">
+          Block R{{blockCustomizeTarget.r}} · C{{blockCustomizeTarget.c}}
+          <span *ngIf="isBlockOverridden(blockCustomizeTarget.r, blockCustomizeTarget.c)"
+            class="ml-2 px-1.5 py-0.5 bg-accent/20 text-accent rounded-full text-[8px]">CUSTOM</span>
+        </p>
+      </div>
+      <button (click)="isBlockCustomizeOpen = false"
+        class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 space-y-5">
+      <p class="text-[10px] text-slate-400 leading-relaxed">
+        Set the number of <strong class="text-white">rows</strong> and <strong class="text-white">columns</strong> of plots inside this block independently.
+        The block's physical size stays the same — only the plot count changes.
+      </p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Rows -->
+        <div class="space-y-2">
+          <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
+            <span class="text-amber-400">↕</span> Rows
+          </label>
+          <div class="flex items-center gap-2 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2">
+            <button (click)="blockCustomizeRows = blockCustomizeRows > 1 ? blockCustomizeRows - 1 : 1"
+              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">−</button>
+            <span class="flex-1 text-center text-white font-black text-lg">{{blockCustomizeRows}}</span>
+            <button (click)="blockCustomizeRows = blockCustomizeRows < 8 ? blockCustomizeRows + 1 : 8"
+              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">+</button>
+          </div>
+          <p class="text-[8px] text-slate-600 text-center">1 – 8 rows</p>
+        </div>
+
+        <!-- Cols -->
+        <div class="space-y-2">
+          <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
+            <span class="text-accent">↔</span> Columns
+          </label>
+          <div class="flex items-center gap-2 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2">
+            <button (click)="blockCustomizeCols = blockCustomizeCols > 1 ? blockCustomizeCols - 1 : 1"
+              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">−</button>
+            <span class="flex-1 text-center text-white font-black text-lg">{{blockCustomizeCols}}</span>
+            <button (click)="blockCustomizeCols = blockCustomizeCols < 8 ? blockCustomizeCols + 1 : 8"
+              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">+</button>
+          </div>
+          <p class="text-[8px] text-slate-600 text-center">1 – 8 cols</p>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="bg-slate-900/60 border border-white/5 rounded-2xl p-4 flex items-center justify-center gap-3">
+        <div class="text-center">
+          <div class="text-[8px] text-slate-500 uppercase tracking-widest mb-1">Preview</div>
+          <div class="inline-grid gap-0.5"
+            [style.grid-template-columns]="'repeat(' + blockCustomizeCols + ', 14px)'"
+            [style.grid-template-rows]="'repeat(' + blockCustomizeRows + ', 14px)'">
+            <div *ngFor="let i of [].constructor(blockCustomizeRows * blockCustomizeCols)"
+              class="w-3.5 h-3.5 rounded-sm bg-accent/30 border border-accent/20"></div>
+          </div>
+          <div class="text-[9px] text-accent font-black mt-2">{{blockCustomizeRows}} × {{blockCustomizeCols}} = {{blockCustomizeRows * blockCustomizeCols}} plots</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 pb-6 flex gap-3">
+      <button *ngIf="isBlockOverridden(blockCustomizeTarget.r, blockCustomizeTarget.c)"
+        (click)="resetBlockCustomize()"
+        class="flex-1 py-2.5 bg-danger/10 border border-danger/20 text-danger text-[9px] font-black uppercase tracking-wider rounded-xl hover:bg-danger/20 transition-all">
+        ↺ Reset Default
+      </button>
+      <button (click)="applyBlockCustomize()"
+        class="flex-1 py-2.5 bg-accent text-slate-900 text-[9px] font-black uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-accent/20">
+        ✓ Apply
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Shop Type Picker Modal -->
 <div *ngIf="isShopPickerOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-6"
   (click)="isShopPickerOpen = false">
-  <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
+  <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
   <div
-    class="relative bg-slate-900 border border-white/10 rounded-3xl shadow-[0_0_80px_rgba(0,0,0,0.8)] p-8 w-full max-w-sm animate-fade-up"
+    class="relative bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-8 w-full max-w-sm animate-fade-up"
     (click)="$event.stopPropagation()">
     <div class="mb-6">
-      <h2 class="text-xl font-black text-white tracking-tight">Select Shop Type</h2>
-      <p class="text-[10px] text-amber-400 uppercase tracking-[0.3em] font-black mt-1">Choose what this space sells</p>
+      <h2 class="text-xl font-black text-slate-900 tracking-tight">Select Shop Type</h2>
+      <p class="text-[10px] text-amber-600 uppercase tracking-[0.3em] font-black mt-1">Choose what this space sells</p>
     </div>
     <div class="grid grid-cols-2 gap-3">
       <button *ngFor="let opt of shopOptions" (click)="confirmShopType(opt.value)"
-        [class]="'flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left hover:scale-[1.02] active:scale-95 ' + (selectedPlot()?.shopType === opt.value ? 'bg-amber-500/10 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)]' : 'bg-slate-800/60 border-white/5 hover:border-amber-400/40')">
+        [class]="'flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left hover:scale-[1.02] active:scale-95 ' + (selectedPlot()?.shopType === opt.value ? 'bg-amber-50 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.1)]' : 'bg-slate-50 border-slate-100 hover:border-amber-400/40')">
         <span class="text-2xl">{{opt.emoji}}</span>
         <div>
-          <div class="text-[11px] font-black text-white">{{opt.label}}</div>
-          <div class="text-[9px] text-slate-500 uppercase tracking-wide">{{opt.category}}</div>
+          <div class="text-[11px] font-black text-slate-900">{{opt.label}}</div>
+          <div class="text-[9px] text-slate-500 uppercase tracking-wide font-bold">{{opt.category}}</div>
         </div>
       </button>
     </div>
     <button (click)="isShopPickerOpen = false"
-      class="mt-6 w-full py-3 text-slate-500 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors">Cancel</button>
+      class="mt-6 w-full py-3 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-900 transition-colors uppercase">Cancel</button>
   </div>
 
   <!-- Project Info Modal -->
@@ -907,89 +1030,89 @@
       (click)="$event.stopPropagation()">
       <!-- Modal Header -->
       <div
-        class="p-8 border-b border-white/5 bg-gradient-to-r from-accent/10 to-transparent flex items-center justify-between">
+        class="p-8 border-b border-slate-100 bg-gradient-to-r from-accent/5 to-transparent flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
-            class="w-12 h-12 bg-accent/20 rounded-2xl flex items-center justify-center border border-accent/30 shadow-[0_0_20px_rgba(56,189,248,0.2)]">
+            class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20 shadow-sm">
             <span class="text-2xl">📋</span>
           </div>
           <div>
-            <h2 class="text-xl font-black text-white tracking-widest uppercase">Area Statement</h2>
-            <p class="text-[10px] text-accent font-black tracking-[0.3em] uppercase mt-1">THE PATIO VILLAS - Land Use
+            <h2 class="text-xl font-black text-slate-900 tracking-widest uppercase">Area Statement</h2>
+            <p class="text-[10px] text-accent font-black tracking-[0.3em] uppercase mt-1">MACS LAYOUT - Land Use
               Analysis</p>
           </div>
         </div>
         <button (click)="isProjectInfoOpen = false"
-          class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all flex items-center justify-center border border-white/10">✕</button>
+          class="w-10 h-10 rounded-full bg-slate-900/5 hover:bg-slate-900/10 text-slate-400 hover:text-slate-900 transition-all flex items-center justify-center border border-slate-100">✕</button>
       </div>
 
       <!-- Modal Body -->
       <div class="p-8 space-y-6">
         <div class="grid grid-cols-2 gap-4 mb-4">
-          <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5">
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
             <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Total Land Area</div>
-            <div class="text-white font-black text-sm">{{state().projectMeta?.totalLandArea}}</div>
+            <div class="text-slate-900 font-black text-sm">{{state().projectMeta?.totalLandArea}}</div>
           </div>
-          <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5">
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
             <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Net Plot Area</div>
-            <div class="text-white font-black text-sm">{{state().projectMeta?.netPlotArea}}</div>
+            <div class="text-slate-900 font-black text-sm">{{state().projectMeta?.netPlotArea}}</div>
           </div>
         </div>
 
-        <div class="rounded-2xl border border-white/10 overflow-hidden">
+        <div class="rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
           <table class="w-full text-left text-[11px]">
-            <thead class="bg-slate-900/80 border-b border-white/10">
+            <thead class="bg-slate-50 border-b border-slate-100">
               <tr>
-                <th class="px-6 py-4 font-black text-slate-400 uppercase tracking-widest">Category</th>
-                <th class="px-6 py-4 font-black text-slate-400 uppercase tracking-widest text-right">Area (SQ.MTS)</th>
-                <th class="px-6 py-4 font-black text-slate-400 uppercase tracking-widest text-right">Percentage</th>
+                <th class="px-6 py-4 font-black text-slate-500 uppercase tracking-widest">Category</th>
+                <th class="px-6 py-4 font-black text-slate-500 uppercase tracking-widest text-right">Area (SQ.MTS)</th>
+                <th class="px-6 py-4 font-black text-slate-500 uppercase tracking-widest text-right">Percentage</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-white/5 bg-slate-900/40">
-              <tr class="hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4 font-bold text-white flex items-center gap-2">🏠 Plotted Area</td>
-                <td class="px-6 py-4 text-emerald-400 font-mono font-bold text-right">
+            <tbody class="divide-y divide-slate-100 bg-white">
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-700 flex items-center gap-2">🏠 Plotted Area</td>
+                <td class="px-6 py-4 text-emerald-600 font-mono font-bold text-right">
                   {{state().projectMeta?.plottedArea?.split(' ')[0]}}</td>
-                <td class="px-6 py-4 text-slate-500 font-black text-right">57.924%</td>
+                <td class="px-6 py-4 text-slate-400 font-black text-right">57.924%</td>
               </tr>
-              <tr class="hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4 font-bold text-white flex items-center gap-2">🛣️ Road Area</td>
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-700 flex items-center gap-2">🛣️ Road Area</td>
                 <td class="px-6 py-4 text-accent font-mono font-bold text-right">
                   {{state().projectMeta?.roadArea?.split(' ')[0]}}</td>
-                <td class="px-6 py-4 text-slate-500 font-black text-right">27.660%</td>
+                <td class="px-6 py-4 text-slate-400 font-black text-right">27.660%</td>
               </tr>
-              <tr class="hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4 font-bold text-white flex items-center gap-2">🌳 Open Area</td>
-                <td class="px-6 py-4 text-green-400 font-mono font-bold text-right">
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-700 flex items-center gap-2">🌳 Open Area</td>
+                <td class="px-6 py-4 text-green-600 font-mono font-bold text-right">
                   {{state().projectMeta?.openArea?.split(' ')[0]}}</td>
-                <td class="px-6 py-4 text-slate-500 font-black text-right">10.005%</td>
+                <td class="px-6 py-4 text-slate-400 font-black text-right">10.005%</td>
               </tr>
-              <tr class="hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4 font-bold text-white flex items-center gap-2">🏗️ Utility Area</td>
-                <td class="px-6 py-4 text-yellow-400 font-mono font-bold text-right">
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-700 flex items-center gap-2">🏗️ Utility Area</td>
+                <td class="px-6 py-4 text-amber-600 font-mono font-bold text-right">
                   {{state().projectMeta?.utilityArea?.split(' ')[0]}}</td>
-                <td class="px-6 py-4 text-slate-500 font-black text-right">1.037%</td>
+                <td class="px-6 py-4 text-slate-400 font-black text-right">1.037%</td>
               </tr>
-              <tr class="hover:bg-white/5 transition-colors">
-                <td class="px-6 py-4 font-bold text-white flex items-center gap-2">🏥 Civic Amenities</td>
-                <td class="px-6 py-4 text-red-400 font-mono font-bold text-right">
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-700 flex items-center gap-2">🏥 Civic Amenities</td>
+                <td class="px-6 py-4 text-red-600 font-mono font-bold text-right">
                   {{state().projectMeta?.civicAmenities?.split(' ')[0]}}</td>
-                <td class="px-6 py-4 text-slate-500 font-black text-right">3.372%</td>
+                <td class="px-6 py-4 text-slate-400 font-black text-right">3.372%</td>
               </tr>
             </tbody>
-            <tfoot class="bg-accent/5 border-t border-white/10">
+            <tfoot class="bg-accent/5 border-t border-slate-100">
               <tr class="font-black text-right">
-                <td class="px-6 py-4 text-white uppercase tracking-widest text-left">Total Area</td>
+                <td class="px-6 py-4 text-slate-900 uppercase tracking-widest text-left">Total Area</td>
                 <td class="px-6 py-4 text-accent text-sm">82,223.377</td>
-                <td class="px-6 py-4 text-white">100.00%</td>
+                <td class="px-6 py-4 text-slate-900">100.00%</td>
               </tr>
             </tfoot>
           </table>
         </div>
 
-        <div class="flex items-center justify-between p-4 bg-accent/10 rounded-xl border border-accent/20">
-          <span class="text-[10px] font-black text-accent uppercase tracking-[0.2em]">Total Units Planned</span>
-          <span class="text-xl font-black text-white">175 NO'S</span>
+        <div class="flex items-center justify-between p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+          <span class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em]">Total Units Planned</span>
+          <span class="text-xl font-black text-slate-900">175 NO'S</span>
         </div>
       </div>
     </div>

@@ -10,83 +10,99 @@ import { Resident, AptConfig } from '../../../types';
   template: `
     <div *ngIf="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md" (click)="onClose.emit()"></div>
-      <div class="relative glass-card w-full max-w-sm rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden animate-fade-up">
-        <div [class]="'p-6 border-b border-white/5 ' + (role === 'owner' ? 'bg-house/10' : 'bg-apt/10')">
-          <h2 class="text-xl font-black text-white tracking-tight">Register {{role === 'owner' ? 'Owner' : 'Tenant'}}</h2>
-          <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Identity Verification</p>
+      <div class="relative w-full max-w-sm rounded-3xl overflow-hidden animate-fade-up"
+        style="background:#ffffff; border:1px solid #e2e8f0; box-shadow:0 20px 60px rgba(0,0,0,0.15);">
+
+        <!-- Header -->
+        <div [style]="'padding:24px 24px 20px; border-bottom:1px solid #f1f5f9; background:' + (role === 'owner' ? 'linear-gradient(135deg,#f0fdf4,#ffffff)' : 'linear-gradient(135deg,#f0f9ff,#ffffff)')">
+          <h2 style="font-size:18px; font-weight:900; color:#0f172a !important; -webkit-text-fill-color:#0f172a !important; letter-spacing:-0.02em; margin:0 0 4px;">
+            Register {{role === 'owner' ? 'Owner' : 'Tenant'}}
+          </h2>
+          <p style="font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.2em; color:#94a3b8 !important; -webkit-text-fill-color:#94a3b8 !important; margin:0;">
+            Identity Verification
+          </p>
         </div>
 
-        <div class="p-6 space-y-4">
-          <!-- Role Radio -->
-          <div class="flex gap-3">
-            <label class="flex-1 flex items-center gap-2.5 p-3 rounded-xl border-2 cursor-pointer transition-all"
-              [class]="role === 'owner' ? 'bg-house/10 border-house text-house' : 'bg-slate-800/60 border-white/5 text-slate-500 hover:border-white/20'">
-              <input type="radio" name="resRole" value="owner" [(ngModel)]="role" class="hidden">
-              <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
-                [class]="role === 'owner' ? 'border-house' : 'border-slate-600'">
-                <span *ngIf="role === 'owner'" class="w-2 h-2 rounded-full bg-house"></span>
+        <!-- Body -->
+        <div style="padding:24px; display:flex; flex-direction:column; gap:16px; background:#ffffff;">
+
+          <!-- Role Toggle -->
+          <div style="display:flex; gap:10px;">
+            <label style="flex:1; display:flex; align-items:center; gap:10px; padding:12px; border-radius:12px; border:2px solid; cursor:pointer; transition:all 0.2s;"
+              [style.border-color]="role === 'owner' ? '#10b981' : '#e2e8f0'"
+              [style.background]="role === 'owner' ? '#f0fdf4' : '#f8fafc'">
+              <input type="radio" name="resRole" value="owner" [(ngModel)]="role" style="display:none;">
+              <span style="width:16px; height:16px; border-radius:50%; border:2px solid; display:flex; align-items:center; justify-content:center; flex-shrink:0;"
+                [style.border-color]="role === 'owner' ? '#10b981' : '#cbd5e1'">
+                <span *ngIf="role === 'owner'" style="width:8px; height:8px; border-radius:50%; background:#10b981; display:block;"></span>
               </span>
-              <span class="text-[10px] font-black uppercase tracking-widest">👤 Owner</span>
+              <span style="font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em;"
+                [style.color]="role === 'owner' ? '#059669' : '#94a3b8'">👤 Owner</span>
             </label>
-            <label class="flex-1 flex items-center gap-2.5 p-3 rounded-xl border-2 cursor-pointer transition-all"
-              [class]="role === 'tenant' ? 'bg-apt/10 border-apt text-apt' : 'bg-slate-800/60 border-white/5 text-slate-500 hover:border-white/20'">
-              <input type="radio" name="resRole" value="tenant" [(ngModel)]="role" class="hidden">
-              <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
-                [class]="role === 'tenant' ? 'border-apt' : 'border-slate-600'">
-                <span *ngIf="role === 'tenant'" class="w-2 h-2 rounded-full bg-apt"></span>
+
+            <label style="flex:1; display:flex; align-items:center; gap:10px; padding:12px; border-radius:12px; border:2px solid; cursor:pointer; transition:all 0.2s;"
+              [style.border-color]="role === 'tenant' ? '#0ea5e9' : '#e2e8f0'"
+              [style.background]="role === 'tenant' ? '#f0f9ff' : '#f8fafc'">
+              <input type="radio" name="resRole" value="tenant" [(ngModel)]="role" style="display:none;">
+              <span style="width:16px; height:16px; border-radius:50%; border:2px solid; display:flex; align-items:center; justify-content:center; flex-shrink:0;"
+                [style.border-color]="role === 'tenant' ? '#0ea5e9' : '#cbd5e1'">
+                <span *ngIf="role === 'tenant'" style="width:8px; height:8px; border-radius:50%; background:#0ea5e9; display:block;"></span>
               </span>
-              <span class="text-[10px] font-black uppercase tracking-widest">🏠 Tenant</span>
+              <span style="font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em;"
+                [style.color]="role === 'tenant' ? '#0284c7' : '#94a3b8'">🏠 Tenant</span>
             </label>
           </div>
-          <div class="space-y-1.5">
-            <label class="text-[9px] uppercase tracking-[0.2em] text-slate-500 font-black">Full Name</label>
-            <input 
-              #nameInput
-              type="text" 
-              [(ngModel)]="name"
-              class="w-full bg-slate-800 border border-white/10 p-2.5 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 text-sm"
+
+          <!-- Full Name -->
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:0.2em; color:#64748b;">Full Name</label>
+            <input #nameInput type="text" [(ngModel)]="name" autocomplete="off"
               placeholder="Enter resident name"
-            />
+              style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; color:#0f172a; font-size:14px; outline:none; box-sizing:border-box; caret-color:#0f172a;"
+              (focus)="$event.target.style.borderColor='#3b82f6'"
+              (blur)="$event.target.style.borderColor='#e2e8f0'" />
           </div>
 
-          <div class="space-y-1.5">
-            <label class="text-[9px] uppercase tracking-[0.2em] text-slate-500 font-black">Contact Number</label>
-            <input 
-              type="text" 
-              [(ngModel)]="phone"
-              class="w-full bg-slate-800 border border-white/10 p-2.5 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 text-sm"
+          <!-- Phone -->
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:0.2em; color:#64748b;">Contact Number</label>
+            <input type="text" [(ngModel)]="phone" autocomplete="off"
               placeholder="+1 234 567 890"
-            />
+              style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; color:#0f172a; font-size:14px; outline:none; box-sizing:border-box; caret-color:#0f172a;"
+              (focus)="$event.target.style.borderColor='#3b82f6'"
+              (blur)="$event.target.style.borderColor='#e2e8f0'" />
           </div>
 
-          <div *ngIf="aptConfig" class="space-y-1.5">
-            <label class="text-[9px] uppercase tracking-[0.2em] text-slate-500 font-black">Unit Designation</label>
-            <select 
-              [(ngModel)]="unit"
-              class="w-full bg-slate-800 border border-white/10 p-2.5 text-accent rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 appearance-none text-sm"
-            >
+          <!-- Unit (apt only) -->
+          <div *ngIf="aptConfig" style="display:flex; flex-direction:column; gap:6px;">
+            <label style="font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:0.2em; color:#64748b;">Unit Designation</label>
+            <select [(ngModel)]="unit"
+              style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; color:#0f172a; font-size:14px; outline:none; box-sizing:border-box; appearance:none;">
               <option value="">Select Unit</option>
               <option *ngFor="let opt of unitOptions" [value]="opt.value">{{opt.label}}</option>
             </select>
           </div>
 
-          <div class="space-y-1.5">
-            <label class="text-[9px] uppercase tracking-[0.2em] text-slate-500 font-black">System Notes</label>
-            <textarea 
-              [(ngModel)]="note"
-              class="w-full bg-slate-800 border border-white/10 p-2.5 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 h-20 resize-none text-sm"
-              placeholder="Additional telemetry..."
-            ></textarea>
+          <!-- Notes -->
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <label style="font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:0.2em; color:#64748b;">Notes</label>
+            <textarea [(ngModel)]="note"
+              placeholder="Additional notes..."
+              style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; color:#0f172a; font-size:14px; outline:none; box-sizing:border-box; height:80px; resize:none; caret-color:#0f172a;"
+              (focus)="$event.target.style.borderColor='#3b82f6'"
+              (blur)="$event.target.style.borderColor='#e2e8f0'"></textarea>
           </div>
         </div>
 
-        <div class="p-6 bg-slate-900/40 flex justify-end gap-3">
-          <button (click)="onClose.emit()" class="px-4 py-2 text-slate-400 font-black text-[10px] uppercase tracking-widest hover:text-white transition-colors">Abort</button>
-          <button 
-            (click)="handleSave()"
-            class="bg-accent text-slate-900 font-bold px-4 py-2 rounded-lg text-xs transition-all hover:shadow-[0_0_20px_rgba(56,189,248,0.4)]"
-          >
-            Commit Entry
+        <!-- Footer -->
+        <div style="padding:16px 24px; background:#f8fafc; border-top:1px solid #f1f5f9; display:flex; justify-content:flex-end; gap:10px;">
+          <button (click)="onClose.emit()"
+            style="padding:8px 16px; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em; color:#64748b !important; -webkit-text-fill-color:#64748b !important; background:#ffffff; border:1px solid #e2e8f0; cursor:pointer; border-radius:10px;">
+            Cancel
+          </button>
+          <button (click)="handleSave()"
+            style="padding:8px 20px; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em; color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; background:#0f172a; border:none; cursor:pointer; border-radius:10px;">
+            Save
           </button>
         </div>
       </div>
@@ -126,13 +142,7 @@ export class ResModalComponent {
 
   handleSave() {
     if (!this.name.trim()) return;
-    this.onSave.emit({
-      name: this.name,
-      phone: this.phone,
-      role: this.role,
-      unit: this.unit,
-      note: this.note
-    });
+    this.onSave.emit({ name: this.name, phone: this.phone, role: this.role, unit: this.unit, note: this.note });
     this.reset();
   }
 
