@@ -28,28 +28,28 @@ const COMMUNITY_SHOPS = [
     <div *ngIf="isOpen" class="fixed inset-0 z-[150] flex items-center justify-center p-2">
       <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-xl" (click)="onClose.emit()"></div>
 
-      <div class="relative glass-card w-full max-w-[96vw] h-[94vh] rounded-[2rem] shadow-[0_0_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col animate-fade-up border-white/10">
+      <div class="relative w-full max-w-[96vw] h-[94vh] rounded-[2rem] overflow-hidden flex flex-col animate-fade-up" style="background:#ffffff; border:1px solid #e2e8f0; box-shadow:0 20px 60px rgba(0,0,0,0.12);">
 
         <!-- Top Header -->
-        <div class="px-8 py-5 border-b border-white/5 flex items-center justify-between bg-slate-900/60 shrink-0">
+        <div class="px-8 py-5 flex items-center justify-between shrink-0" style="border-bottom:1px solid #e2e8f0; background:#ffffff;">
           <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-apt/20 border border-apt/30 rounded-2xl flex items-center justify-center text-2xl">🏢</div>
+            <div class="w-12 h-12 bg-apt/10 border border-apt/20 rounded-2xl flex items-center justify-center text-2xl shadow-sm">🏢</div>
             <div>
-              <h2 class="text-2xl font-black text-white tracking-tighter">{{plotData.aptConfig?.blockName || 'Tower'}}</h2>
-              <p class="text-accent text-[10px] font-bold uppercase tracking-[0.3em] mt-0.5">
+              <h2 class="text-2xl font-black text-slate-900 tracking-tighter">{{plotData.aptConfig?.blockName || 'Tower'}}</h2>
+              <p class="text-accent text-[10px] font-bold uppercase tracking-[0.3em] mt-0.5 opacity-80">
                 {{plotData.aptConfig?.floors}} Floors · {{plotData.aptConfig?.unitsPerFloor}} Units/Floor · {{plotKey}}
               </p>
             </div>
           </div>
           <div class="flex items-center gap-3">
             <!-- Legend -->
-            <div class="flex items-center gap-3 text-[9px] text-slate-500 mr-4">
-              <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border border-white/20 bg-slate-800/60 inline-block"></span>Room</span>
-              <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border border-blue-400/50 bg-blue-500/15 inline-block"></span>Shop</span>
-              <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border-dashed border border-white/20 opacity-40 inline-block"></span>Removed</span>
+            <div class="flex items-center gap-3 text-[9px] text-slate-500 mr-4 font-bold">
+              <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border border-slate-200 bg-white inline-block"></span>Room</span>
+              <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border border-blue-400/50 bg-blue-50 inline-block"></span>Shop</span>
+              <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border-dashed border border-slate-300 opacity-60 inline-block"></span>Removed</span>
               <span class="flex items-center gap-1.5"><span class="w-4 h-5 rounded border border-house/40 bg-house/10 inline-block"></span>Occupied</span>
             </div>
-            <button (click)="onClose.emit()" class="w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-all text-white text-lg">✕</button>
+            <button (click)="onClose.emit()" class="w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-all text-slate-600 text-lg">✕</button>
           </div>
         </div>
 
@@ -57,9 +57,9 @@ const COMMUNITY_SHOPS = [
         <div class="flex flex-1 overflow-hidden">
 
           <!-- LEFT: Facilities only -->
-          <div class="w-64 bg-slate-900/50 border-r border-white/5 flex flex-col overflow-y-auto custom-scrollbar shrink-0">
+          <div class="w-64 flex flex-col overflow-y-auto custom-scrollbar shrink-0" style="background:#ffffff; border-right:1px solid #e2e8f0;">
             <!-- Facilities (Editable) -->
-            <div class="p-5 border-b border-white/5">
+            <div class="p-5" style="border-bottom:1px solid #e2e8f0;">
               <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4 flex items-center justify-between">
                 <span>Facilities</span>
                 <span class="text-accent text-[8px] font-normal lowercase tracking-normal">Click to toggle</span>
@@ -67,14 +67,14 @@ const COMMUNITY_SHOPS = [
               <div class="flex flex-wrap gap-1.5">
                 <button *ngFor="let f of commonFacilities" (click)="toggleFacility(f)"
                   [class]="'px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest transition-all border ' +
-                    (plotData.aptConfig!.facilities.includes(f) ? 'bg-accent text-slate-950 border-accent' : 'bg-slate-800 text-slate-500 border-white/5 hover:border-white/20')">
+                    (plotData.aptConfig!.facilities.includes(f) ? 'bg-accent text-slate-950 border-accent shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-accent/40 hover:bg-slate-50')">
                   {{f}}
                 </button>
               </div>
             </div>
 
             <!-- Shop Palette (Editable) -->
-            <div class="p-5 border-b border-white/5">
+            <div class="p-5" style="border-bottom:1px solid #e2e8f0;">
               <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4 flex items-center justify-between">
                 <span>Community Palette</span>
                 <span class="text-slate-600 text-[8px] font-normal lowercase tracking-normal">Drag onto unit</span>
@@ -82,31 +82,31 @@ const COMMUNITY_SHOPS = [
               <div class="grid grid-cols-2 gap-2">
                 <div *ngFor="let s of communityShops"
                   draggable="true" (dragstart)="onShopDragStart(s.value)"
-                  class="flex items-center gap-2 px-2.5 py-2.5 bg-slate-800/80 rounded-xl border border-white/5 hover:border-blue-400/40 hover:bg-blue-500/10 transition-all cursor-grab active:cursor-grabbing group">
+                  class="flex items-center gap-2 px-2.5 py-2.5 bg-white rounded-xl border border-slate-200 hover:border-blue-400/40 hover:bg-blue-50/50 hover:shadow-sm transition-all cursor-grab active:cursor-grabbing group">
                   <span class="text-base group-hover:scale-110 transition-transform">{{s.emoji}}</span>
-                  <span class="text-[9px] font-black text-slate-400 group-hover:text-blue-300 truncate">{{s.label}}</span>
+                  <span class="text-[9px] font-black text-slate-600 group-hover:text-blue-600 truncate">{{s.label}}</span>
                 </div>
               </div>
             </div>
 
             <!-- Room summary -->
-            <div class="p-5 border-t border-white/5 mt-auto">
+            <div class="p-5 mt-auto" style="border-top:1px solid #e2e8f0;">
               <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mb-3">Room Summary</h3>
               <div class="space-y-2">
-                <div class="flex items-center justify-between p-2.5 bg-slate-800/40 rounded-xl border border-white/5">
-                  <span class="text-[10px] text-slate-400 font-bold">Total Rooms</span>
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-sm">
+                  <span class="text-[10px] text-slate-500 font-bold">Total Rooms</span>
                   <span class="text-accent font-black">{{(plotData.aptConfig?.floors || 0) * (plotData.aptConfig?.unitsPerFloor || 0)}}</span>
                 </div>
-                <div class="flex items-center justify-between p-2.5 bg-slate-800/40 rounded-xl border border-white/5">
-                  <span class="text-[10px] text-slate-400 font-bold">Occupied</span>
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-sm">
+                  <span class="text-[10px] text-slate-500 font-bold">Occupied</span>
                   <span class="text-house font-black">{{plotData.residents.length}}</span>
                 </div>
-                <div class="flex items-center justify-between p-2.5 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                  <span class="text-[10px] text-blue-300 font-bold">Shops</span>
-                  <span class="text-blue-400 font-black">{{getShopCount()}}</span>
+                <div class="flex items-center justify-between p-2.5 bg-blue-50 rounded-xl border border-blue-200 shadow-sm">
+                  <span class="text-[10px] text-blue-600 font-bold">Shops</span>
+                  <span class="text-blue-500 font-black">{{getShopCount()}}</span>
                 </div>
-                <div class="flex items-center justify-between p-2.5 bg-slate-800/40 rounded-xl border border-white/5">
-                  <span class="text-[10px] text-slate-400 font-bold">Removed</span>
+                <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-sm">
+                  <span class="text-[10px] text-slate-500 font-bold">Removed</span>
                   <span class="text-danger font-black">{{plotData.aptConfig?.skippedUnits?.length || 0}}</span>
                 </div>
               </div>
@@ -114,9 +114,9 @@ const COMMUNITY_SHOPS = [
           </div>
 
           <!-- CENTER: Schematic -->
-          <div class="flex-1 flex flex-col overflow-hidden bg-slate-950/80">
-            <div class="px-6 py-3 border-b border-white/5 flex items-center justify-between shrink-0 bg-slate-900/60">
-              <span class="text-[10px] uppercase tracking-[0.2em] text-slate-300 font-black">Real-Time Schematic Unit</span>
+          <div class="flex-1 flex flex-col overflow-hidden" style="background:#f0f4f8;">
+            <div class="px-6 py-3 border-b flex items-center justify-between shrink-0" style="background:#ffffff; border-color:#e2e8f0;">
+              <span class="text-[10px] uppercase tracking-[0.2em] font-black" style="color:#64748b;">Real-Time Schematic Unit</span>
               <div class="flex items-center gap-4">
                 <span *ngIf="pendingMerge.length > 0" class="text-[10px] text-purple-400 font-black animate-pulse">{{pendingMerge.length}} units selected — release Ctrl to merge</span>
                 <span *ngIf="pendingMerge.length === 0 && selectedUnit" class="text-[10px] text-accent font-black">
@@ -128,12 +128,12 @@ const COMMUNITY_SHOPS = [
               </div>
             </div>
 
-            <div class="flex-1 overflow-auto custom-scrollbar p-8 flex items-start justify-center" (dragover)="$event.preventDefault()">
+            <div class="flex-1 overflow-auto custom-scrollbar p-8 flex items-start justify-center" style="background-image:radial-gradient(circle,#c8d4e0 1px,transparent 1px);background-size:24px 24px;" (dragover)="$event.preventDefault()">
               <div class="flex flex-col gap-3">
 
                 <!-- Floors (top = highest floor) -->
                 <div *ngFor="let floor of floorsArray; let fIdx = index" class="flex gap-3 items-center">
-                  <span class="text-[10px] text-slate-300 font-black w-8 text-right shrink-0">
+                  <span class="text-[10px] font-black w-8 text-right shrink-0" style="color:#64748b;">
                     {{plotData.aptConfig!.floors - fIdx}}F
                   </span>
                   <ng-container *ngFor="let unit of unitsArray; let uIdx = index">
@@ -183,8 +183,8 @@ const COMMUNITY_SHOPS = [
                 </div>
 
                 <!-- Ground Floor -->
-                <div class="flex gap-3 items-center border-t-2 border-white/10 pt-3 mt-1">
-                  <span class="text-[10px] text-slate-300 font-black w-8 text-right shrink-0">GF</span>
+                <div class="flex gap-3 items-center pt-3 mt-1" style="border-top:2px solid #e2e8f0;">
+                  <span class="text-[10px] font-black w-8 text-right shrink-0" style="color:#64748b;">GF</span>
                   <ng-container *ngFor="let unit of unitsArray; let uIdx = index">
                     <div *ngIf="!isMergeSecondary('G'+(uIdx+1))"
                       (click)="selectUnit('G'+(uIdx+1))"
@@ -231,7 +231,7 @@ const COMMUNITY_SHOPS = [
               </div>
             </div>
 
-            <div class="px-6 py-2 border-t border-white/5 bg-slate-900/20 text-[9px] text-slate-600 flex gap-5 shrink-0">
+            <div class="px-6 py-2 text-[9px] text-slate-400 flex gap-5 shrink-0" style="border-top:1px solid #e2e8f0; background:#ffffff;">
               <span>🖱️ Click to inspect</span>
               <span>⌨️ Ctrl+Click multi-select → merge</span>
               <span>✂ Click merged → Split</span>
@@ -240,8 +240,8 @@ const COMMUNITY_SHOPS = [
           </div>
 
           <!-- RIGHT: Unit Inspector -->
-          <div class="w-80 bg-slate-900/70 border-l border-white/5 flex flex-col shrink-0">
-            <div class="p-6 border-b border-white/5">
+          <div class="w-80 flex flex-col shrink-0" style="background:#ffffff; border-left:1px solid #e2e8f0;">
+            <div class="p-6" style="border-bottom:1px solid #e2e8f0;">
               <h3 class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mb-3">Unit Inspector</h3>
               <div *ngIf="selectedUnit">
                 <div class="flex items-center gap-3 mb-3">
@@ -250,7 +250,7 @@ const COMMUNITY_SHOPS = [
                     <div class="flex items-center gap-2">
                       <input type="text" [ngModel]="plotData.aptConfig?.unitNames?.[selectedUnit] || selectedUnit"
                         (ngModelChange)="updateUnitName(selectedUnit, $event)"
-                        class="bg-transparent border-none outline-none text-2xl font-black text-white w-full hover:bg-white/5 rounded px-1 transition-all" />
+                        class="bg-transparent border-none outline-none text-2xl font-black text-slate-900 w-full hover:bg-slate-900/5 rounded px-1 transition-all" />
                     </div>
                     <div class="text-[10px] font-bold uppercase tracking-widest mt-0.5"
                       [class]="isShopUnit(selectedUnit) ? 'text-blue-400' : 'text-house'">
@@ -265,7 +265,7 @@ const COMMUNITY_SHOPS = [
                   <div class="grid grid-cols-3 gap-2">
                     <button *ngFor="let b of ['1BHK', '2BHK', '3BHK']" (click)="setUnitBhk(selectedUnit, b)"
                       [class]="'py-2 px-1 rounded-xl text-[10px] font-black uppercase tracking-wider border-2 transition-all ' +
-                        (getUnitBhk(selectedUnit) === b ? 'bg-accent text-slate-900 border-accent' : 'bg-slate-800 text-slate-400 border-white/5 hover:border-accent/40')">
+                        (getUnitBhk(selectedUnit) === b ? 'bg-accent text-slate-950 border-accent shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:border-accent/40')">
                       {{b}}
                     </button>
                   </div>
@@ -278,19 +278,19 @@ const COMMUNITY_SHOPS = [
                     <span class="text-[8px] text-slate-500 font-bold">Standard Specs</span>
                   </div>
                   <div class="grid grid-cols-3 gap-1.5">
-                    <div class="bg-slate-800/60 rounded-lg p-2 text-center border border-white/5">
+                    <div class="bg-slate-50 rounded-lg p-2 text-center border border-slate-200">
                       <div class="text-base">🛏️</div>
-                      <div class="text-[10px] font-black text-white">{{getBhkDetails(selectedUnit).bedrooms}}</div>
+                      <div class="text-[10px] font-black text-slate-900">{{getBhkDetails(selectedUnit).bedrooms}}</div>
                       <div class="text-[7px] text-slate-500 uppercase">Bed</div>
                     </div>
-                    <div class="bg-slate-800/60 rounded-lg p-2 text-center border border-white/5">
+                    <div class="bg-slate-50 rounded-lg p-2 text-center border border-slate-200">
                       <div class="text-base">🛁</div>
-                      <div class="text-[10px] font-black text-white">{{getBhkDetails(selectedUnit).bathrooms}}</div>
+                      <div class="text-[10px] font-black text-slate-900">{{getBhkDetails(selectedUnit).bathrooms}}</div>
                       <div class="text-[7px] text-slate-500 uppercase">Bath</div>
                     </div>
-                    <div class="bg-slate-800/60 rounded-lg p-2 text-center border border-white/5">
+                    <div class="bg-slate-50 rounded-lg p-2 text-center border border-slate-200">
                       <div class="text-base">🪑</div>
-                      <div class="text-[10px] font-black text-white">{{getBhkDetails(selectedUnit).hall}}</div>
+                      <div class="text-[10px] font-black text-slate-900">{{getBhkDetails(selectedUnit).hall}}</div>
                       <div class="text-[7px] text-slate-500 uppercase">Hall</div>
                     </div>
                   </div>
@@ -315,7 +315,7 @@ const COMMUNITY_SHOPS = [
               <div *ngIf="!selectedUnit" class="text-sm text-slate-600 italic">Select a unit to inspect</div>
             </div>
 
-            <div *ngIf="selectedUnit" class="flex border-b border-white/5 bg-slate-900/40 shrink-0">
+            <div *ngIf="selectedUnit" class="flex shrink-0" style="border-bottom:1px solid #e2e8f0; background:#f8fafc;">
               <button (click)="inspectorTab = 'occupants'"
                 [class]="'flex-1 py-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all border-b-2 ' + (inspectorTab === 'occupants' ? 'text-white border-accent bg-accent/5' : 'text-slate-500 border-transparent hover:text-slate-300')">
                 Occupants
@@ -339,9 +339,9 @@ const COMMUNITY_SHOPS = [
                       <div class="flex items-start justify-between">
                         <div>
                           <span class="text-[8px] font-black uppercase tracking-widest text-slate-500 mb-1 block">Tenant {{i+1}}</span>
-                          <div class="text-sm font-black text-white">{{occupant.name}}</div>
+                          <div class="text-sm font-black text-slate-900">{{occupant.name}}</div>
                           <div class="text-[10px] font-bold uppercase mt-0.5"
-                            [class]="isShopUnit(selectedUnit) ? 'text-blue-400' : 'text-house'">{{occupant.role}}</div>
+                            [class]="isShopUnit(selectedUnit) ? 'text-blue-600' : 'text-emerald-600'">{{occupant.role}}</div>
                           <div *ngIf="getUnitBhk(selectedUnit)" class="text-[9px] text-accent font-black mt-0.5">🏠 {{getUnitBhk(selectedUnit)}}</div>
                         </div>
                         <span class="text-xl">{{isShopUnit(selectedUnit) ? '🛒' : '👤'}}</span>
@@ -371,20 +371,20 @@ const COMMUNITY_SHOPS = [
                     <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-2 mb-2">
                       <span class="text-accent">💰</span> Monthly Rent
                     </label>
-                    <div class="flex items-center text-xl font-black text-white">
-                      <span class="mr-2 text-slate-500">$</span>
+                    <div class="flex items-center text-xl font-black text-slate-900">
+                      <span class="mr-2 text-slate-400">$</span>
                       <input type="number" [(ngModel)]="unitRent" (change)="saveUnitDetail()"
-                        class="w-full bg-transparent border-none p-0 text-white focus:outline-none font-black"/>
+                        class="w-full bg-transparent border-none p-0 text-slate-900 focus:outline-none font-black"/>
                     </div>
                   </div>
                   <div class="bg-slate-800/40 border border-white/5 p-5 rounded-2xl focus-within:border-accent/50 transition-all">
                     <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-2 mb-2">
                       <span class="text-accent">📐</span> Area SQFT
                     </label>
-                    <div class="flex items-center text-xl font-black text-white">
+                    <div class="flex items-center text-xl font-black text-slate-900">
                       <input type="number" [(ngModel)]="unitSqft" (change)="saveUnitDetail()"
-                        class="w-full bg-transparent border-none p-0 text-white focus:outline-none font-black"/>
-                      <span class="ml-2 text-slate-500 text-sm">ft²</span>
+                        class="w-full bg-transparent border-none p-0 text-slate-900 focus:outline-none font-black"/>
+                      <span class="ml-2 text-slate-400 text-sm">ft²</span>
                     </div>
                   </div>
                 </div>
@@ -402,7 +402,7 @@ const COMMUNITY_SHOPS = [
       <div class="relative bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 w-full max-w-sm animate-fade-up" (click)="$event.stopPropagation()">
         <div class="flex items-center justify-between mb-5">
           <div>
-            <h3 class="text-lg font-black text-white">Unit {{unitFormData.unit}}</h3>
+            <h3 class="text-lg font-black text-slate-900">Unit {{unitFormData.unit}}</h3>
             <p class="text-[10px] text-accent uppercase tracking-widest font-bold">Add Resident</p>
           </div>
           <button (click)="isUnitFormOpen = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">✕</button>
@@ -680,11 +680,11 @@ export class AptDetailModalComponent {
     const base = 'w-20 h-24 rounded-xl border-2 transition-all cursor-pointer relative flex flex-col items-center justify-center gap-0.5 ';
 
     if (isPending) return base + 'bg-purple-500/20 border-purple-400 shadow-[0_0_15px_rgba(192,132,252,0.3)] scale-105 z-10';
-    if (isSelected) return base + 'bg-select/20 border-select shadow-[0_0_20px_rgba(251,191,36,0.3)] scale-110 z-10';
-    if (isSkipped) return base + 'bg-slate-900/60 border-dashed border-white/20 opacity-40 hover:opacity-70';
-    if (hasShop) return base + 'bg-blue-600/25 border-blue-400/60 hover:border-blue-400 hover:bg-blue-600/35 hover:scale-105';
-    if (isOccupied) return base + 'bg-house/15 border-house/40 hover:border-house/70 hover:scale-105';
-    return base + 'bg-slate-800/80 border-slate-600/40 hover:border-slate-400/60 hover:bg-slate-700/80 hover:scale-105';
+    if (isSelected) return base + 'border-amber-400 shadow-[0_0_16px_rgba(251,191,36,0.25)] scale-110 z-10' + ' bg-amber-50';
+    if (isSkipped) return base + 'bg-slate-100 border-dashed border-slate-300 opacity-40 hover:opacity-70';
+    if (hasShop) return base + 'bg-blue-50 border-blue-300 hover:border-blue-400 hover:bg-blue-100 hover:scale-105';
+    if (isOccupied) return base + 'bg-emerald-50 border-emerald-300 hover:border-emerald-400 hover:scale-105';
+    return base + 'bg-white border-slate-200 hover:border-slate-400 hover:bg-slate-50 hover:scale-105';
   }
 
   toggleFacility(f: string) {

@@ -1,6 +1,7 @@
 import { Component, computed, signal, ChangeDetectionStrategy, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { StateService } from './state.service';
 import { PlotCellComponent } from './components/plot-cell/plot-cell.component';
 import { AptModalComponent } from './components/apt-modal/apt-modal.component';
@@ -39,9 +40,21 @@ export class AppComponent implements OnInit {
   isSidebarOpen = signal(true);
   isSidebarExtended = signal(false);
   sidebarStage = signal<0 | 1 | 2>(0); // 0=narrow, 1=wide, 2=full
-  classificationOpen = signal(false);
+  classificationOpen = signal(true);
+  othersOpen = signal(true);
   shopPickerKey = '';
   resModalRole: 'owner' | 'tenant' = 'owner';
+  layoutRotation = signal(0);
+  compassRightPos = computed(() => {
+    if (!this.isSidebarOpen()) return 32; // Standard margin when closed
+    const stage = this.sidebarStage();
+    const widths = [288, 480, 700];
+    return widths[stage] + 32; // Offset by sidebar width plus margin
+  });
+
+  rotateLayout() {
+    this.layoutRotation.update(r => r + 90);
+  }
 
   // Drag and Drop State
   draggedType: PlotType | null = null;
@@ -122,6 +135,20 @@ export class AppComponent implements OnInit {
     return this.shopOptions.find(o => o.value === value);
   }
 
+  getShopColorClass(category: string): string {
+    switch (category) {
+      case 'Health': return 'bg-cyan-50 border-cyan-100 text-cyan-700 hover:border-cyan-400';
+      case 'Food': return 'bg-amber-50 border-amber-100 text-amber-700 hover:border-amber-400';
+      case 'Beauty':
+      case 'Services': return 'bg-purple-50 border-purple-100 text-purple-700 hover:border-purple-400';
+      case 'Finance':
+      case 'Tech': return 'bg-blue-50 border-blue-100 text-blue-700 hover:border-blue-400';
+      case 'Entertainment': return 'bg-indigo-50 border-indigo-100 text-indigo-700 hover:border-indigo-400';
+      case 'Education': return 'bg-orange-50 border-orange-100 text-orange-700 hover:border-orange-400';
+      default: return 'bg-slate-50 border-slate-100 text-slate-700 hover:border-accent/40';
+    }
+  }
+
   // ── MERGE ──────────────────────────────────────────────
   pendingMerge: string[] = [];
   isCtrlHeld = false;
@@ -155,6 +182,24 @@ export class AppComponent implements OnInit {
   CELL = computed(() => 96 * this.zoom());
   ROAD = computed(() => 64 * this.zoom());
 
+  getBlockX(c: number): number {
+    let x = 0;
+    const road = this.ROAD();
+    for (let i = 0; i < c; i++) {
+      x += this.getMaxBlockCols(i) * this.CELL() + road;
+    }
+    return x;
+  }
+
+  getBlockY(r: number): number {
+    let y = 0;
+    const road = this.ROAD();
+    for (let i = 0; i < r; i++) {
+      y += this.getMaxBlockRows(i) * this.CELL() + road;
+    }
+    return y;
+  }
+
   zoomIn() { if (this.zoom() < 2.0) this.zoom.update(z => +(z + 0.1).toFixed(1)); }
   zoomOut() { if (this.zoom() > 0.4) this.zoom.update(z => +(z - 0.1).toFixed(1)); }
   resetZoom() { this.zoom.set(1.0); }
@@ -164,11 +209,15 @@ export class AppComponent implements OnInit {
     const m = key.match(/r(\d+)c(\d+)pr(\d+)pc(\d+)/);
     if (!m) return null;
     const r = +m[1], c = +m[2], pr = +m[3], pc = +m[4];
-    const C = this.CELL(), R = this.ROAD();
-    // x = sum of blocks before column c (each block = plotsPerBlock*C) + roads between blocks + pc*C
-    const x = c * (this.plotsPerBlock * C + R) + pc * C;
-    // y = sum of blocks before row r + roads between blocks + pr*C
-    const y = r * (this.plotsPerBlock * C + R) + pr * C;
+    const C = this.CELL();
+    
+    // Use the new accumulated position helpers
+    const baseX = this.getBlockX(c);
+    const baseY = this.getBlockY(r);
+    
+    const x = baseX + pc * C;
+    const y = baseY + pr * C;
+    
     return { x, y, w: C, h: C };
   }
 
@@ -261,7 +310,7 @@ export class AppComponent implements OnInit {
     return { total, houses, apts, vacant: total - houses - apts, residents };
   });
 
-  constructor(private stateService: StateService) { }
+  constructor(private stateService: StateService, public router: Router) { }
 
   ngOnInit() { 
     this.loadHardcodedJson(); 
@@ -444,6 +493,16 @@ export class AppComponent implements OnInit {
     this.stateService.updatePlot(key, updates);
   }
 
+  updateSecurityGuard(key: string, field: 'name' | 'phone', value: string) {
+    const plot = this.plots()[key];
+    if (!plot) return;
+    const residents = plot.residents?.length
+      ? [...plot.residents]
+      : [{ name: '', phone: '', role: 'owner' as const }];
+    residents[0] = { ...residents[0], [field]: value };
+    this.stateService.updatePlot(key, { residents });
+  }
+
   updateSqft(key: string, sqft: number) {
     this.stateService.saveState();
     this.stateService.updatePlot(key, { sqft });
@@ -453,7 +512,19 @@ export class AppComponent implements OnInit {
     const key = this.selectedKey();
     if (!key) return;
     this.stateService.saveState();
-    this.stateService.updatePlot(key, { type: 'apartment', aptConfig: config, residents: this.plots()[key]?.residents || [] });
+    
+    // Auto-update name if it's a merged plot
+    const isMerged = !!this.getMergeGroupOf(key);
+    const updates: any = { 
+      type: 'apartment', 
+      aptConfig: config, 
+      residents: this.plots()[key]?.residents || [] 
+    };
+    if (isMerged) {
+      updates.name = 'Merged Apartment';
+    }
+    
+    this.stateService.updatePlot(key, updates);
     this.isAptModalOpen = false;
   }
 
@@ -603,7 +674,10 @@ export class AppComponent implements OnInit {
     }
     this.stateService.selectPlot(key, half);
     const plot = this.plots()[key];
-    const hasData = plot && (plot.type !== 'vacant' && plot.type !== 'road') || (plot?.residents?.length ?? 0) > 0;
+    const hasData = plot && (
+      (plot.type && plot.type !== 'vacant' && plot.type !== 'road') ||
+      (plot.residents?.length ?? 0) > 0
+    );
     if (hasData) this.isDetailModalOpen = true;
   }
 
@@ -725,10 +799,159 @@ export class AppComponent implements OnInit {
     return !!this.blockOverrides()[`${r}_${c}`];
   }
 
+  getMaxBlockRows(r: number): number {
+    let max = 0;
+    for (let c = 0; c <= this.vStreets; c++)
+      max = Math.max(max, this.getBlockRows(r, c));
+    return max;
+  }
+
+  getMaxBlockCols(c: number): number {
+    let max = 0;
+    for (let r = 0; r <= this.hStreets; r++)
+      max = Math.max(max, this.getBlockCols(r, c));
+    return max;
+  }
+
+  addRow() { this.hStreets = Math.min(this.hStreets + 1, 8); }
+  addCol() { this.vStreets = Math.min(this.vStreets + 1, 8); }
+
+  // ── GATE ──────────────────────────────────────────────
+  isGatePickerOpen = false;
+  gatePickerKey = '';
+  gateConfig: { position: 'top' | 'bottom' | 'left' | 'right'; type: 'cyber' | 'side' } = { position: 'top', type: 'cyber' };
+
+  readonly gateTypes = [
+    { value: 'cyber',     label: 'Cyber Gate',     emoji: '⚡', desc: 'High-Tech Neon Style' },
+    { value: 'side',      label: 'Side Gate',      emoji: '🏙️', desc: 'Modern Elite Style' },
+  ];
+
+  openGatePicker(key: string) {
+    this.gatePickerKey = key;
+    const existing = this.plots()[key]?.gate;
+    this.gateConfig = { position: (existing?.position || 'top') as any, type: (existing?.type || 'cyber') as any };
+    this.isGatePickerOpen = true;
+  }
+
+  confirmGate() {
+    const key = this.gatePickerKey;
+    if (!key) return;
+    this.stateService.saveState();
+    this.stateService.updatePlot(key, { gate: { position: this.gateConfig.position as any, type: this.gateConfig.type as any } });
+    this.isGatePickerOpen = false;
+  }
+
+  removeGate() {
+    const key = this.gatePickerKey;
+    if (!key) return;
+    this.stateService.saveState();
+    this.stateService.updatePlot(key, { gate: undefined });
+    this.isGatePickerOpen = false;
+  }
+
   // Vacant plot click — select and open sidebar
   onVacantClick(key: string) {
     this.stateService.selectPlot(key);
     if (!this.isSidebarOpen()) this.isSidebarOpen.set(true);
+  }
+
+  getMergeTypeColor(type: string | undefined): string {
+    const colors: Record<string, string> = {
+      house:     '#10b981',
+      apartment: '#0ea5e9',
+      park:      '#22c55e',
+      shop:      '#f59e0b',
+      watertank: '#3b82f6',
+      hospital:  '#ef4444',
+    };
+    return colors[type || ''] || '#94a3b8';
+  }
+
+  getMergeBlockStyle(type: string | undefined, isSelected: boolean): string {
+    const selectedBorder = isSelected ? `box-shadow: 0 0 0 2px ${this.getMergeTypeColor(type)};` : '';
+    return `background:#ffffff; border:1px solid #e2e8f0; ${selectedBorder}`;
+  }
+
+  getMergeGlassLayer(_type: string | undefined): string { return ''; }
+  getMergeGlowRing(_type: string | undefined, _units: number): string { return ''; }
+
+  // ── SVG POLYGON MERGE SHAPE ──────────────────────────
+  getMergePolygonPath(group: string[]): string | null {
+    const positions = group.map(k => this.getCellPixelPos(k)).filter(Boolean) as { x: number; y: number; w: number; h: number }[];
+    if (!positions.length) return null;
+
+    // Build a set of all cell rects as grid coords for edge detection
+    const C = this.CELL();
+    const minX = Math.min(...positions.map(p => p.x));
+    const minY = Math.min(...positions.map(p => p.y));
+
+    // Map each cell to grid row/col relative to bounding box
+    const cellSet = new Set(positions.map(p => {
+      const col = Math.round((p.x - minX) / C);
+      const row = Math.round((p.y - minY) / C);
+      return `${row},${col}`;
+    }));
+
+    const has = (r: number, c: number) => cellSet.has(`${r},${c}`);
+
+    // Collect all outer edges (segments between a filled and empty cell)
+    const edges: { x1: number; y1: number; x2: number; y2: number }[] = [];
+    positions.forEach(p => {
+      const col = Math.round((p.x - minX) / C);
+      const row = Math.round((p.y - minY) / C);
+      const x = p.x, y = p.y;
+      // top edge
+      if (!has(row - 1, col)) edges.push({ x1: x, y1: y, x2: x + C, y2: y });
+      // bottom edge
+      if (!has(row + 1, col)) edges.push({ x1: x + C, y1: y + C, x2: x, y2: y + C });
+      // left edge
+      if (!has(row, col - 1)) edges.push({ x1: x, y1: y + C, x2: x, y2: y });
+      // right edge
+      if (!has(row, col + 1)) edges.push({ x1: x + C, y1: y, x2: x + C, y2: y + C });
+    });
+
+    if (!edges.length) return null;
+
+    // Chain edges into a closed polygon path
+    const pt = (x: number, y: number) => `${Math.round(x)},${Math.round(y)}`;
+    const edgeMap = new Map<string, { x: number; y: number }>();
+    edges.forEach(e => edgeMap.set(pt(e.x1, e.y1), { x: e.x2, y: e.y2 }));
+
+    const start = edges[0];
+    let cur = { x: start.x1, y: start.y1 };
+    const points: string[] = [`M${Math.round(cur.x)},${Math.round(cur.y)}`];
+    const visited = new Set<string>();
+
+    for (let i = 0; i < edges.length; i++) {
+      const key = pt(cur.x, cur.y);
+      if (visited.has(key)) break;
+      visited.add(key);
+      const next = edgeMap.get(key);
+      if (!next) break;
+      points.push(`L${Math.round(next.x)},${Math.round(next.y)}`);
+      cur = next;
+    }
+    points.push('Z');
+    return points.join(' ');
+  }
+
+  getMergeCentroid(group: string[]): { x: number; y: number } | null {
+    const positions = group.map(k => this.getCellPixelPos(k)).filter(Boolean) as { x: number; y: number; w: number; h: number }[];
+    if (!positions.length) return null;
+    const avgX = positions.reduce((s, p) => s + p.x + p.w / 2, 0) / positions.length;
+    const avgY = positions.reduce((s, p) => s + p.y + p.h / 2, 0) / positions.length;
+    return { x: avgX, y: avgY };
+  }
+
+  getMergeSvgBounds(group: string[]): { x: number; y: number; w: number; h: number } | null {
+    const positions = group.map(k => this.getCellPixelPos(k)).filter(Boolean) as { x: number; y: number; w: number; h: number }[];
+    if (!positions.length) return null;
+    const pad = 6;
+    const minX = Math.min(...positions.map(p => p.x)) - pad;
+    const minY = Math.min(...positions.map(p => p.y)) - pad;
+    const maxX = Math.max(...positions.map(p => p.x + p.w)) + pad;
+    const maxY = Math.max(...positions.map(p => p.y + p.h)) + pad;
+    return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
   }
 
   toggleSidebarExtension() {
@@ -746,4 +969,52 @@ export class AppComponent implements OnInit {
     if (stage === 1) return 'w-[480px]';
     return 'w-[700px]';
   });
+
+  getPlotIconPath(type?: PlotType, shopType?: string): string {
+    if (!type || type === 'vacant' || type === 'road') return '';
+    let iconFile = `${type}.png`;
+    if (type === 'shop') {
+      const shopMap: Record<string, string> = {
+        'gym': 'gym.png',
+        'playstation': 'playstation.png',
+        'bank': 'bank.png',
+        'atm': 'bank.png',
+        'miniclinic': 'mini clinic.png',
+        'pharmacy': 'pharmacy.png',
+        'bakery': 'bakery.png',
+        'grosary': 'grosary.png',
+        'grocery': 'grosary.png',
+        'laundry': 'laundary (1).png',
+        'tailoring': 'tailor (1).png',
+        'salon': 'spa (1).png',
+        'spa': 'spa (1).png',
+      };
+      if (shopType && shopMap[shopType.toLowerCase()]) {
+        iconFile = shopMap[shopType.toLowerCase()];
+      } else {
+        iconFile = 'shop.png';
+      }
+    } else if (type === 'watertank') {
+      iconFile = 'watertank.png';
+    }
+    return `assets/plot-icons/${iconFile}`;
+  }
+
+  getPillarStyle(type: string | undefined): string {
+    if (!type) return 'background: #94a3b8;';
+    switch (type) {
+      case 'cyber': return 'background: linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%); border: 1px solid #1e3a8a; box-shadow: 0 0 15px rgba(14,165,233,0.4);';
+      case 'side': return 'background: linear-gradient(135deg, #475569 0%, #1e293b 100%); border: 1px solid #0f172a;';
+      default: return 'background: #94a3b8;';
+    }
+  }
+
+  getBarStyle(type: string | undefined): string {
+    if (!type) return 'background: #64748b;';
+    switch (type) {
+      case 'cyber': return 'background: linear-gradient(to bottom, #0ea5e9, #2563eb); border: 1px solid #1e40af;';
+      case 'side': return 'background: linear-gradient(to bottom, #1e293b, #0f172a); border: 1px solid #020617;';
+      default: return 'background: #64748b;';
+    }
+  }
 }

@@ -1,4 +1,4 @@
-export type PlotType = 'vacant' | 'house' | 'apartment' | 'watertank' | 'hospital' | 'park' | 'road' | 'shop';
+export type PlotType = 'vacant' | 'house' | 'apartment' | 'watertank' | 'hospital' | 'park' | 'road' | 'shop' | 'security';
 
 export interface Resident {
   name: string;
@@ -56,6 +56,20 @@ export interface PlotData {
   parking?: boolean;
   splitDirection?: 'h' | 'v';
   splitData?: { a: SplitHalf; b: SplitHalf };
+  gate?: { position: 'top' | 'bottom' | 'left' | 'right'; type: 'cyber' | 'side' };
+}
+
+export interface LayoutSection {
+  id: string;
+  name?: string;
+  hStreets: number;
+  vStreets: number;
+  plotsPerBlock: number;
+  hStreetNames: string[];
+  vStreetNames: string[];
+  plots: Record<string, PlotData>;
+  mergeGroups: string[][];
+  blockOverrides?: Record<string, { rows: number; cols: number }>;
 }
 
 export interface ProjectMeta {
@@ -81,4 +95,6 @@ export interface GlobalState {
   mergeGroups: string[][];
   projectMeta?: ProjectMeta;
   blockOverrides?: Record<string, { rows: number; cols: number }>;
+  sections: LayoutSection[];
+  activeSectionId: string;
 }

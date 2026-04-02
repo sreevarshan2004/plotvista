@@ -1,5 +1,22 @@
 import { Injectable, signal } from '@angular/core';
-import { GlobalState, PlotData, PlotType, AptConfig, Resident, SplitHalf } from '../types';
+import { GlobalState, PlotData, PlotType, AptConfig, Resident, SplitHalf, LayoutSection } from '../types';
+
+const DEFAULT_H_NAMES = ['Maple Avenue', 'Birch Lane', 'Cedar Boulevard', 'Oakwood Drive', 'Elm Street', 'Rosewood Path', 'Willow Walk', 'Jasmine Court'];
+const DEFAULT_V_NAMES = ['Gold Crescent', 'Silver Close', 'Diamond Road', 'Pearl Way', 'Emerald Row', 'Sapphire Drive', 'Ruby Street', 'Ivory Lane'];
+
+export function makeSection(overrides: Partial<LayoutSection> = {}): LayoutSection {
+  return {
+    id: Math.random().toString(36).slice(2),
+    hStreets: 1,
+    vStreets: 1,
+    plotsPerBlock: 2,
+    hStreetNames: [...DEFAULT_H_NAMES],
+    vStreetNames: [...DEFAULT_V_NAMES],
+    plots: {},
+    mergeGroups: [],
+    ...overrides
+  };
+}
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +25,15 @@ export class StateService {
   state = signal<GlobalState>({
     hStreets: 2,
     vStreets: 2,
-    hStreetNames: ['Maple Avenue', 'Birch Lane', 'Cedar Boulevard', 'Oakwood Drive', 'Elm Street', 'Rosewood Path', 'Willow Walk', 'Jasmine Court'],
-    vStreetNames: ['Gold Crescent', 'Silver Close', 'Diamond Road', 'Pearl Way', 'Emerald Row', 'Sapphire Drive', 'Ruby Street', 'Ivory Lane'],
+    hStreetNames: [...DEFAULT_H_NAMES],
+    vStreetNames: [...DEFAULT_V_NAMES],
     plotsPerBlock: 2,
     plots: {},
     selectedKey: null,
     selectedHalf: null,
-    mergeGroups: []
+    mergeGroups: [],
+    sections: [],
+    activeSectionId: ''
   });
 
   undoStack = signal<{ plots: Record<string, PlotData>; mergeGroups: string[][] }[]>([]);

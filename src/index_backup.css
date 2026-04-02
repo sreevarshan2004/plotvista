@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @theme {
   --font-sans: "Outfit", "Inter", sans-serif;
@@ -76,21 +76,12 @@
   }
 
   .plot-cell {
-    @apply rounded-2xl transition-[background-color,border-color,box-shadow,transform,opacity] duration-300 cursor-pointer relative flex flex-col items-center justify-center;
+    @apply rounded-xl transition-[background-color,border-color,box-shadow,transform,opacity] duration-300 cursor-pointer relative flex flex-col items-center justify-center overflow-hidden;
     width: var(--cell-size, 96px);
     height: var(--cell-size, 96px);
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    z-index: 10;
-    overflow: visible;
-  }
-
-  .plot-ghost {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    pointer-events: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
   .plot-cell::before {
@@ -105,10 +96,15 @@
 
   .plot-cell:hover {
     background: #ffffff;
-    border-color: var(--color-accent);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
-    transform: translateY(-4px) scale(1.02);
-    z-index: 30;
+    border: 1px solid #a0aec0;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+
+      0 8px 20px rgba(0, 0, 0, 0.10),
+      0 2px 6px rgba(0, 0, 0, 0.07);
+    transform: translateY(-2px);
+    z-index: 10;
   }
 
   .plot-vacant {
@@ -136,72 +132,6 @@
     border-color: #e2e8f0;
   }
 
-  /* ── Typed plot cells with vibrant screenshot-style colors ── */
-  .plot-type-house {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #f59e0b !important;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-  }
-  .plot-type-apartment {
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #2563eb !important;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-  }
-  .plot-type-park {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #10b981 !important;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
-  }
-  .plot-type-shop {
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #ec4899 !important;
-    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.1);
-  }
-  .plot-type-watertank {
-    background: linear-gradient(135deg, rgba(8, 145, 178, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #0891b2 !important;
-    box-shadow: 0 4px 12px rgba(8, 145, 178, 0.1);
-  }
-  .plot-type-hospital {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #ef4444 !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
-  }
-  .plot-type-security {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #8b5cf6 !important;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
-  }
-
-  /* --- Shop Specific Colors --- */
-  .plot-shop-gym, .plot-shop-clinic, .plot-shop-pharmacy {
-    background: linear-gradient(135deg, rgba(34, 211, 238, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #06b6d4 !important;
-  }
-  .plot-shop-bakery, .plot-shop-grocery, .plot-shop-cafe, .plot-shop-restaurant, .plot-shop-stationery {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #f59e0b !important;
-  }
-  .plot-shop-boutique, .plot-shop-salon, .plot-shop-spa, .plot-shop-laundry, .plot-shop-tailoring {
-    background: linear-gradient(135deg, rgba(217, 70, 239, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #d946ef !important;
-  }
-  .plot-shop-bank, .plot-shop-atm, .plot-shop-electronics {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #3b82f6 !important;
-  }
-  .plot-shop-cinema, .plot-shop-playstation {
-    background: linear-gradient(135deg, rgba(79, 70, 229, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #4f46e5 !important;
-  }
-
-  /* Make text black on white backgrounds */
-  [class*="plot-type-"]:not(.plot-type-road) span,
-  [class*="plot-type-"]:not(.plot-type-road) div {
-    color: #1e293b !important;
-    text-shadow: none !important;
-  }
-
   .plot-3d-road {
     background: #64748b !important;
     @apply border-slate-400/20 !rounded-none;
@@ -223,7 +153,7 @@
   }
 
   .stat-box {
-    @apply bg-slate-800/40 border border-white/5 p-3 rounded-2xl flex flex-col items-center justify-center transition-all hover:border-white/10 hover:shadow-lg;
+    @apply bg-white border border-slate-200 p-3 rounded-2xl flex flex-col items-center justify-center transition-all hover:border-slate-300 hover:shadow-sm;
   }
 
   .searchBox {
@@ -240,11 +170,10 @@
 
   /* â”€â”€ SPLIT CELL STYLES â”€â”€ */
   .split-cell {
-    @apply !p-0;
+    @apply !p-0 !overflow-hidden;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    overflow: visible !important;
   }
 
   .split-cell:hover {
@@ -412,27 +341,28 @@ body.light-theme {
   color: #334155;
 }
 
-/* Sidebar Specific - Deep Navy Theme */
+/* Sidebar Specific - Clean, Modern "Mild White" Aesthetic */
 body.light-theme aside.glass-card {
-  background: #1e293b !important;
-  border-left: 1px solid rgba(71, 85, 105, 0.6) !important;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2) !important;
+  background: #ffffff !important;
+  border-left: 1px solid #e2e8f0 !important;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.04) !important;
 }
 
 body.light-theme aside * {
-  color: #e0f2fe !important;
+  color: #1e293b !important;
+  /* Dark Slate for readability on light bg */
 }
 
 body.light-theme aside .bg-slate-900\/60 {
-  background-color: #0f172a !important;
-  border-bottom: 1px solid rgba(71, 85, 105, 0.5) !important;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 body.light-theme aside button,
 body.light-theme aside input:not(.res-modal-input) {
-  background-color: rgba(51, 65, 85, 0.6) !important;
-  border: 1px solid rgba(71, 85, 105, 0.5) !important;
-  color: #e0f2fe !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
   transition: all 0.3s ease;
 }
 
@@ -463,16 +393,18 @@ body.light-theme .res-modal-input::placeholder {
 }
 
 body.light-theme aside button:hover {
-  background-color: rgba(71, 85, 105, 0.7) !important;
-  border-color: #22d3ee !important;
+  background-color: #ffffff !important;
+  /* Keep it white on hover or slightly darker */
+  border-color: var(--color-accent) !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 body.light-theme aside .text-slate-400,
 body.light-theme aside .text-slate-500,
 body.light-theme aside h3 {
-  color: #38bdf8 !important;
+  color: #0f172a !important;
+  /* Dark Slate 900 for high visibility */
   letter-spacing: 0.15em !important;
   font-weight: 800 !important;
   font-family: var(--font-sans) !important;
@@ -481,50 +413,9 @@ body.light-theme aside h3 {
 body.light-theme aside .text-xs,
 body.light-theme aside .text-\[9px\],
 body.light-theme aside .text-\[8px\] {
-  color: #bae6fd !important;
+  color: #1e293b !important;
   letter-spacing: 0.05em !important;
   font-weight: 700 !important;
-}
-
-/* Section headers: Split Cell, Classification, Batch Tools */
-body.light-theme aside .text-amber-400 {
-  color: #38bdf8 !important;
-}
-
-body.light-theme aside .text-\[10px\] {
-  color: #38bdf8 !important;
-  font-weight: 800 !important;
-}
-
-/* Split / Classification buttons */
-body.light-theme aside .text-amber-400.text-base {
-  color: #38bdf8 !important;
-}
-
-body.light-theme aside h3 span.text-amber-400,
-body.light-theme aside h3 span.text-accent {
-  color: #38bdf8 !important;
-}
-
-body.light-theme aside .bg-amber-500\/10 {
-  background-color: rgba(56, 189, 248, 0.1) !important;
-  border-color: rgba(56, 189, 248, 0.3) !important;
-}
-
-body.light-theme aside .text-amber-400:not(.split-resident-badge) {
-  color: #38bdf8 !important;
-}
-
-body.light-theme aside .border-amber-500\/30 {
-  border-color: rgba(56, 189, 248, 0.3) !important;
-}
-
-body.light-theme aside .hover\:bg-amber-500\/20:hover {
-  background-color: rgba(56, 189, 248, 0.2) !important;
-}
-
-body.light-theme aside .hover\:border-amber-400\/50:hover {
-  border-color: rgba(56, 189, 248, 0.5) !important;
 }
 
 body.light-theme .split-half {
@@ -595,13 +486,10 @@ body.light-theme main .flex-1.bg-slate-100 {
 }
 
 /* â”€â”€ Plot cells light theme â”€â”€ */
-body.light-theme .plot-cell:not([class*="plot-type-"]):not(.plot-3d-road):not(.plot-vacant) {
-  background: #ffffff !important;
-}
-
 body.light-theme .plot-cell {
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 body.light-theme .plot-cell:hover {
@@ -625,16 +513,14 @@ body.light-theme .text-slate-500 {
   color: #64748b !important;
 }
 
-/* Exceptions where white text should remain white (on dark/vibrant backgrounds like roads or merged blocks) */
+/* Exceptions where white text should remain white (on dark backgrounds like roads or merged blocks) */
 body.light-theme .road-block *,
 body.light-theme .plot-3d-road *,
-body.light-theme [class*="plot-type-"] div,
-body.light-theme [class*="plot-type-"] span,
 body.light-theme [style*="background: linear-gradient"] *,
 body.light-theme [style*="background:linear-gradient"] *,
 body.light-theme .bg-violet-500 *,
 body.light-theme .bg-accent * {
-  color: unset !important; /* Let themed text colors take precedence */
+  color: #ffffff !important;
 }
 
 body.light-theme .bg-accent .text-slate-400 {
@@ -668,9 +554,9 @@ body.light-theme .stat-box .text-accent {
 /* Enhanced Typography for Sidebar Headers */
 body.light-theme aside h3,
 body.light-theme aside .text-\[10px\] {
-  color: #38bdf8 !important;
-  letter-spacing: 0.2em !important;
-  font-weight: 800 !important;
+  color: #0f172a !important;
+  letter-spacing: 0.25em !important;
+  font-weight: 900 !important;
 }
 
 body.light-theme .fixed .text-accent {
@@ -678,49 +564,14 @@ body.light-theme .fixed .text-accent {
 }
 
 body.light-theme footer.glass-card {
-  background: #1e293b !important;
-  border-top: 1px solid rgba(71, 85, 105, 0.6) !important;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2) !important;
+  background: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.03) !important;
 }
 
-body.light-theme footer * {
-  color: #e0f2fe !important;
-}
-
-body.light-theme footer .text-slate-500,
-body.light-theme footer .text-slate-600 {
-  color: #38bdf8 !important;
-}
-
-body.light-theme footer .text-\[9px\] {
-  color: #bae6fd !important;
-  font-weight: 700 !important;
-}
-
-body.light-theme footer .stat-box {
-  background: rgba(51, 65, 85, 0.6) !important;
-  border: 1px solid rgba(71, 85, 105, 0.5) !important;
-}
-
-body.light-theme footer .stat-box:hover {
-  background: rgba(71, 85, 105, 0.8) !important;
-  border-color: #22d3ee !important;
-}
-
-body.light-theme footer .stat-box span[class*="text-xl"] {
-  color: #ffffff !important;
-}
-
-body.light-theme footer .stat-box .text-house {
-  color: #34d399 !important;
-}
-
-body.light-theme footer .stat-box .text-apt {
-  color: #38bdf8 !important;
-}
-
-body.light-theme footer .stat-box .text-accent {
-  color: #7dd3fc !important;
+body.light-theme .stat-box {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
 }
 
 /* Sidebar Toggle Handle Style */
