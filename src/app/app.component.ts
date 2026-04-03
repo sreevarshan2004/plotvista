@@ -1,4 +1,4 @@
-import { Component, computed, signal, ChangeDetectionStrategy, OnInit, HostListener } from '@angular/core';
+import { Component, computed, signal, ChangeDetectionStrategy, OnInit, HostListener } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -51,6 +51,12 @@ export class AppComponent implements OnInit {
     const widths = [288, 480, 700];
     return widths[stage] + 32; // Offset by sidebar width plus margin
   });
+
+  isContextMenuOpen = signal(false);
+  contextMenuPos = { x: 0, y: 0 };
+  contextMenuKey = '';
+  isRenameModalOpen = signal(false);
+  renameValue = '';
 
   rotateLayout() {
     this.layoutRotation.update(r => r + 90);
@@ -137,15 +143,15 @@ export class AppComponent implements OnInit {
 
   getShopColorClass(category: string): string {
     switch (category) {
-      case 'Health': return 'bg-cyan-50 border-cyan-100 text-cyan-700 hover:border-cyan-400';
-      case 'Food': return 'bg-amber-50 border-amber-100 text-amber-700 hover:border-amber-400';
+      case 'Health': return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
+      case 'Food': return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
       case 'Beauty':
-      case 'Services': return 'bg-purple-50 border-purple-100 text-purple-700 hover:border-purple-400';
+      case 'Services': return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
       case 'Finance':
-      case 'Tech': return 'bg-blue-50 border-blue-100 text-blue-700 hover:border-blue-400';
-      case 'Entertainment': return 'bg-indigo-50 border-indigo-100 text-indigo-700 hover:border-indigo-400';
-      case 'Education': return 'bg-orange-50 border-orange-100 text-orange-700 hover:border-orange-400';
-      default: return 'bg-slate-50 border-slate-100 text-slate-700 hover:border-accent/40';
+      case 'Tech': return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
+      case 'Entertainment': return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
+      case 'Education': return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
+      default: return 'bg-sky-50 border-sky-100 text-sky-700 hover:border-sky-400';
     }
   }
 
@@ -206,19 +212,34 @@ export class AppComponent implements OnInit {
 
   // Convert a plot key to its pixel top-left position on the canvas
   getCellPixelPos(key: string): { x: number; y: number; w: number; h: number } | null {
-    const m = key.match(/r(\d+)c(\d+)pr(\d+)pc(\d+)/);
+    const fullKey = key.split('-')[0];
+    const halfSuffix = key.includes('-') ? key.split('-')[1] : null;
+    
+    const m = fullKey.match(/r(\d+)c(\d+)pr(\d+)pc(\d+)/);
     if (!m) return null;
     const r = +m[1], c = +m[2], pr = +m[3], pc = +m[4];
     const C = this.CELL();
     
-    // Use the new accumulated position helpers
     const baseX = this.getBlockX(c);
     const baseY = this.getBlockY(r);
     
-    const x = baseX + pc * C;
-    const y = baseY + pr * C;
+    let x = baseX + pc * C;
+    let y = baseY + pr * C;
+    let w = C;
+    let h = C;
     
-    return { x, y, w: C, h: C };
+    if (halfSuffix) {
+      const plot = this.plots()[fullKey];
+      if (plot?.splitDirection === 'v') {
+        w = C / 2;
+        if (halfSuffix === 'b') x += w;
+      } else if (plot?.splitDirection === 'h') {
+        h = C / 2;
+        if (halfSuffix === 'b') y += h;
+      }
+    }
+    
+    return { x, y, w, h };
   }
 
   // Compute the bounding rectangle for a merge group
@@ -233,21 +254,40 @@ export class AppComponent implements OnInit {
   }
 
   getMergeGroupOf(key: string): string[] | null {
-    return this.mergeGroups().find(g => g.includes(key)) || null;
+    return this.mergeGroups().find(g => 
+      g.includes(key) || g.includes(key + '-a') || g.includes(key + '-b')
+    ) || null;
   }
 
   isMergePrimary(key: string): boolean {
-    const g = this.getMergeGroupOf(key); return !!g && g[0] === key;
+    const g = this.getMergeGroupOf(key);
+    // It's a primary only if the FULL key itself is the primary (at index 0)
+    return !!g && g[0] === key;
   }
 
   isMergeSecondary(key: string): boolean {
-    const g = this.getMergeGroupOf(key); return !!g && g[0] !== key;
+    const g = this.getMergeGroupOf(key);
+    if (!g) return false;
+    // It's a full secondary only if the FULL key itself is in the group (not as index 0)
+    return g.includes(key) && g[0] !== key;
+  }
+
+  getHiddenHalf(key: string): 'a' | 'b' | null {
+    const group = this.mergeGroups().find(g => g.includes(key + '-a') || g.includes(key + '-b'));
+    if (!group) return null;
+    if (group.includes(key + '-a')) return 'a';
+    if (group.includes(key + '-b')) return 'b';
+    return null;
   }
 
   // No longer needed for grid span — kept empty for template compat
   getMergeStyle(_key: string): { [k: string]: string } { return {}; }
 
-  isPendingMerge(key: string) { return this.pendingMerge.includes(key); }
+  isPendingMerge(key: string) { 
+    return this.pendingMerge.includes(key) || 
+           this.pendingMerge.includes(key + '-a') || 
+           this.pendingMerge.includes(key + '-b'); 
+  }
 
   roadStartKey = signal<string | null>(null);
   roadEndKey = signal<string | null>(null);
@@ -429,9 +469,36 @@ export class AppComponent implements OnInit {
   onPlotRightClick(event: MouseEvent, key: string, data: PlotData) {
     event.preventDefault();
     event.stopPropagation();
-    this.stateService.selectPlot(key);
+    
+    // Ensure we target the primary cell if it's a merged block
+    const group = this.getMergeGroupOf(key);
+    const targetKey = group ? group[0] : key;
+    
+    this.contextMenuKey = targetKey;
+    this.contextMenuPos = { x: event.clientX, y: event.clientY };
+    this.isContextMenuOpen.set(true);
+  }
+
+  openRenameModal() {
+    const plot = this.plots()[this.contextMenuKey];
+    this.renameValue = plot?.name || '';
+    this.isRenameModalOpen.set(true);
+    this.isContextMenuOpen.set(false);
+  }
+
+  saveRename() {
+    if (this.contextMenuKey) {
+      this.stateService.saveState();
+      this.stateService.updatePlot(this.contextMenuKey, { name: this.renameValue });
+    }
+    this.isRenameModalOpen.set(false);
+  }
+
+  openResidentModal() {
+    this.stateService.selectPlot(this.contextMenuKey);
     this.resModalRole = 'owner';
     this.isResModalOpen = true;
+    this.isContextMenuOpen.set(false);
   }
 
   getResident(data: PlotData | null | undefined, role: 'owner' | 'tenant'): Resident | undefined {
@@ -470,7 +537,7 @@ export class AppComponent implements OnInit {
       residents: type === 'road' ? [] : (targetData?.residents || []),
       price: type === 'house' ? 6000 : undefined,
       sqft: type === 'house' ? 1200 : (isMerged ? 2400 : undefined),
-      name: displayName,
+      name: plot?.name || displayName,
       roadDirection: type === 'road' ? direction : undefined
     } as any);
   }
@@ -600,6 +667,46 @@ export class AppComponent implements OnInit {
 
   fillCrossWithRoads() { this.fillRowWithRoads(); this.fillColWithRoads(); }
 
+  fillRowWithHouse() {
+    const key = this.selectedKey();
+    if (!key) return;
+    const match = key.match(/r(\d+)c(\d+)pr(\d+)pc(\d+)/);
+    if (!match) return;
+    this.stateService.saveState();
+    const r = match[1], pr = match[3];
+    for (let c = 0; c <= this.vStreets; c++)
+      for (let pc = 0; pc < this.plotsPerBlock; pc++) {
+        const targetKey = `r${r}c${c}pr${pr}pc${pc}`;
+        this.stateService.updatePlot(targetKey, { 
+          type: 'house', 
+          name: `House ${r}${c}-${pr}${pc}`,
+          price: 6000,
+          sqft: 1200,
+          residents: [] 
+        });
+      }
+  }
+
+  fillColWithHouse() {
+    const key = this.selectedKey();
+    if (!key) return;
+    const match = key.match(/r(\d+)c(\d+)pr(\d+)pc(\d+)/);
+    if (!match) return;
+    this.stateService.saveState();
+    const c = match[2], pc = match[4];
+    for (let r = 0; r <= this.hStreets; r++)
+      for (let pr = 0; pr < this.plotsPerBlock; pr++) {
+        const targetKey = `r${r}c${c}pr${pr}pc${pc}`;
+        this.stateService.updatePlot(targetKey, { 
+          type: 'house', 
+          name: `House ${r}${c}-${pr}${pc}`,
+          price: 6000,
+          sqft: 1200,
+          residents: [] 
+        });
+      }
+  }
+
   addMiddleRoadsToAll() {
     this.stateService.saveState();
     const mid = Math.floor(this.plotsPerBlock / 2);
@@ -665,15 +772,18 @@ export class AppComponent implements OnInit {
 
   selectPlot(key: string, half: 'a' | 'b' | null = null) {
     if (this.isCtrlHeld) {
-      if (this.pendingMerge.includes(key)) {
-        this.pendingMerge = this.pendingMerge.filter(k => k !== key);
+      const mergeKey = half ? `${key}-${half}` : key;
+      if (this.pendingMerge.includes(mergeKey)) {
+        this.pendingMerge = this.pendingMerge.filter(k => k !== mergeKey);
       } else {
-        this.pendingMerge = [...this.pendingMerge, key];
+        this.pendingMerge = [...this.pendingMerge, mergeKey];
       }
       return;
     }
-    this.stateService.selectPlot(key, half);
-    const plot = this.plots()[key];
+    const group = this.getMergeGroupOf(key);
+    const targetKey = group ? group[0] : key;
+    this.stateService.selectPlot(targetKey, half);
+    const plot = this.plots()[targetKey];
     const hasData = plot && (
       (plot.type && plot.type !== 'vacant' && plot.type !== 'road') ||
       (plot.residents?.length ?? 0) > 0
@@ -736,6 +846,10 @@ export class AppComponent implements OnInit {
   }
 
   handleSplitClick(key: string, half: 'a' | 'b') {
+    if (this.isCtrlHeld) {
+      this.selectPlot(key, half);
+      return;
+    }
     this.stateService.selectPlot(key, half);
     const plot = this.plots()[key];
     const halfData = plot?.splitData?.[half];
@@ -819,7 +933,8 @@ export class AppComponent implements OnInit {
   // ── GATE ──────────────────────────────────────────────
   isGatePickerOpen = false;
   gatePickerKey = '';
-  gateConfig: { position: 'top' | 'bottom' | 'left' | 'right'; type: 'cyber' | 'side' } = { position: 'top', type: 'cyber' };
+  gateConfig: { position: 'top' | 'bottom' | 'left' | 'right'; type: 'cyber' | 'side'; label: string; isCustom: boolean } = { position: 'top', type: 'cyber', label: 'ENTRANCE', isCustom: false };
+  readonly gateNames = ['ENTRANCE', 'EXIT', 'GATE A', 'CUSTOMIZE'];
 
   readonly gateTypes = [
     { value: 'cyber',     label: 'Cyber Gate',     emoji: '⚡', desc: 'High-Tech Neon Style' },
@@ -829,15 +944,28 @@ export class AppComponent implements OnInit {
   openGatePicker(key: string) {
     this.gatePickerKey = key;
     const existing = this.plots()[key]?.gate;
-    this.gateConfig = { position: (existing?.position || 'top') as any, type: (existing?.type || 'cyber') as any };
+    const isCustom = !this.gateNames.includes(existing?.label || 'ENTRANCE');
+    this.gateConfig = { 
+      position: (existing?.position || 'top') as any, 
+      type: (existing?.type || 'cyber') as any,
+      label: existing?.label || 'ENTRANCE',
+      isCustom: isCustom
+    };
     this.isGatePickerOpen = true;
   }
 
   confirmGate() {
     const key = this.gatePickerKey;
-    if (!key) return;
-    this.stateService.saveState();
-    this.stateService.updatePlot(key, { gate: { position: this.gateConfig.position as any, type: this.gateConfig.type as any } });
+    if (key) {
+      this.stateService.saveState();
+      this.stateService.updatePlot(key, { 
+        gate: { 
+          position: this.gateConfig.position as any, 
+          type: this.gateConfig.type as any,
+          label: this.gateConfig.isCustom ? this.gateConfig.label : (this.gateConfig.label === 'CUSTOMIZE' ? '' : this.gateConfig.label)
+        } 
+      });
+    }
     this.isGatePickerOpen = false;
   }
 
@@ -860,7 +988,7 @@ export class AppComponent implements OnInit {
       house:     '#10b981',
       apartment: '#0ea5e9',
       park:      '#22c55e',
-      shop:      '#f59e0b',
+      shop:      '#06b6d4',
       watertank: '#3b82f6',
       hospital:  '#ef4444',
     };
@@ -880,46 +1008,51 @@ export class AppComponent implements OnInit {
     const positions = group.map(k => this.getCellPixelPos(k)).filter(Boolean) as { x: number; y: number; w: number; h: number }[];
     if (!positions.length) return null;
 
-    // Build a set of all cell rects as grid coords for edge detection
     const C = this.CELL();
+    const step = C / 2; 
     const minX = Math.min(...positions.map(p => p.x));
     const minY = Math.min(...positions.map(p => p.y));
 
-    // Map each cell to grid row/col relative to bounding box
-    const cellSet = new Set(positions.map(p => {
-      const col = Math.round((p.x - minX) / C);
-      const row = Math.round((p.y - minY) / C);
-      return `${row},${col}`;
-    }));
+    const cellSet = new Set<string>();
+    positions.forEach(p => {
+      const c = Math.round((p.x - minX) / step);
+      const r = Math.round((p.y - minY) / step);
+      const cols = Math.round(p.w / step);
+      const rows = Math.round(p.h / step);
+      for (let ir = 0; ir < rows; ir++) {
+        for (let ic = 0; ic < cols; ic++) {
+          cellSet.add(`${r + ir},${c + ic}`);
+        }
+      }
+    });
 
     const has = (r: number, c: number) => cellSet.has(`${r},${c}`);
 
-    // Collect all outer edges (segments between a filled and empty cell)
+    // Collect all outer edges
     const edges: { x1: number; y1: number; x2: number; y2: number }[] = [];
-    positions.forEach(p => {
-      const col = Math.round((p.x - minX) / C);
-      const row = Math.round((p.y - minY) / C);
-      const x = p.x, y = p.y;
-      // top edge
-      if (!has(row - 1, col)) edges.push({ x1: x, y1: y, x2: x + C, y2: y });
-      // bottom edge
-      if (!has(row + 1, col)) edges.push({ x1: x + C, y1: y + C, x2: x, y2: y + C });
-      // left edge
-      if (!has(row, col - 1)) edges.push({ x1: x, y1: y + C, x2: x, y2: y });
-      // right edge
-      if (!has(row, col + 1)) edges.push({ x1: x + C, y1: y, x2: x + C, y2: y + C });
+    cellSet.forEach(key => {
+      const parts = key.split(',');
+      const r = parseInt(parts[0]);
+      const c = parseInt(parts[1]);
+      const x = minX + c * step;
+      const y = minY + r * step;
+
+      if (!has(r - 1, c)) edges.push({ x1: x, y1: y, x2: x + step, y2: y }); // top
+      if (!has(r + 1, c)) edges.push({ x1: x + step, y1: y + step, x2: x, y2: y + step }); // bottom
+      if (!has(r, c - 1)) edges.push({ x1: x, y1: y + step, x2: x, y2: y }); // left
+      if (!has(r, c + 1)) edges.push({ x1: x + step, y1: y, x2: x + step, y2: y + step }); // right
     });
 
-    if (!edges.length) return null;
+    if (edges.length === 0) return null;
 
     // Chain edges into a closed polygon path
-    const pt = (x: number, y: number) => `${Math.round(x)},${Math.round(y)}`;
+    const pt = (x: number, y: number) => `${x.toFixed(2)},${y.toFixed(2)}`;
     const edgeMap = new Map<string, { x: number; y: number }>();
     edges.forEach(e => edgeMap.set(pt(e.x1, e.y1), { x: e.x2, y: e.y2 }));
 
     const start = edges[0];
     let cur = { x: start.x1, y: start.y1 };
-    const points: string[] = [`M${Math.round(cur.x)},${Math.round(cur.y)}`];
+    const points: string[] = [`M${cur.x.toFixed(2)},${cur.y.toFixed(2)}`];
     const visited = new Set<string>();
 
     for (let i = 0; i < edges.length; i++) {
@@ -928,7 +1061,7 @@ export class AppComponent implements OnInit {
       visited.add(key);
       const next = edgeMap.get(key);
       if (!next) break;
-      points.push(`L${Math.round(next.x)},${Math.round(next.y)}`);
+      points.push(`L${next.x.toFixed(2)},${next.y.toFixed(2)}`);
       cur = next;
     }
     points.push('Z');
@@ -1000,17 +1133,23 @@ export class AppComponent implements OnInit {
     return `assets/plot-icons/${iconFile}`;
   }
 
-  getPillarStyle(type: string | undefined): string {
+  getPillarStyle(type: string | undefined, label?: string): string {
     if (!type) return 'background: #94a3b8;';
-    switch (type) {
-      case 'cyber': return 'background: linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%); border: 1px solid #1e3a8a; box-shadow: 0 0 15px rgba(14,165,233,0.4);';
-      case 'side': return 'background: linear-gradient(135deg, #475569 0%, #1e293b 100%); border: 1px solid #0f172a;';
-      default: return 'background: #94a3b8;';
+    const isExit = label?.toLowerCase().includes('exit');
+    const color = isExit ? '#ef4444' : (type === 'cyber' ? '#1d4ed8' : '#1e293b');
+    const accent = isExit ? '#fee2e2' : (type === 'cyber' ? '#38bdf8' : '#475569');
+    
+    if (type === 'cyber') {
+      return `background: linear-gradient(135deg, ${accent} 0%, ${color} 100%); border: 1px solid ${isExit ? '#991b1b' : '#1e3a8a'}; box-shadow: 0 0 15px ${isExit ? 'rgba(239,68,68,0.4)' : 'rgba(14,165,233,0.4)'};`;
     }
+    return `background: linear-gradient(135deg, ${accent} 0%, ${color} 100%); border: 1px solid ${isExit ? '#991b1b' : '#0f172a'};`;
   }
 
-  getBarStyle(type: string | undefined): string {
+  getBarStyle(type: string | undefined, label?: string): string {
     if (!type) return 'background: #64748b;';
+    const isExit = label?.toLowerCase().includes('exit');
+    if (isExit) return 'background: linear-gradient(to bottom, #f87171, #ef4444); border: 1px solid #991b1b;';
+    
     switch (type) {
       case 'cyber': return 'background: linear-gradient(to bottom, #0ea5e9, #2563eb); border: 1px solid #1e40af;';
       case 'side': return 'background: linear-gradient(to bottom, #1e293b, #0f172a); border: 1px solid #020617;';

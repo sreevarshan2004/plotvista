@@ -56,7 +56,7 @@ export interface PlotData {
   parking?: boolean;
   splitDirection?: 'h' | 'v';
   splitData?: { a: SplitHalf; b: SplitHalf };
-  gate?: { position: 'top' | 'bottom' | 'left' | 'right'; type: 'cyber' | 'side' };
+  gate?: { position: 'top' | 'bottom' | 'left' | 'right'; type: 'cyber' | 'side'; label?: string };
 }
 
 export interface LayoutSection {

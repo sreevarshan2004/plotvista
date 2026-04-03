@@ -24,14 +24,15 @@
 
     <div class="flex items-center gap-4">
       <div
-        class="flex items-center bg-slate-700/50 border border-slate-600/50 rounded-full h-8 px-3 gap-2 focus-within:border-cyan-400 transition-all">
-        <span class="text-sky-400 text-xs">🔍</span>
+        class="flex items-center bg-slate-700/50 border border-white rounded-full h-8 px-3 gap-2 focus-within:border-white transition-all shadow-sm">
+        <span class="text-slate-400 text-xs">🔍</span>
         <input
-          class="bg-transparent border-none outline-none text-sky-100 text-xs w-36 placeholder:text-sky-400/50 font-medium"
+          class="bg-transparent border-none outline-none text-slate-400 text-xs w-36 placeholder:text-slate-500 font-medium"
           type="text" placeholder="Search house name..." [(ngModel)]="searchTerm" />
       </div>
 
-      <div class="flex gap-4" [title]="mergeGroups().length > 0 ? 'Clear all merge groups first to reconfigure grid structure' : ''">
+      <div class="flex gap-4"
+        [title]="mergeGroups().length > 0 ? 'Clear all merge groups first to reconfigure grid structure' : ''">
         <div class="flex flex-col">
           <label class="text-[9px] uppercase tracking-widest text-sky-400 font-black mb-1">H-Streets</label>
           <input type="number" min="1" max="8" [(ngModel)]="hStreets" [disabled]="mergeGroups().length > 0"
@@ -120,30 +121,38 @@
       [style.--cell-size.px]="CELL()" [style.--road-size.px]="ROAD()">
 
       <!-- Orientation Global Controller (Dynamic Position) -->
-      <div class="fixed top-24 z-[400] cursor-pointer flex flex-col items-center transition-all duration-500 ease-in-out" 
-           [style.right.px]="compassRightPos()"
-           (click)="rotateLayout()">
-        <div class="w-14 h-14 rounded-full bg-white/95 backdrop-blur-xl border border-slate-300 shadow-xl relative flex items-center justify-center transition-transform duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] ring-4 ring-slate-200/30" 
-             [style.transform]="'rotate(' + layoutRotation() + 'deg)'">
-          <span class="absolute top-1 left-1/2 -translate-x-1/2 text-[10px] font-black text-red-600 drop-shadow-sm tracking-tighter">N</span>
-          <span class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-black text-slate-950 tracking-tighter">S</span>
-          <span class="absolute left-1 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-950 tracking-tighter">W</span>
-          <span class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-950 tracking-tighter">E</span>
-          
+      <div
+        class="fixed top-24 z-[400] cursor-pointer flex flex-col items-center transition-all duration-500 ease-in-out"
+        [style.right.px]="compassRightPos()" (click)="rotateLayout()">
+        <div
+          class="w-14 h-14 rounded-full bg-white/95 backdrop-blur-xl border border-slate-300 shadow-xl relative flex items-center justify-center transition-transform duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] ring-4 ring-slate-200/30"
+          [style.transform]="'rotate(' + layoutRotation() + 'deg)'">
+          <span
+            class="absolute top-1 left-1/2 -translate-x-1/2 text-[10px] font-black text-red-600 drop-shadow-sm tracking-tighter">N</span>
+          <span
+            class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-black text-slate-950 tracking-tighter">S</span>
+          <span
+            class="absolute left-1 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-950 tracking-tighter">W</span>
+          <span
+            class="absolute right-1 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-950 tracking-tighter">E</span>
+
           <!-- Robust Stable Needle -->
           <div class="absolute w-[3px] h-[35%] bg-red-600 rounded-t-full top-[15%] origin-bottom shadow-sm z-20"></div>
-          <div class="absolute w-[3px] h-[35%] bg-slate-500 rounded-b-full bottom-[15%] origin-top shadow-sm z-20"></div>
-          
+          <div class="absolute w-[3px] h-[35%] bg-slate-500 rounded-b-full bottom-[15%] origin-top shadow-sm z-20">
+          </div>
+
           <div class="w-2.5 h-2.5 rounded-full bg-slate-900 border-2 border-white shadow-lg z-30"></div>
-          
+
           <!-- Modern Guide Rings -->
           <div class="absolute inset-1 border border-slate-100 rounded-full"></div>
         </div>
-        <div class="mt-2 text-[7px] font-black text-slate-500 uppercase tracking-[0.25em] opacity-60">Orientation Mode</div>
+        <div class="mt-2 text-[7px] font-black text-slate-500 uppercase tracking-[0.25em] opacity-60">Orientation Mode
+        </div>
       </div>
 
       <!-- Zoom Controls -->
-      <div class="fixed bottom-8 right-8 z-[400] flex flex-col gap-3">
+      <!-- Zoom Controls -->
+      <div class="fixed top-1/2 left-1 -translate-y-1/2 z-[400] flex flex-col gap-3">
         <button (click)="zoomIn()"
           class="w-12 h-12 glass-card rounded-2xl flex items-center justify-center text-xl font-black text-slate-700 hover:bg-slate-50 transition-all shadow-xl border border-slate-200">＋</button>
         <div (click)="resetZoom()"
@@ -157,232 +166,313 @@
 
       <div class="flex flex-col gap-24">
 
-      <!-- Main layout section -->
+        <!-- Main layout section -->
         <!-- Main layout section with rotation support -->
-        <div class="inline-block min-w-max animate-fade-up relative origin-center transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-             [style.transform]="'rotate(' + layoutRotation() + 'deg)'">
+        <div
+          class="inline-block min-w-max animate-fade-up relative origin-center transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+          [style.transform]="'rotate(' + layoutRotation() + 'deg)'">
 
-        <div *ngFor="let r of getRange(hStreets)" class="flex flex-col gap-0 p-0 m-0 leading-none">
-          <!-- Plot Band Row -->
+          <div *ngFor="let r of getRange(hStreets)" class="flex flex-col gap-0 p-0 m-0 leading-none">
+            <!-- Plot Band Row -->
 
-          <div class="flex">
-            <ng-container *ngFor="let c of getRange(vStreets)">
-              <div
-                [class]="'bg-bg2/30 border border-border/10 transition-[background-color,border-color,box-shadow,opacity] duration-500 relative group/block ' + (isBlockHighlighted(r, c) ? 'bg-yellow-400/20 border-yellow-400/50 shadow-[0_0_20px_rgba(250,204,21,0.2)]' : '')"
-                [style.width.px]="getMaxBlockCols(c) * CELL()"
-                [style.height.px]="getMaxBlockRows(r) * CELL()">
+            <div class="flex">
+              <ng-container *ngFor="let c of getRange(vStreets)">
+                <div
+                  [class]="'bg-bg2/30 border border-border/10 transition-[background-color,border-color,box-shadow,opacity] duration-500 relative group/block ' + (isBlockHighlighted(r, c) ? 'bg-yellow-400/20 border-yellow-400/50 shadow-[0_0_20px_rgba(250,204,21,0.2)]' : '')"
+                  [style.width.px]="getMaxBlockCols(c) * CELL()" [style.height.px]="getMaxBlockRows(r) * CELL()">
 
-                <!-- Per-block customize button -->
-                <button (click)="openBlockCustomize(r, c, $event)"
-                  class="absolute top-1 right-1 z-[100] w-6 h-6 rounded-lg flex items-center justify-center text-[10px] opacity-0 group-hover/block:opacity-100 transition-all shadow-lg"
-                  [class]="isBlockOverridden(r, c) ? 'bg-accent text-slate-900 opacity-100' : 'bg-slate-800/90 text-slate-300 hover:bg-accent hover:text-slate-900 border border-white/10'">
-                  ⚙️
-                </button>
-                <ng-container *ngIf="isAllParks(r, c) && plotsPerBlock > 1; else individualPlots">
-                  <div class="flex items-center justify-center h-full w-full" [style.width.px]="getBlockCols(r,c) * CELL()"
-                    [style.height.px]="getBlockRows(r,c) * CELL()">
-                    <app-plot-cell [plotKey]="getBlockKeys(r, c)[0]" [data]="plots()[getBlockKeys(r, c)[0]]"
-                      [isSelected]="selectedKey() === getBlockKeys(r, c)[0]"
-                      [isMerged]="isMergeSecondary(getBlockKeys(r, c)[0]) || isMergePrimary(getBlockKeys(r, c)[0])"
-                      [roadConnectivity]="roadConnectivity()[getBlockKeys(r, c)[0]]"
-                      (onClick)="selectPlot(getBlockKeys(r, c)[0])"
-                      (onRightClick)="onPlotRightClick($event, getBlockKeys(r, c)[0], plots()[getBlockKeys(r, c)[0]])"
-                      (onSqftChange)="updateSqft(getBlockKeys(r, c)[0], $event)"
-                      (onNameChange)="updateCellName(getBlockKeys(r, c)[0], $event)"
-                      (onDropType)="onDrop($event.event, getBlockKeys(r, c)[0], $event.half)"
-                      [isLarge]="true"></app-plot-cell>
-                  </div>
-                </ng-container>
-                <ng-template #individualPlots>
-                  <!-- CSS Grid using per-block row/col overrides -->
-                  <div class="grid h-full w-full"
-                    [style.grid-template-columns]="'repeat(' + getBlockCols(r,c) + ',' + CELL() + 'px)'"
-                    [style.grid-template-rows]="'repeat(' + getBlockRows(r,c) + ',' + CELL() + 'px)'">
-                    <ng-container *ngFor="let pr of getSubRange(getBlockRows(r,c))">
-                      <ng-container *ngFor="let pc of getSubRange(getBlockCols(r,c))">
-                        <!-- Standard cell (not merged) -->
-                        <ng-container
-                          *ngIf="!isMergeSecondary('r'+r+'c'+c+'pr'+pr+'pc'+pc) && !isMergePrimary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
-                          <app-plot-cell [plotKey]="'r'+r+'c'+c+'pr'+pr+'pc'+pc"
-                            [data]="plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc]"
-                            [isSelected]="selectedKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc"
-                            [isMerged]="false"
-                            [selectedHalf]="selectedKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc ? selectedHalf() : null"
-                            [roadConnectivity]="roadConnectivity()['r'+r+'c'+c+'pr'+pr+'pc'+pc]"
-                            (onClick)="selectPlot('r'+r+'c'+c+'pr'+pr+'pc'+pc)"
-                            (onRightClick)="onPlotRightClick($event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc])"
-                            (onSplitClick)="handleSplitClick('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
-                            (onSqftChange)="updateSqft('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
-                            (onNameChange)="updateCellName('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
-                            (onDropType)="onDrop($event.event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, $event.half)"
-                            [customClass]="(isPlotMatched('r'+r+'c'+c+'pr'+pr+'pc'+pc) ? 'ring-4 ring-yellow-400 animate-pulse z-30 ' : '') + (roadStartKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc ? 'ring-4 ring-green-500 z-30 ' : '') + (roadEndKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc ? 'ring-4 ring-red-500 z-30 ' : '') + (isPendingMerge('r'+r+'c'+c+'pr'+pr+'pc'+pc) ? 'ring-4 ring-purple-400 z-30 scale-105 ' : '')"></app-plot-cell>
-                        </ng-container>
-                        <!-- Merged Primary cell (Ghost mode to show gate) -->
-                        <ng-container
-                          *ngIf="isMergePrimary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
-                          <app-plot-cell [plotKey]="'r'+r+'c'+c+'pr'+pr+'pc'+pc"
-                            [data]="plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc]"
-                            [isSelected]="selectedKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc"
-                            [isGhost]="true"
-                            [isMerged]="true"
-                            (onClick)="selectPlot('r'+r+'c'+c+'pr'+pr+'pc'+pc)"
-                            (onRightClick)="onPlotRightClick($event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc])"
-                            (onSqftChange)="updateSqft('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
-                            (onNameChange)="updateCellName('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
-                            (onDropType)="onDrop($event.event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, $event.half)"
-                            [style.width.px]="CELL()" [style.height.px]="CELL()"></app-plot-cell>
-                        </ng-container>
-                        <!-- Merged Secondary cell (Invisible placeholder) -->
-                        <ng-container
-                          *ngIf="isMergeSecondary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
-                          <div class="opacity-0 pointer-events-none"
-                            [style.width.px]="CELL()" [style.height.px]="CELL()"></div>
+                  <!-- Per-block customize button -->
+                  <button (click)="openBlockCustomize(r, c, $event)"
+                    class="absolute top-1 right-1 z-[100] w-6 h-6 rounded-lg flex items-center justify-center text-[10px] opacity-0 group-hover/block:opacity-100 transition-all shadow-lg"
+                    [class]="isBlockOverridden(r, c) ? 'bg-accent text-slate-900 opacity-100' : 'bg-slate-800/90 text-slate-300 hover:bg-accent hover:text-slate-900 border border-white/10'">
+                    ⚙️
+                  </button>
+                  <ng-container *ngIf="isAllParks(r, c) && plotsPerBlock > 1; else individualPlots">
+                    <div class="flex items-center justify-center h-full w-full"
+                      [style.width.px]="getBlockCols(r,c) * CELL()" [style.height.px]="getBlockRows(r,c) * CELL()">
+                      <app-plot-cell [plotKey]="getBlockKeys(r, c)[0]" [data]="plots()[getBlockKeys(r, c)[0]]"
+                        [isSelected]="selectedKey() === getBlockKeys(r, c)[0]"
+                        [isMerged]="isMergeSecondary(getBlockKeys(r, c)[0]) || isMergePrimary(getBlockKeys(r, c)[0])"
+                        [roadConnectivity]="roadConnectivity()[getBlockKeys(r, c)[0]]"
+                        (onClick)="selectPlot(getBlockKeys(r, c)[0])"
+                        (onRightClick)="onPlotRightClick($event, getBlockKeys(r, c)[0], plots()[getBlockKeys(r, c)[0]])"
+                        (onSqftChange)="updateSqft(getBlockKeys(r, c)[0], $event)"
+                        (onNameChange)="updateCellName(getBlockKeys(r, c)[0], $event)"
+                        (onDropType)="onDrop($event.event, getBlockKeys(r, c)[0], $event.half)"
+                        [isLarge]="true"></app-plot-cell>
+                    </div>
+                  </ng-container>
+                  <ng-template #individualPlots>
+                    <!-- CSS Grid using per-block row/col overrides -->
+                    <div class="grid h-full w-full"
+                      [style.grid-template-columns]="'repeat(' + getBlockCols(r,c) + ',' + CELL() + 'px)'"
+                      [style.grid-template-rows]="'repeat(' + getBlockRows(r,c) + ',' + CELL() + 'px)'">
+                      <ng-container *ngFor="let pr of getSubRange(getBlockRows(r,c))">
+                        <ng-container *ngFor="let pc of getSubRange(getBlockCols(r,c))">
+                          <!-- Standard cell (not merged) -->
+                          <ng-container
+                            *ngIf="!isMergeSecondary('r'+r+'c'+c+'pr'+pr+'pc'+pc) && !isMergePrimary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
+                            <app-plot-cell [plotKey]="'r'+r+'c'+c+'pr'+pr+'pc'+pc"
+                              [data]="plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc]"
+                              [isSelected]="selectedKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc" [isMerged]="false"
+                              [selectedHalf]="selectedKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc ? selectedHalf() : null"
+                              [roadConnectivity]="roadConnectivity()['r'+r+'c'+c+'pr'+pr+'pc'+pc]"
+                              [hiddenHalf]="getHiddenHalf('r'+r+'c'+c+'pr'+pr+'pc'+pc)"
+                              (onClick)="selectPlot('r'+r+'c'+c+'pr'+pr+'pc'+pc)"
+                              (onRightClick)="onPlotRightClick($event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc])"
+                              (onSplitClick)="handleSplitClick('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
+                              (onSqftChange)="updateSqft('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
+                              (onNameChange)="updateCellName('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
+                              (onDropType)="onDrop($event.event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, $event.half)"
+                              [customClass]="(isPlotMatched('r'+r+'c'+c+'pr'+pr+'pc'+pc) ? 'ring-4 ring-yellow-400 animate-pulse z-30 ' : '') + (roadStartKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc ? 'ring-4 ring-green-500 z-30 ' : '') + (roadEndKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc ? 'ring-4 ring-red-500 z-30 ' : '') + (isPendingMerge('r'+r+'c'+c+'pr'+pr+'pc'+pc) ? 'ring-4 ring-purple-400 z-30 scale-105 ' : '')"></app-plot-cell>
+                          </ng-container>
+                          <!-- Merged Primary cell (Ghost mode to show gate) -->
+                          <ng-container *ngIf="isMergePrimary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
+                            <app-plot-cell [plotKey]="'r'+r+'c'+c+'pr'+pr+'pc'+pc"
+                              [data]="plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc]"
+                              [isSelected]="selectedKey() === 'r'+r+'c'+c+'pr'+pr+'pc'+pc" [isGhost]="true"
+                              [isMerged]="true" [hiddenHalf]="getHiddenHalf('r'+r+'c'+c+'pr'+pr+'pc'+pc)"
+                              (onClick)="selectPlot('r'+r+'c'+c+'pr'+pr+'pc'+pc)"
+                              (onRightClick)="onPlotRightClick($event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, plots()['r'+r+'c'+c+'pr'+pr+'pc'+pc])"
+                              (onSqftChange)="updateSqft('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
+                              (onNameChange)="updateCellName('r'+r+'c'+c+'pr'+pr+'pc'+pc, $event)"
+                              (onDropType)="onDrop($event.event, 'r'+r+'c'+c+'pr'+pr+'pc'+pc, $event.half)"
+                              [style.width.px]="CELL()" [style.height.px]="CELL()"></app-plot-cell>
+                          </ng-container>
+                          <!-- Merged Secondary cell (Invisible placeholder) -->
+                          <ng-container *ngIf="isMergeSecondary('r'+r+'c'+c+'pr'+pr+'pc'+pc)">
+                            <div class="opacity-0 pointer-events-none" [style.width.px]="CELL()"
+                              [style.height.px]="CELL()"></div>
+                          </ng-container>
                         </ng-container>
                       </ng-container>
-                    </ng-container>
-                  </div>
-                </ng-template>
-              </div>
-
-              <!-- Vertical Road -->
-              <div *ngIf="c < vStreets"
-                [class]="'road-v flex items-center justify-center relative transition-[background-color,border-color,box-shadow,opacity] duration-500 ' + (isRoadHighlighted(r, c, 'v') ? 'bg-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.4)] z-10' : '')"
-                [style.width.px]="ROAD()"
-                [style.height.px]="getMaxBlockRows(r) * CELL()">
-                <div
-                  [class]="'flex items-center justify-center p-1 rounded-full border transition-all z-10 max-h-full overflow-hidden ' + (isRoadHighlighted(r, c, 'v') ? 'bg-yellow-400 border-white scale-110 shadow-xl' : 'bg-slate-900 border-white/20 shadow-lg')">
-                  <input type="text" [ngModel]="vStreetNames()[c % vStreetNames().length]"
-                    (ngModelChange)="updateStreetName('v', c % vStreetNames().length, $event)"
-                    [class]="'text-[10px] font-mono uppercase tracking-[0.3em] whitespace-nowrap transition-colors bg-transparent border-none outline-none text-center w-full ' + (isRoadHighlighted(r, c, 'v') ? 'text-slate-900 font-black' : 'text-white font-black')"
-                    [style.max-height.px]="getMaxBlockRows(r) * CELL() - 8"
-                    style="writing-mode: vertical-rl; color: white !important; font-weight: 900; overflow: hidden; text-overflow: ellipsis;" />
+                    </div>
+                  </ng-template>
                 </div>
-              </div>
-            </ng-container>
-          </div>
+
+                <!-- Vertical Road -->
+                <div *ngIf="c < vStreets"
+                  (click)="selectPlot('vStreet-' + c + '-r' + r); $event.stopPropagation()"
+                  (contextmenu)="onPlotRightClick($event, 'vStreet-' + c + '-r' + r, plots()['vStreet-' + c + '-r' + r])"
+                  [class]="'road-v flex items-center justify-center relative transition-[background-color,border-color,box-shadow,opacity] duration-500 ' + (selectedKey() === 'vStreet-' + c + '-r' + r ? 'ring-4 ring-yellow-400 z-10' : '') + (isRoadHighlighted(r, c, 'v') ? ' bg-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.4)] z-10' : '')"
+                  [style.width.px]="ROAD()" [style.height.px]="getMaxBlockRows(r) * CELL()">
+                  
+                  <!-- Main Road Gate Container -->
+                  <div *ngIf="plots()['vStreet-' + c + '-r' + r]?.gate as gate" 
+                    class="absolute inset-0 z-[100] pointer-events-none flex flex-col items-center"
+                    [class.justify-start]="gate.position === 'top'"
+                    [class.justify-end]="gate.position === 'bottom'">
+                    
+                    <div *ngIf="gate.label" 
+                      class="px-2.5 py-1 rounded-sm text-[8px] font-black uppercase tracking-[0.25em] mb-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border bg-white"
+                      [class]="gate.label.toLowerCase().includes('exit') ? 'text-red-500 border-red-200' : 'text-slate-900 border-slate-200'">
+                      {{gate.label}}
+                    </div>
+
+                    <div class="w-full h-8 overflow-visible flex items-center justify-center">
+                      <div [style]="getPillarStyle(gate.type, gate.label)" class="w-2.5 h-10 rounded-sm shadow-xl"></div>
+                      <div [style]="getBarStyle(gate.type, gate.label)" class="grow h-1.5 mx-0.5 rounded-sm shadow-inner overflow-hidden flex items-center justify-center">
+                         <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-current opacity-40 blur-[2px]"></div>
+                      </div>
+                      <div [style]="getPillarStyle(gate.type, gate.label)" class="w-2.5 h-10 rounded-sm shadow-xl"></div>
+                    </div>
+                  </div>
+
+                  <div
+                    [class]="'flex items-center justify-center p-1 rounded-full border transition-all z-10 max-h-full overflow-hidden ' + (selectedKey() === 'vStreet-' + c + '-r' + r ? 'bg-yellow-400 border-white scale-110 shadow-xl' : (isRoadHighlighted(r, c, 'v') ? 'bg-yellow-400 border-white scale-110 shadow-xl' : 'bg-slate-900 border-white/20 shadow-lg'))">
+                    <input type="text" [ngModel]="vStreetNames()[c % vStreetNames().length]"
+                      (ngModelChange)="updateStreetName('v', c % vStreetNames().length, $event)"
+                      [class]="'text-[10px] font-mono uppercase tracking-[0.3em] whitespace-nowrap transition-colors bg-transparent border-none outline-none text-center w-full ' + (selectedKey() === 'vStreet-' + c + '-r' + r || isRoadHighlighted(r, c, 'v') ? 'text-slate-900 font-black' : 'text-white font-black')"
+                      [style.max-height.px]="getMaxBlockRows(r) * CELL() - 8"
+                      style="writing-mode: vertical-rl; color: white !important; font-weight: 900; overflow: hidden; text-overflow: ellipsis;" />
+                  </div>
+                </div>
+              </ng-container>
+            </div>
 
             <div *ngIf="r < hStreets" class="flex">
-            <ng-container *ngFor="let c of getRange(vStreets)">
-              <div
-                [class]="'road-h flex items-center justify-center transition-[background-color,border-color,box-shadow,opacity] duration-500 ' + (isRoadHighlighted(r, c, 'h') ? 'bg-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.4)] z-10' : '')"
-                [style.width.px]="getMaxBlockCols(c) * CELL()" [style.height.px]="ROAD()">
-                <div *ngIf="c === 0"
-                  [class]="'flex items-center gap-1 px-3 py-1 rounded-full border whitespace-nowrap transition-all z-10 ' + (isRoadHighlighted(r, c, 'h') ? 'bg-yellow-400 text-slate-900 border-white font-black scale-110 shadow-xl' : 'bg-slate-900 text-white border-white/20 shadow-lg')">
-                  🛣 <input type="text" [ngModel]="hStreetNames()[r % hStreetNames().length]"
-                    (ngModelChange)="updateStreetName('h', r % hStreetNames().length, $event)"
-                    class="bg-transparent border-none outline-none w-24 text-[10px] font-mono uppercase tracking-widest placeholder:text-white/40 text-center font-black"
-                    placeholder="Street Name" style="color: white !important; font-weight: 900;" />
+              <ng-container *ngFor="let c of getRange(vStreets)">
+                <div
+                  (click)="selectPlot('hStreet-' + r + '-c' + c); $event.stopPropagation()"
+                  (contextmenu)="onPlotRightClick($event, 'hStreet-' + r + '-c' + c, plots()['hStreet-' + r + '-c' + c])"
+                  [class]="'road-h flex items-center justify-center relative transition-[background-color,border-color,box-shadow,opacity] duration-500 ' + (selectedKey() === 'hStreet-' + r + '-c' + c ? 'ring-4 ring-yellow-400 z-10' : '') + (isRoadHighlighted(r, c, 'h') ? ' bg-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.4)] z-10' : '')"
+                  [style.width.px]="getMaxBlockCols(c) * CELL()" [style.height.px]="ROAD()">
+                  
+                  <!-- Main Road Gate Container -->
+                  <div *ngIf="plots()['hStreet-' + r + '-c' + c]?.gate as gate" 
+                    class="absolute inset-0 z-[100] pointer-events-none flex items-center"
+                    [class.justify-start]="gate.position === 'left'"
+                    [class.justify-end]="gate.position === 'right'">
+                    
+                    <div *ngIf="gate.label" 
+                      class="px-2.5 py-1 rounded-sm text-[8px] font-black uppercase tracking-[0.25em] mx-2 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border whitespace-nowrap bg-white"
+                      [class]="gate.label.toLowerCase().includes('exit') ? 'text-red-500 border-red-200' : 'text-slate-900 border-slate-200'"
+                      [style]="gate.position === 'right' ? 'order: 1; writing-mode: vertical-rl;' : 'order: 2; writing-mode: vertical-rl; transform: rotate(180deg);'">
+                      {{gate.label}}
+                    </div>
+
+                    <div class="h-full w-8 overflow-visible flex flex-col items-center justify-center"
+                         [style]="gate.position === 'left' ? 'order: 1;' : 'order: 2;'">
+                      <div [style]="getPillarStyle(gate.type, gate.label)" class="h-2.5 w-10 rounded-sm shadow-xl"></div>
+                      <div [style]="getBarStyle(gate.type, gate.label)" class="grow w-1.5 my-0.5 rounded-sm shadow-inner flex items-center justify-center overflow-hidden">
+                         <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-current opacity-40 blur-[2px]"></div>
+                      </div>
+                      <div [style]="getPillarStyle(gate.type, gate.label)" class="h-2.5 w-10 rounded-sm shadow-xl"></div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="c === 0"
+                    [class]="'flex items-center gap-1 px-3 py-1 rounded-full border whitespace-nowrap transition-all z-10 ' + (selectedKey() === 'hStreet-' + r + '-c' + c ? 'bg-yellow-400 text-slate-900 border-white font-black scale-110 shadow-xl' : (isRoadHighlighted(r, c, 'h') ? 'bg-yellow-400 text-slate-900 border-white font-black scale-110 shadow-xl' : 'bg-slate-900 text-white border-white/20 shadow-lg'))">
+                    🛣 <input type="text" [ngModel]="hStreetNames()[r % hStreetNames().length]"
+                      (ngModelChange)="updateStreetName('h', r % hStreetNames().length, $event)"
+                      class="bg-transparent border-none outline-none w-24 text-[10px] font-mono uppercase tracking-widest placeholder:text-white/40 text-center font-black"
+                      placeholder="Street Name" style="color: white !important; font-weight: 900;" />
+                  </div>
                 </div>
-              </div>
-              <div *ngIf="c < vStreets"
-                [class]="'intersection transition-[background-color,border-color,box-shadow,transform,opacity] duration-500 ' + (isIntersectionHighlighted(r, c) ? 'bg-yellow-400 text-slate-900 scale-125 z-20 ' : '')"
-                [style.width.px]="ROAD()" [style.height.px]="ROAD()"
-                style="background: #64748b; border-radius: 20%; border: 1px solid rgba(255,255,255,0.05);">
-              </div>
+                <div *ngIf="c < vStreets"
+                  [class]="'intersection transition-[background-color,border-color,box-shadow,transform,opacity] duration-500 ' + (isIntersectionHighlighted(r, c) ? 'bg-yellow-400 text-slate-900 scale-125 z-20 ' : '')"
+                  [style.width.px]="ROAD()" [style.height.px]="ROAD()"
+                  style="background: #64748b; border-radius: 20%; border: 1px solid rgba(255,255,255,0.05);">
+                </div>
+              </ng-container>
+            </div>
+            <ng-container *ngFor="let group of mergeGroups()">
+              <ng-container *ngIf="getMergeSvgBounds(group) as bounds">
+                <svg class="absolute z-30 pointer-events-none overflow-visible" [style.left.px]="bounds.x"
+                  [style.top.px]="bounds.y" [attr.width]="bounds.w" [attr.height]="bounds.h"
+                  [attr.viewBox]="bounds.x + ' ' + bounds.y + ' ' + bounds.w + ' ' + bounds.h">
+                  <defs>
+                    <linearGradient [attr.id]="'grad-' + group[0]" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" [attr.stop-color]="getMergeTypeColor(plots()[group[0]]?.type)"
+                        stop-opacity="0.4" />
+                      <stop offset="100%" stop-color="white" stop-opacity="1" />
+                    </linearGradient>
+                    <filter [attr.id]="'glow-' + group[0]" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  <!-- Fill -->
+                  <path *ngIf="getMergePolygonPath(group) as path" [attr.d]="path"
+                    [attr.fill]="'url(#grad-' + group[0] + ')'"
+                    [attr.stroke]="getMergeTypeColor(plots()[group[0]]?.type)" stroke-width="2.5"
+                    stroke-linejoin="round"
+                    [attr.filter]="selectedKey() === group[0] ? 'url(#glow-' + group[0] + ')' : null" />
+                </svg>
+
+                <!-- Merged Gate Layer (Outer Boundary) -->
+                <ng-container *ngIf="plots()[group[0]]?.gate as gate">
+                  <!-- Top Gate -->
+                  <div *ngIf="gate.position === 'top'"
+                    class="absolute z-[100] flex items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
+                    [style.left.px]="bounds.x + bounds.w / 2" [style.top.px]="bounds.y" [style.width.px]="CELL() * 0.8"
+                    [style.height.px]="CELL() * 0.18">
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width.px]="CELL() * 0.1"
+                      [style.height.px]="CELL() * 0.18"></div>
+                    <div [style]="getBarStyle(gate.type)"
+                      class="grow max-w-[65%] rounded-full flex items-center justify-center border-t border-white/20 shadow-inner relative"
+                      [style.height.px]="CELL() * 0.04">
+                      <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]">
+                      </div>
+                    </div>
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width.px]="CELL() * 0.1"
+                      [style.height.px]="CELL() * 0.18"></div>
+                  </div>
+
+                  <!-- Bottom Gate -->
+                  <div *ngIf="gate.position === 'bottom'"
+                    class="absolute z-[100] flex items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
+                    [style.left.px]="bounds.x + bounds.w / 2" [style.top.px]="bounds.y + bounds.h"
+                    [style.width.px]="CELL() * 0.8" [style.height.px]="CELL() * 0.18">
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width.px]="CELL() * 0.1"
+                      [style.height.px]="CELL() * 0.18"></div>
+                    <div [style]="getBarStyle(gate.type)"
+                      class="grow max-w-[65%] rounded-full transition-all duration-500 relative flex items-center justify-center border-b border-black/20 shadow-inner"
+                      [style.height.px]="CELL() * 0.04">
+                      <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]">
+                      </div>
+                    </div>
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width.px]="CELL() * 0.1"
+                      [style.height.px]="CELL() * 0.18"></div>
+                  </div>
+
+                  <!-- Left Gate -->
+                  <div *ngIf="gate.position === 'left'"
+                    class="absolute z-[100] flex flex-col items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
+                    [style.left.px]="bounds.x" [style.top.px]="bounds.y + bounds.h / 2" [style.width.px]="CELL() * 0.18"
+                    [style.height.px]="CELL() * 0.8">
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width.px]="CELL() * 0.18"
+                      [style.height.px]="CELL() * 0.1"></div>
+                    <div [style]="getBarStyle(gate.type)"
+                      class="grow max-h-[65%] rounded-full transition-all duration-500 relative flex items-center justify-center border-l border-white/20 shadow-inner"
+                      [style.width.px]="CELL() * 0.04">
+                      <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]">
+                      </div>
+                    </div>
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width.px]="CELL() * 0.18"
+                      [style.height.px]="CELL() * 0.1"></div>
+                  </div>
+
+                  <!-- Right Gate -->
+                  <div *ngIf="gate.position === 'right'"
+                    class="absolute z-[100] flex flex-col items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
+                    [style.left.px]="bounds.x + bounds.w" [style.top.px]="bounds.y + bounds.h / 2"
+                    [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.8">
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width.px]="CELL() * 0.18"
+                      [style.height.px]="CELL() * 0.1"></div>
+                    <div [style]="getBarStyle(gate.type)"
+                      class="grow max-h-[65%] rounded-full transition-all duration-500 relative flex items-center justify-center border-r border-black/20 shadow-inner"
+                      [style.width.px]="CELL() * 0.04">
+                      <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]">
+                      </div>
+                    </div>
+                    <div [style]="getPillarStyle(gate.type)"
+                      class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width.px]="CELL() * 0.18"
+                      [style.height.px]="CELL() * 0.1"></div>
+                  </div>
+                </ng-container>
+                <!-- Floating label at centroid -->
+                <ng-container *ngIf="getMergeCentroid(group) as c">
+                  <div class="absolute z-40 pointer-events-auto -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+                    [style.left.px]="c.x" [style.top.px]="c.y" (click)="selectPlot(group[0])"
+                    (contextmenu)="onPlotRightClick($event, group[0], plots()[group[0]])"
+                    (dragover)="onDragOver($event)" (drop)="onDrop($event, group[0])">
+                    <div class="flex flex-col items-center justify-center gap-0 overflow-hidden"
+                      [style.width.px]="bounds.w * 0.8" [style.height.px]="bounds.h * 0.8">
+                      <div class="flex items-center justify-center p-0 flex-1 w-full h-full min-h-0">
+                        <img *ngIf="getPlotIconPath(plots()[group[0]]?.type, plots()[group[0]]?.shopType) as icon"
+                          [src]="icon"
+                          class="max-w-[90%] max-h-[85%] object-contain pointer-events-none transition-transform duration-500"
+                          style="mix-blend-mode: multiply;" />
+                        <span *ngIf="!getPlotIconPath(plots()[group[0]]?.type, plots()[group[0]]?.shopType)"
+                          class="text-5xl">⬜</span>
+                      </div>
+                      <div
+                        class="text-[12px] font-black uppercase tracking-widest text-[#1e293b] w-full text-center leading-none mt-1"
+                        style="text-shadow: 0 1px 3px rgba(255,255,255,0.8); white-space:nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{plots()[group[0]]?.name || 'Merged Plot'}}
+                      </div>
+                      <div
+                        class="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-slate-900/10 text-slate-800 whitespace-nowrap mt-1 border border-slate-900/10 scale-90 shrink-0">
+                        {{group.length}} Units
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
             </ng-container>
           </div>
-          <ng-container *ngFor="let group of mergeGroups()">
-            <ng-container *ngIf="getMergeSvgBounds(group) as bounds">
-              <svg
-                class="absolute z-30 pointer-events-none overflow-visible"
-                [style.left.px]="bounds.x" [style.top.px]="bounds.y"
-                [attr.width]="bounds.w" [attr.height]="bounds.h"
-                [attr.viewBox]="bounds.x + ' ' + bounds.y + ' ' + bounds.w + ' ' + bounds.h">
-                <defs>
-                  <linearGradient [attr.id]="'grad-' + group[0]" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" [attr.stop-color]="getMergeTypeColor(plots()[group[0]]?.type)" stop-opacity="0.4" />
-                    <stop offset="100%" stop-color="white" stop-opacity="1" />
-                  </linearGradient>
-                  <filter [attr.id]="'glow-' + group[0]" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="3" result="blur"/>
-                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                  </filter>
-                </defs>
-                <!-- Fill -->
-                <path
-                  *ngIf="getMergePolygonPath(group) as path"
-                  [attr.d]="path"
-                  [attr.fill]="'url(#grad-' + group[0] + ')'"
-                  [attr.stroke]="getMergeTypeColor(plots()[group[0]]?.type)"
-                  stroke-width="2.5"
-                  stroke-linejoin="round"
-                  [attr.filter]="selectedKey() === group[0] ? 'url(#glow-' + group[0] + ')' : null"
-                />
-              </svg>
-
-              <!-- Merged Gate Layer (Outer Boundary) -->
-              <ng-container *ngIf="plots()[group[0]]?.gate as gate">
-                <!-- Top Gate -->
-                <div *ngIf="gate.position === 'top'" class="absolute z-[100] flex items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
-                  [style.left.px]="bounds.x + bounds.w / 2" [style.top.px]="bounds.y" [style.width.px]="CELL() * 0.8" [style.height.px]="CELL() * 0.18">
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width.px]="CELL() * 0.1" [style.height.px]="CELL() * 0.18"></div>
-                  <div [style]="getBarStyle(gate.type)" class="grow max-w-[65%] rounded-full flex items-center justify-center border-t border-white/20 shadow-inner relative" [style.height.px]="CELL() * 0.04">
-                    <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  </div>
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width.px]="CELL() * 0.1" [style.height.px]="CELL() * 0.18"></div>
-                </div>
-
-                <!-- Bottom Gate -->
-                <div *ngIf="gate.position === 'bottom'" class="absolute z-[100] flex items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
-                  [style.left.px]="bounds.x + bounds.w / 2" [style.top.px]="bounds.y + bounds.h" [style.width.px]="CELL() * 0.8" [style.height.px]="CELL() * 0.18">
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width.px]="CELL() * 0.1" [style.height.px]="CELL() * 0.18"></div>
-                  <div [style]="getBarStyle(gate.type)" class="grow max-w-[65%] rounded-full transition-all duration-500 relative flex items-center justify-center border-b border-black/20 shadow-inner" [style.height.px]="CELL() * 0.04">
-                    <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  </div>
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width.px]="CELL() * 0.1" [style.height.px]="CELL() * 0.18"></div>
-                </div>
-
-                <!-- Left Gate -->
-                <div *ngIf="gate.position === 'left'" class="absolute z-[100] flex flex-col items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
-                  [style.left.px]="bounds.x" [style.top.px]="bounds.y + bounds.h / 2" [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.8">
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.1"></div>
-                  <div [style]="getBarStyle(gate.type)" class="grow max-h-[65%] rounded-full transition-all duration-500 relative flex items-center justify-center border-l border-white/20 shadow-inner" [style.width.px]="CELL() * 0.04">
-                    <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  </div>
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.1"></div>
-                </div>
-
-                <!-- Right Gate -->
-                <div *ngIf="gate.position === 'right'" class="absolute z-[100] flex flex-col items-center justify-center pointer-events-none -translate-x-1/2 -translate-y-1/2"
-                  [style.left.px]="bounds.x + bounds.w" [style.top.px]="bounds.y + bounds.h / 2" [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.8">
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.1"></div>
-                  <div [style]="getBarStyle(gate.type)" class="grow max-h-[65%] rounded-full transition-all duration-500 relative flex items-center justify-center border-r border-black/20 shadow-inner" [style.width.px]="CELL() * 0.04">
-                    <div *ngIf="gate.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  </div>
-                  <div [style]="getPillarStyle(gate.type)" class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width.px]="CELL() * 0.18" [style.height.px]="CELL() * 0.1"></div>
-                </div>
-              </ng-container>
-              <!-- Floating label at centroid -->
-              <ng-container *ngIf="getMergeCentroid(group) as c">
-                <div class="absolute z-40 pointer-events-auto -translate-x-1/2 -translate-y-1/2 cursor-pointer"
-                  [style.left.px]="c.x" [style.top.px]="c.y"
-                  (click)="selectPlot(group[0])"
-                  (contextmenu)="onPlotRightClick($event, group[0], plots()[group[0]])"
-                  (dragover)="onDragOver($event)" (drop)="onDrop($event, group[0])">
-                  <div class="flex flex-col items-center justify-center gap-0 overflow-hidden"
-                    [style.width.px]="bounds.w * 0.8"
-                    [style.height.px]="bounds.h * 0.8">
-                    <div class="flex items-center justify-center p-0 flex-1 w-full h-full min-h-0">
-                      <img *ngIf="getPlotIconPath(plots()[group[0]]?.type, plots()[group[0]]?.shopType) as icon"
-                           [src]="icon"
-                           class="max-w-[90%] max-h-[85%] object-contain pointer-events-none transition-transform duration-500"
-                           style="mix-blend-mode: multiply;" />
-                      <span *ngIf="!getPlotIconPath(plots()[group[0]]?.type, plots()[group[0]]?.shopType)" class="text-5xl">⬜</span>
-                    </div>
-                    <div class="text-[12px] font-black uppercase tracking-widest text-[#1e293b] w-full text-center leading-none mt-1"
-                      style="text-shadow: 0 1px 3px rgba(255,255,255,0.8); white-space:nowrap; overflow: hidden; text-overflow: ellipsis;">
-                      {{plots()[group[0]]?.name || 'Merged Plot'}}
-                    </div>
-                    <div class="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-slate-900/10 text-slate-800 whitespace-nowrap mt-1 border border-slate-900/10 scale-90 shrink-0">
-                      {{group.length}} Units
-                    </div>
-                  </div>
-                </div>
-              </ng-container>
-            </ng-container>
-          </ng-container>
         </div>
-      </div>
       </div>
     </div>
 
@@ -391,7 +481,8 @@
       [class]="'glass-card border-l border-white/5 flex flex-col shrink-0 transition-all duration-500 ease-in-out ' + sidebarWidthClass()">
 
       <!-- Sidebar Header with Stage Toggle -->
-      <div *ngIf="isSidebarOpen()" class="flex items-center justify-between px-4 py-2.5 border-b border-white/10 bg-slate-900/60 shrink-0">
+      <div *ngIf="isSidebarOpen()"
+        class="flex items-center justify-between px-4 py-2.5 border-b border-white/10 bg-slate-900/60 shrink-0">
         <span class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-1.5">
           <span class="text-accent">📐</span> Inspector
         </span>
@@ -478,7 +569,9 @@
             <div *ngIf="selectedPlot()?.type === 'security'"
               class="bg-orange-500/5 border border-orange-500/20 p-4 rounded-3xl space-y-3 shadow-inner animate-fade-up">
               <div class="flex items-center gap-3">
-                <div class="bg-orange-500/20 text-orange-400 p-2 rounded-xl shrink-0 text-xl border border-orange-500/20">👮</div>
+                <div
+                  class="bg-orange-500/20 text-orange-400 p-2 rounded-xl shrink-0 text-xl border border-orange-500/20">
+                  👮</div>
                 <div class="flex-1">
                   <div class="text-[8px] text-orange-400 font-black uppercase tracking-[0.2em] mb-1">Security Room</div>
                   <input type="text" [ngModel]="selectedPlot()?.name"
@@ -491,16 +584,14 @@
               <div class="grid grid-cols-2 gap-2">
                 <div class="bg-slate-800/60 border border-white/10 p-3 rounded-2xl flex flex-col gap-1">
                   <span class="text-[8px] text-orange-400 font-black uppercase tracking-widest">👤 Guard Name</span>
-                  <input type="text"
-                    [ngModel]="selectedPlot()?.residents?.[0]?.name"
+                  <input type="text" [ngModel]="selectedPlot()?.residents?.[0]?.name"
                     (ngModelChange)="updateSecurityGuard(selectedKey()!, 'name', $event)"
                     class="bg-transparent border-none outline-none text-white text-[10px] font-bold w-full placeholder:text-slate-600"
                     placeholder="Enter name..." />
                 </div>
                 <div class="bg-slate-800/60 border border-white/10 p-3 rounded-2xl flex flex-col gap-1">
                   <span class="text-[8px] text-orange-400 font-black uppercase tracking-widest">📞 Phone</span>
-                  <input type="text"
-                    [ngModel]="selectedPlot()?.residents?.[0]?.phone"
+                  <input type="text" [ngModel]="selectedPlot()?.residents?.[0]?.phone"
                     (ngModelChange)="updateSecurityGuard(selectedKey()!, 'phone', $event)"
                     class="bg-transparent border-none outline-none text-white text-[10px] font-bold w-full placeholder:text-slate-600"
                     placeholder="Phone no..." />
@@ -641,7 +732,7 @@
                   <div class="text-[9px] font-black">ROAD V</div>
                 </button>
                 <button (click)="openShopPicker(selectedKey()!)"
-                  [class]="'p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1 ' + (selectedPlot()?.type === 'shop' ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'bg-slate-900/40 border-white/5 text-slate-500 hover:border-amber-500/40')">
+                  [class]="'p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1 ' + (selectedPlot()?.type === 'shop' ? 'bg-sky-500/10 border-sky-500 text-sky-500 shadow-[0_0_15px_rgba(14,165,233,0.2)]' : 'bg-white border-slate-200 text-slate-500 hover:border-sky-500/40')">
                   <span class="text-lg">🏪</span>
                   <div class="text-[9px] font-black">SHOP</div>
                 </button>
@@ -649,7 +740,7 @@
             </div>
 
             <!-- Others Selection -->
-            <div class="bg-slate-900/40 border border-white/5 rounded-2xl p-3 space-y-3">
+            <div class="bg-slate-100/40 border border-slate-200/60 rounded-2xl p-3 space-y-3">
               <button (click)="othersOpen.set(!othersOpen())"
                 class="w-full flex items-center justify-between px-0 py-0 bg-transparent border-none outline-none">
                 <span class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 flex items-center gap-2">
@@ -658,15 +749,15 @@
                 <span class="text-slate-400 text-[10px] transition-transform duration-300"
                   [class.rotate-180]="othersOpen()">▼</span>
               </button>
-              
+
               <div *ngIf="othersOpen()" class="grid grid-cols-2 gap-2 animate-fade-up">
                 <button (click)="openGatePicker(selectedKey()!)"
-                  [class]="'p-2.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 ' + (selectedPlot()?.gate ? 'bg-yellow-500/10 border-yellow-500 text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.2)]' : 'bg-slate-900/60 border-white/5 text-slate-500 hover:border-yellow-500/40')">
+                  [class]="'p-2.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 ' + (selectedPlot()?.gate ? 'bg-yellow-500/10 border-yellow-500 text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.2)]' : 'bg-white border-slate-200 text-slate-500 hover:border-yellow-500/40')">
                   <span class="text-lg">🚪</span>
                   <div class="text-[9px] font-black">GATE</div>
                 </button>
                 <button (click)="setPlotType(selectedKey()!, 'security')"
-                  [class]="'p-2.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 ' + (selectedPlot()?.type === 'security' ? 'bg-orange-500/10 border-orange-500 text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.2)]' : 'bg-slate-900/60 border-white/5 text-slate-500 hover:border-orange-500/40')">
+                  [class]="'p-2.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 ' + (selectedPlot()?.type === 'security' ? 'bg-orange-500/10 border-orange-500 text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.2)]' : 'bg-white border-slate-200 text-slate-500 hover:border-orange-500/40')">
                   <span class="text-lg">👮</span>
                   <div class="text-[9px] font-black">SECURITY</div>
                 </button>
@@ -698,6 +789,16 @@
                 <button (click)="fillColWithRoads()"
                   class="w-full py-1.5 bg-slate-800/60 border border-white/5 text-white/70 text-[9px] font-black uppercase tracking-[0.2em] hover:bg-slate-700/60 transition-all rounded-xl">
                   ↕️ Fill Col
+                </button>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-1">
+                <button (click)="fillRowWithHouse()"
+                  class="w-full py-1.5 bg-slate-800/60 border border-white/5 text-white/70 text-[9px] font-black uppercase tracking-[0.2em] hover:bg-slate-700/60 transition-all rounded-xl">
+                  🏠 Fill House R
+                </button>
+                <button (click)="fillColWithHouse()"
+                  class="w-full py-1.5 bg-slate-800/60 border border-white/5 text-white/70 text-[9px] font-black uppercase tracking-[0.2em] hover:bg-slate-700/60 transition-all rounded-xl">
+                  🏠 Fill House C
                 </button>
               </div>
               <div class="grid grid-cols-2 gap-2">
@@ -757,75 +858,6 @@
         <span class="text-xl font-black text-accent">{{stats().residents}}</span>
       </div>
       <div class="shrink-0">
-        <div class="tooltip-container" style="font-size: 14px; padding: 0.6em;">
-          <span class="text">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-send-fill" viewBox="0 0 16 16">
-              <path
-                d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-twitter" viewBox="0 0 16 16">
-              <path
-                d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334q.002-.211-.006-.422A6.7 6.7 0 0 0 16 3.542a6.7 6.7 0 0 1-1.889.518 3.3 3.3 0 0 0 1.447-1.817 6.5 6.5 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.32 9.32 0 0 1-6.767-3.429 3.29 3.29 0 0 0 1.018 4.382A3.3 3.3 0 0 1 .64 6.575v.045a3.29 3.29 0 0 0 2.632 3.218 3.2 3.2 0 0 1-.865.115 3 3 0 0 1-.614-.057 3.28 3.28 0 0 0 3.067 2.277A6.6 6.6 0 0 1 .78 13.58a6 6 0 0 1-.78-.045A9.34 9.34 0 0 0 5.026 15">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-facebook" viewBox="0 0 16 16">
-              <path
-                d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-whatsapp" viewBox="0 0 16 16">
-              <path
-                d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-discord" viewBox="0 0 16 16">
-              <path
-                d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-pinterest" viewBox="0 0 16 16">
-              <path
-                d="M8 0a8 8 0 0 0-2.915 15.452c-.07-.633-.134-1.606.027-2.297.146-.625.938-3.977.938-3.977s-.239-.479-.239-1.187c0-1.113.645-1.943 1.448-1.943.682 0 1.012.512 1.012 1.127 0 .686-.437 1.712-.663 2.663-.188.796.4 1.446 1.185 1.446 1.422 0 2.515-1.5 2.515-3.664 0-1.915-1.377-3.254-3.342-3.254-2.276 0-3.612 1.707-3.612 3.471 0 .688.265 1.425.595 1.826a.24.24 0 0 1 .056.23c-.061.252-.196.796-.222.907-.035.146-.116.177-.268.107-1-.465-1.624-1.926-1.624-3.1 0-2.523 1.834-4.84 5.286-4.84 2.775 0 4.932 1.977 4.932 4.62 0 2.757-1.739 4.976-4.151 4.976-.811 0-1.573-.421-1.834-.919l-.498 1.902c-.181.695-.669 1.566-.995 2.097A8 8 0 1 0 8 0">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip6">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M8 0C3.584 0 0 3.584 0 8s3.584 8 8 8c4.408 0 8-3.584 8-8s-3.592-8-8-8m5.284 3.688a6.8 6.8 0 0 1 1.545 4.251c-.226-.043-2.482-.503-4.755-.217-.052-.112-.096-.234-.148-.355-.139-.33-.295-.668-.451-.99 2.516-1.023 3.662-2.498 3.81-2.69zM8 1.18c1.735 0 3.323.65 4.53 1.718-.122.174-1.155 1.553-3.584 2.464-1.12-2.056-2.36-3.74-2.551-4A7 7 0 0 1 8 1.18m-2.907.642A43 43 0 0 1 7.627 5.77c-3.193.85-6.013.833-6.317.833a6.87 6.87 0 0 1 3.783-4.78zM1.163 8.01V7.8c.295.01 3.61.053 7.02-.971.199.381.381.772.555 1.162l-.27.078c-3.522 1.137-5.396 4.243-5.553 4.504a6.82 6.82 0 0 1-1.752-4.564zM8 14.837a6.8 6.8 0 0 1-4.19-1.44c.12-.252 1.509-2.924 5.361-4.269.018-.009.026-.009.044-.017a28.3 28.3 0 0 1 1.457 5.18A6.7 6.7 0 0 1 8 14.837m3.81-1.171c-.07-.417-.435-2.412-1.328-4.868 2.143-.338 4.017.217 4.251.295a6.77 6.77 0 0 1-2.924 4.573z">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip7">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-github" viewBox="0 0 16 16">
-              <path
-                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip8">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-reddit" viewBox="0 0 16 16">
-              <path
-                d="M6.167 8a.83.83 0 0 0-.83.83c0 .459.372.84.83.831a.831.831 0 0 0 0-1.661m1.843 3.647c.315 0 1.403-.038 1.976-.611a.23.23 0 0 0 0-.306.213.213 0 0 0-.306 0c-.353.363-1.126.487-1.67.487-.545 0-1.308-.124-1.671-.487a.213.213 0 0 0-.306 0 .213.213 0 0 0 0 .306c.564.563 1.652.61 1.977.61zm.992-2.807c0 .458.373.83.831.83s.83-.381.83-.83a.831.831 0 0 0-1.66 0z">
-              </path>
-              <path
-                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.828-1.165c-.315 0-.602.124-.812.325-.801-.573-1.9-.945-3.121-.993l.534-2.501 1.738.372a.83.83 0 1 0 .83-.869.83.83 0 0 0-.744.468l-1.938-.41a.2.2 0 0 0-.153.028.2.2 0 0 0-.086.134l-.592 2.788c-1.24.038-2.358.41-3.17.992-.21-.2-.496-.324-.81-.324a1.163 1.163 0 0 0-.478 2.224q-.03.17-.029.353c0 1.795 2.091 3.256 4.669 3.256s4.668-1.451 4.668-3.256c0-.114-.01-.238-.029-.353.401-.181.688-.592.688-1.069 0-.65-.525-1.165-1.165-1.165">
-              </path>
-            </svg>
-          </span>
-          <span class="tooltip9"></span>
-        </div>
       </div>
     </div>
   </footer>
@@ -849,7 +881,7 @@
         (selectedPlot()?.type === 'house' ? 'bg-house/10' :
          selectedPlot()?.type === 'apartment' ? 'bg-apt/10' :
          selectedPlot()?.type === 'park' ? 'bg-green-500/10' :
-         selectedPlot()?.type === 'shop' ? 'bg-amber-500/10' :
+         selectedPlot()?.type === 'shop' ? 'bg-sky-500/10' :
          selectedPlot()?.type === 'watertank' ? 'bg-blue-500/10' :
          selectedPlot()?.type === 'hospital' ? 'bg-red-500/10' : 'bg-slate-800/50')">
         <div>
@@ -951,11 +983,11 @@
 
         <!-- Shop type -->
         <div *ngIf="selectedPlot()?.type === 'shop' && selectedPlot()?.shopType"
-          class="bg-amber-50 p-3 rounded-xl border border-amber-100 flex items-center gap-3">
+          class="bg-sky-50 p-3 rounded-xl border border-sky-100 flex items-center gap-3">
           <span class="text-2xl">{{getShopOption(selectedPlot()!.shopType!)?.emoji}}</span>
           <div>
             <div class="text-slate-900 font-black text-sm">{{getShopOption(selectedPlot()!.shopType!)?.label}}</div>
-            <div class="text-[9px] text-amber-600 uppercase tracking-wider font-bold">
+            <div class="text-[9px] text-sky-600 uppercase tracking-wider font-bold">
               {{getShopOption(selectedPlot()!.shopType!)?.category}}</div>
           </div>
         </div>
@@ -1010,168 +1042,184 @@
     [plotKey]="selectedKey()!" [plotData]="selectedPlot()!" (onClose)="isAptDetailOpen = false"
     (onUpdatePlot)="updatePlotDetails($event.key, $event.updates)"></app-apt-detail-modal>
 
-<!-- Block Customize Modal -->
-<div *ngIf="isBlockCustomizeOpen" class="fixed inset-0 z-[250] flex items-center justify-center p-4"
-  (click)="isBlockCustomizeOpen = false">
-  <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md"></div>
-  <div class="relative glass-card w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden animate-fade-up border border-white/10"
-    (click)="$event.stopPropagation()">
+  <!-- Block Customize Modal -->
+  <div *ngIf="isBlockCustomizeOpen" class="fixed inset-0 z-[250] flex items-center justify-center p-4"
+    (click)="isBlockCustomizeOpen = false">
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-md"></div>
+    <div
+      class="relative glass-card w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden animate-fade-up border border-white/10"
+      (click)="$event.stopPropagation()">
 
-    <!-- Header -->
-    <div class="px-6 py-5 border-b border-white/5 bg-accent/10 flex items-center justify-between">
-      <div>
-        <h2 class="text-base font-black text-white tracking-tight">⚙️ Block Customize</h2>
-        <p class="text-[10px] text-accent font-bold uppercase tracking-widest mt-0.5">
-          Block R{{blockCustomizeTarget.r}} · C{{blockCustomizeTarget.c}}
-          <span *ngIf="isBlockOverridden(blockCustomizeTarget.r, blockCustomizeTarget.c)"
-            class="ml-2 px-1.5 py-0.5 bg-accent/20 text-accent rounded-full text-[8px]">CUSTOM</span>
+      <!-- Header -->
+      <div class="px-6 py-5 border-b border-white/5 bg-accent/10 flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-black text-white tracking-tight">⚙️ Block Customize</h2>
+          <p class="text-[10px] text-accent font-bold uppercase tracking-widest mt-0.5">
+            Block R{{blockCustomizeTarget.r}} · C{{blockCustomizeTarget.c}}
+            <span *ngIf="isBlockOverridden(blockCustomizeTarget.r, blockCustomizeTarget.c)"
+              class="ml-2 px-1.5 py-0.5 bg-accent/20 text-accent rounded-full text-[8px]">CUSTOM</span>
+          </p>
+        </div>
+        <button (click)="isBlockCustomizeOpen = false"
+          class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6 space-y-5">
+        <p class="text-[10px] text-slate-400 leading-relaxed">
+          Set the number of <strong class="text-white">rows</strong> and <strong class="text-white">columns</strong> of
+          plots inside this block independently.
+          The block's physical size stays the same — only the plot count changes.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Rows -->
+          <div class="space-y-2">
+            <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
+              <span class="text-amber-400">↕</span> Rows
+            </label>
+            <div class="flex items-center gap-2 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2">
+              <button (click)="blockCustomizeRows = blockCustomizeRows > 1 ? blockCustomizeRows - 1 : 1"
+                class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">−</button>
+              <span class="flex-1 text-center text-white font-black text-lg">{{blockCustomizeRows}}</span>
+              <button (click)="blockCustomizeRows = blockCustomizeRows < 8 ? blockCustomizeRows + 1 : 8"
+                class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">+</button>
+            </div>
+            <p class="text-[8px] text-slate-600 text-center">1 – 8 rows</p>
+          </div>
+
+          <!-- Cols -->
+          <div class="space-y-2">
+            <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
+              <span class="text-accent">↔</span> Columns
+            </label>
+            <div class="flex items-center gap-2 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2">
+              <button (click)="blockCustomizeCols = blockCustomizeCols > 1 ? blockCustomizeCols - 1 : 1"
+                class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">−</button>
+              <span class="flex-1 text-center text-white font-black text-lg">{{blockCustomizeCols}}</span>
+              <button (click)="blockCustomizeCols = blockCustomizeCols < 8 ? blockCustomizeCols + 1 : 8"
+                class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">+</button>
+            </div>
+            <p class="text-[8px] text-slate-600 text-center">1 – 8 cols</p>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="bg-slate-900/60 border border-white/5 rounded-2xl p-4 flex items-center justify-center gap-3">
+          <div class="text-center">
+            <div class="text-[8px] text-slate-500 uppercase tracking-widest mb-1">Preview</div>
+            <div class="inline-grid gap-0.5" [style.grid-template-columns]="'repeat(' + blockCustomizeCols + ', 14px)'"
+              [style.grid-template-rows]="'repeat(' + blockCustomizeRows + ', 14px)'">
+              <div *ngFor="let i of [].constructor(blockCustomizeRows * blockCustomizeCols)"
+                class="w-3.5 h-3.5 rounded-sm bg-accent/30 border border-accent/20"></div>
+            </div>
+            <div class="text-[9px] text-accent font-black mt-2">{{blockCustomizeRows}} × {{blockCustomizeCols}} =
+              {{blockCustomizeRows * blockCustomizeCols}} plots</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 pb-6 flex gap-3">
+        <button *ngIf="isBlockOverridden(blockCustomizeTarget.r, blockCustomizeTarget.c)"
+          (click)="resetBlockCustomize()"
+          class="flex-1 py-2.5 bg-danger/10 border border-danger/20 text-danger text-[9px] font-black uppercase tracking-wider rounded-xl hover:bg-danger/20 transition-all">
+          ↺ Reset Default
+        </button>
+        <button (click)="applyBlockCustomize()"
+          class="flex-1 py-2.5 bg-accent text-slate-900 text-[9px] font-black uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-accent/20">
+          ✓ Apply
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop Type Picker Modal -->
+  <div *ngIf="isShopPickerOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-6"
+    (click)="isShopPickerOpen = false">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+    <div
+      class="relative bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-8 w-full max-w-sm animate-fade-up"
+      (click)="$event.stopPropagation()">
+      <div class="mb-6">
+        <h2 class="text-xl font-black text-slate-900 tracking-tight">Select Shop Type</h2>
+        <p class="text-[10px] text-sky-600 uppercase tracking-[0.3em] font-black mt-1">Choose what this space sells</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <button *ngFor="let opt of shopOptions" (click)="confirmShopType(opt.value)"
+          [class]="'flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left hover:scale-[1.02] active:scale-95 ' + getShopColorClass(opt.category) + ' ' + (selectedPlot()?.shopType === opt.value ? 'ring-2 ring-accent border-accent shadow-lg brightness-105' : '')">
+          <span class="text-2xl">{{opt.emoji}}</span>
+          <div>
+            <div class="text-[11px] font-black text-slate-900">{{opt.label}}</div>
+            <div class="text-[9px] text-slate-500 uppercase tracking-wide font-bold">{{opt.category}}</div>
+          </div>
+        </button>
+      </div>
+      <button (click)="isShopPickerOpen = false"
+        class="mt-6 w-full py-3 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-900 transition-colors uppercase">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Gate Picker Modal -->
+  <div *ngIf="isGatePickerOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-6"
+    (click)="isGatePickerOpen = false">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+    <div
+      class="relative bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-6 w-full max-w-xs animate-fade-up"
+      (click)="$event.stopPropagation()">
+      <div class="mb-4">
+        <h2 class="text-base font-black text-slate-900 tracking-tight">🚪 Gate Configuration</h2>
+        <p class="text-[10px] text-yellow-600 uppercase tracking-[0.2em] font-black mt-0.5">Set entrance for this plot
         </p>
       </div>
-      <button (click)="isBlockCustomizeOpen = false"
-        class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">✕</button>
-    </div>
-
-    <!-- Body -->
-    <div class="p-6 space-y-5">
-      <p class="text-[10px] text-slate-400 leading-relaxed">
-        Set the number of <strong class="text-white">rows</strong> and <strong class="text-white">columns</strong> of plots inside this block independently.
-        The block's physical size stays the same — only the plot count changes.
-      </p>
-
-      <div class="grid grid-cols-2 gap-4">
-        <!-- Rows -->
-        <div class="space-y-2">
-          <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
-            <span class="text-amber-400">↕</span> Rows
-          </label>
-          <div class="flex items-center gap-2 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2">
-            <button (click)="blockCustomizeRows = blockCustomizeRows > 1 ? blockCustomizeRows - 1 : 1"
-              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">−</button>
-            <span class="flex-1 text-center text-white font-black text-lg">{{blockCustomizeRows}}</span>
-            <button (click)="blockCustomizeRows = blockCustomizeRows < 8 ? blockCustomizeRows + 1 : 8"
-              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">+</button>
-          </div>
-          <p class="text-[8px] text-slate-600 text-center">1 – 8 rows</p>
+      <div class="mb-5">
+        <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2 block">Gate Identity</label>
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <button *ngFor="let name of gateNames" (click)="gateConfig.label = name; gateConfig.isCustom = (name === 'CUSTOMIZE')"
+            [class]="'py-1.5 rounded-lg border text-[8px] font-black uppercase transition-all ' + (gateConfig.label === name ? 'bg-slate-900 text-white' : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-400')">
+            {{name}}
+          </button>
         </div>
-
-        <!-- Cols -->
-        <div class="space-y-2">
-          <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-1.5">
-            <span class="text-accent">↔</span> Columns
-          </label>
-          <div class="flex items-center gap-2 bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2">
-            <button (click)="blockCustomizeCols = blockCustomizeCols > 1 ? blockCustomizeCols - 1 : 1"
-              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">−</button>
-            <span class="flex-1 text-center text-white font-black text-lg">{{blockCustomizeCols}}</span>
-            <button (click)="blockCustomizeCols = blockCustomizeCols < 8 ? blockCustomizeCols + 1 : 8"
-              class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/15 text-white font-black text-sm flex items-center justify-center transition-all">+</button>
-          </div>
-          <p class="text-[8px] text-slate-600 text-center">1 – 8 cols</p>
-        </div>
+        <input *ngIf="gateConfig.isCustom || gateConfig.label === 'CUSTOMIZE'" type="text" [(ngModel)]="gateConfig.label" placeholder="Type custom name..."
+          class="w-full bg-slate-50 border-2 border-slate-100 rounded-xl px-4 py-2 text-[11px] font-black text-slate-900 focus:outline-none focus:border-yellow-500 transition-all shadow-inner" />
       </div>
 
-      <!-- Preview -->
-      <div class="bg-slate-900/60 border border-white/5 rounded-2xl p-4 flex items-center justify-center gap-3">
-        <div class="text-center">
-          <div class="text-[8px] text-slate-500 uppercase tracking-widest mb-1">Preview</div>
-          <div class="inline-grid gap-0.5"
-            [style.grid-template-columns]="'repeat(' + blockCustomizeCols + ', 14px)'"
-            [style.grid-template-rows]="'repeat(' + blockCustomizeRows + ', 14px)'">
-            <div *ngFor="let i of [].constructor(blockCustomizeRows * blockCustomizeCols)"
-              class="w-3.5 h-3.5 rounded-sm bg-accent/30 border border-accent/20"></div>
-          </div>
-          <div class="text-[9px] text-accent font-black mt-2">{{blockCustomizeRows}} × {{blockCustomizeCols}} = {{blockCustomizeRows * blockCustomizeCols}} plots</div>
+      <!-- Position -->
+      <div class="mb-4">
+        <div class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2">Gate Position</div>
+        <div class="grid grid-cols-2 gap-2">
+          <button *ngFor="let pos of ['top','bottom','left','right']" (click)="gateConfig.position = pos"
+            [class]="'py-2 rounded-xl border-2 text-[10px] font-black uppercase transition-all ' + (gateConfig.position === pos ? 'bg-yellow-50 border-yellow-500 text-yellow-700' : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-yellow-400')">
+            {{ pos === 'top' ? '↑ Top' : pos === 'bottom' ? '↓ Bottom' : pos === 'left' ? '← Left' : '→ Right' }}
+          </button>
         </div>
       </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="px-6 pb-6 flex gap-3">
-      <button *ngIf="isBlockOverridden(blockCustomizeTarget.r, blockCustomizeTarget.c)"
-        (click)="resetBlockCustomize()"
-        class="flex-1 py-2.5 bg-danger/10 border border-danger/20 text-danger text-[9px] font-black uppercase tracking-wider rounded-xl hover:bg-danger/20 transition-all">
-        ↺ Reset Default
-      </button>
-      <button (click)="applyBlockCustomize()"
-        class="flex-1 py-2.5 bg-accent text-slate-900 text-[9px] font-black uppercase tracking-wider rounded-xl hover:brightness-110 transition-all shadow-lg shadow-accent/20">
-        ✓ Apply
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Shop Type Picker Modal -->
-<div *ngIf="isShopPickerOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-6"
-  (click)="isShopPickerOpen = false">
-  <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
-  <div
-    class="relative bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-8 w-full max-w-sm animate-fade-up"
-    (click)="$event.stopPropagation()">
-    <div class="mb-6">
-      <h2 class="text-xl font-black text-slate-900 tracking-tight">Select Shop Type</h2>
-      <p class="text-[10px] text-amber-600 uppercase tracking-[0.3em] font-black mt-1">Choose what this space sells</p>
-    </div>
-    <div class="grid grid-cols-2 gap-3">
-      <button *ngFor="let opt of shopOptions" (click)="confirmShopType(opt.value)"
-        [class]="'flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left hover:scale-[1.02] active:scale-95 ' + getShopColorClass(opt.category) + ' ' + (selectedPlot()?.shopType === opt.value ? 'ring-2 ring-accent border-accent shadow-lg brightness-105' : '')">
-        <span class="text-2xl">{{opt.emoji}}</span>
-        <div>
-          <div class="text-[11px] font-black text-slate-900">{{opt.label}}</div>
-          <div class="text-[9px] text-slate-500 uppercase tracking-wide font-bold">{{opt.category}}</div>
+      <!-- Type -->
+      <div class="mb-5">
+        <div class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2">Gate Type</div>
+        <div class="flex flex-col gap-2">
+          <button *ngFor="let gt of gateTypes" (click)="gateConfig.type = gt.value"
+            [class]="'flex items-center gap-3 px-3 py-2.5 rounded-xl border-2 text-left transition-all ' + (gateConfig.type === gt.value ? 'bg-yellow-50 border-yellow-500' : 'bg-slate-50 border-slate-200 hover:border-yellow-400')">
+            <span class="text-xl">{{gt.emoji}}</span>
+            <div>
+              <div class="text-[11px] font-black text-slate-900">{{gt.label}}</div>
+              <div class="text-[9px] text-slate-400 font-medium">{{gt.desc}}</div>
+            </div>
+          </button>
         </div>
-      </button>
-    </div>
-    <button (click)="isShopPickerOpen = false"
-      class="mt-6 w-full py-3 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:text-slate-900 transition-colors uppercase">Cancel</button>
-  </div>
-</div>
-
-<!-- Gate Picker Modal -->
-<div *ngIf="isGatePickerOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-6"
-  (click)="isGatePickerOpen = false">
-  <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
-  <div class="relative bg-white border border-slate-200 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] p-6 w-full max-w-xs animate-fade-up"
-    (click)="$event.stopPropagation()">
-    <div class="mb-4">
-      <h2 class="text-base font-black text-slate-900 tracking-tight">🚪 Gate Configuration</h2>
-      <p class="text-[10px] text-yellow-600 uppercase tracking-[0.2em] font-black mt-0.5">Set entrance for this plot</p>
-    </div>
-    <!-- Position -->
-    <div class="mb-4">
-      <div class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2">Gate Position</div>
-      <div class="grid grid-cols-2 gap-2">
-        <button *ngFor="let pos of ['top','bottom','left','right']" (click)="gateConfig.position = pos"
-          [class]="'py-2 rounded-xl border-2 text-[10px] font-black uppercase transition-all ' + (gateConfig.position === pos ? 'bg-yellow-50 border-yellow-500 text-yellow-700' : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-yellow-400')">
-          {{ pos === 'top' ? '↑ Top' : pos === 'bottom' ? '↓ Bottom' : pos === 'left' ? '← Left' : '→ Right' }}
+      </div>
+      <div class="flex gap-2">
+        <button *ngIf="selectedPlot()?.gate" (click)="removeGate()"
+          class="flex-1 py-2.5 bg-red-50 border border-red-200 text-red-600 text-[9px] font-black uppercase rounded-xl hover:bg-red-100 transition-all">
+          ✕ Remove Gate
+        </button>
+        <button (click)="confirmGate()"
+          class="flex-1 py-2.5 bg-yellow-500 text-white text-[9px] font-black uppercase rounded-xl hover:bg-yellow-600 transition-all shadow-lg">
+          ✓ Set Gate
         </button>
       </div>
     </div>
-    <!-- Type -->
-    <div class="mb-5">
-      <div class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2">Gate Type</div>
-      <div class="flex flex-col gap-2">
-        <button *ngFor="let gt of gateTypes" (click)="gateConfig.type = gt.value"
-          [class]="'flex items-center gap-3 px-3 py-2.5 rounded-xl border-2 text-left transition-all ' + (gateConfig.type === gt.value ? 'bg-yellow-50 border-yellow-500' : 'bg-slate-50 border-slate-200 hover:border-yellow-400')">
-          <span class="text-xl">{{gt.emoji}}</span>
-          <div>
-            <div class="text-[11px] font-black text-slate-900">{{gt.label}}</div>
-            <div class="text-[9px] text-slate-400 font-medium">{{gt.desc}}</div>
-          </div>
-        </button>
-      </div>
-    </div>
-    <div class="flex gap-2">
-      <button *ngIf="selectedPlot()?.gate" (click)="removeGate()"
-        class="flex-1 py-2.5 bg-red-50 border border-red-200 text-red-600 text-[9px] font-black uppercase rounded-xl hover:bg-red-100 transition-all">
-        ✕ Remove Gate
-      </button>
-      <button (click)="confirmGate()"
-        class="flex-1 py-2.5 bg-yellow-500 text-white text-[9px] font-black uppercase rounded-xl hover:bg-yellow-600 transition-all shadow-lg">
-        ✓ Set Gate
-      </button>
-    </div>
   </div>
-</div>
 
   <!-- Project Info Modal -->
   <div *ngIf="isProjectInfoOpen" class="fixed inset-0 z-[600] flex items-center justify-center p-4">
@@ -1264,6 +1312,67 @@
         <div class="flex items-center justify-between p-4 bg-emerald-50 rounded-xl border border-emerald-100">
           <span class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em]">Total Units Planned</span>
           <span class="text-xl font-black text-slate-900">175 NO'S</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Context Menu -->
+  <div *ngIf="isContextMenuOpen()"
+    class="fixed z-[1000] bg-white border border-slate-100 shadow-2xl rounded-2xl overflow-hidden min-w-[200px] animate-fade-in"
+    [style.left.px]="contextMenuPos.x" [style.top.px]="contextMenuPos.y" (click)="$event.stopPropagation()">
+
+    <div class="p-3 border-b border-slate-50 flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center text-lg">🏷️</div>
+      <div>
+        <div class="text-[10px] font-black tracking-widest text-slate-400 uppercase">Context Menu</div>
+        <div class="text-[11px] font-black text-slate-900">{{contextMenuKey}}</div>
+      </div>
+    </div>
+
+    <div class="p-1.5 space-y-0.5">
+      <button (click)="openRenameModal()"
+        class="w-full text-left px-3 py-2 rounded-xl text-[11px] font-black text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-3">
+        <span>✏️</span> Change Name
+      </button>
+      <button (click)="openResidentModal()"
+        class="w-full text-left px-3 py-2 rounded-xl text-[11px] font-black text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-3">
+        <span>👤</span> Resident Details
+      </button>
+      <button (click)="openGatePicker(contextMenuKey)"
+        class="w-full text-left px-3 py-2 rounded-xl text-[11px] font-black text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-3">
+        <span>🚪</span> Set Gate
+      </button>
+      <div class="h-px bg-slate-50 mx-2 my-1"></div>
+      <button (click)="isContextMenuOpen.set(false)"
+        class="w-full text-left px-3 py-2 rounded-xl text-[11px] font-black text-red-500 hover:bg-red-50 transition-all flex items-center gap-3">
+        <span>✕</span> Close
+      </button>
+    </div>
+  </div>
+
+  <!-- Rename Modal -->
+  <div *ngIf="isRenameModalOpen()" class="fixed inset-0 z-[1100] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-md" (click)="isRenameModalOpen.set(false)"></div>
+    <div
+      class="relative glass-card w-full max-w-sm rounded-3xl overflow-hidden animate-fade-up shadow-[0_0_80px_rgba(0,0,0,0.5)]">
+      <div class="p-8 border-b border-slate-50 bg-gradient-to-r from-accent/5 to-transparent">
+        <h2 class="text-xl font-black text-slate-900 tracking-tight">Identity Update</h2>
+        <p class="text-[9px] text-accent font-black tracking-widest uppercase mt-1">Refine block label on map</p>
+      </div>
+      <div class="p-8 space-y-6">
+        <div class="space-y-2">
+          <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">New Block Name</label>
+          <input type="text" [(ngModel)]="renameValue" placeholder="e.g. Grand Plaza"
+            class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-3.5 text-sm font-black text-slate-900 focus:outline-none focus:border-accent transition-all shadow-inner"
+            (keyup.enter)="saveRename()" autofocus />
+        </div>
+        <div class="flex gap-3">
+          <button (click)="isRenameModelOpen.set(false)"
+            class="flex-1 py-3.5 rounded-2xl bg-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all">Cancel</button>
+          <button (click)="saveRename()"
+            class="flex-1 py-3.5 rounded-2xl bg-cyan-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-cyan-600 transition-all shadow-xl">Update
+            Name</button>
         </div>
       </div>
     </div>

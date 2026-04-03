@@ -13,19 +13,24 @@ import { PlotData, PlotType, AptConfig } from '../../../types';
       <!-- SPLIT VIEW -->
       <div
         *ngIf="data?.splitDirection; else normalView"
-        class="w-full h-full flex overflow-hidden rounded-xl border border-white/10"
+        class="w-full h-full flex p-1 gap-1 items-center justify-center overflow-visible"
         [class]="data?.splitDirection === 'v' ? 'flex-row' : 'flex-col'"
       >
         <div
           *ngFor="let half of ['a', 'b']"
+          [style.visibility]="hiddenHalf === half ? 'hidden' : 'visible'"
+          [style.pointer-events]="hiddenHalf === half ? 'none' : 'auto'"
           (click)="onSplitClick.emit(half === 'a' ? 'a' : 'b'); $event.stopPropagation()"
-          [class]="'relative flex-1 flex flex-col items-center justify-center p-1 transition-all hover:brightness-110 ' + 
-                   (selectedHalf === half ? 'ring-2 ring-inset ring-white z-10 shadow-lg' : '')"
+          [class]="'relative flex flex-col items-center justify-center p-1 transition-all hover:brightness-[0.98] rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.05)] border border-slate-200 ' + 
+                   (selectedHalf === half ? 'ring-2 ring-inset ring-slate-900 z-10 shadow-lg scale-[1.02]' : '')"
+          [style.flex]="'0 0 calc(50% - 0.5rem)'"
+          [style.height]="data!.splitDirection === 'v' ? 'calc(100% - 0.5rem)' : 'calc(50% - 0.5rem)'"
+          [style.width]="data!.splitDirection === 'v' ? 'calc(50% - 0.5rem)' : 'calc(100% - 0.5rem)'"
           [style.background]="getSplitHalfColor(half === 'a' ? 'a' : 'b')"
         >
           <span class="text-xs w-8 h-8 block" [innerHTML]="getTypeIcon(data!.splitData![half === 'a' ? 'a' : 'b'].type, data!.splitData![half === 'a' ? 'a' : 'b'].shopType)"></span>
           <div class="w-full mt-1 px-1 overflow-hidden">
-            <div class="text-[8px] font-black uppercase text-white/90 truncate text-center">
+            <div class="text-[8px] font-black uppercase text-slate-900 truncate text-center w-full px-1">
               {{ data!.splitData![half === 'a' ? 'a' : 'b'].name || data!.splitData![half === 'a' ? 'a' : 'b'].type }}
             </div>
           </div>
@@ -141,59 +146,84 @@ import { PlotData, PlotType, AptConfig } from '../../../types';
           <ng-container *ngIf="data?.gate && !isMerged">
             <!-- TOP Gate -->
             <div *ngIf="data!.gate!.position === 'top'"
-              class="absolute top-0 left-0 right-0 z-[100] flex items-start justify-center overflow-visible pointer-events-none"
-              [style.height]="'calc(0.18 * var(--cell-size, 96px))'"
-              [style.margin-top]="'calc(-0.09 * var(--cell-size, 96px))'">
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
-              <div [style]="getBarStyle(data!.gate!.type)" class="grow max-w-[65%] rounded-full mt-1.5 flex items-center justify-center border-t border-white/20 shadow-inner relative" [style.height]="'calc(0.04 * var(--cell-size, 96px))'">
-                <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
+              class="absolute top-0 left-0 right-0 z-[100] flex flex-col items-center justify-start overflow-visible pointer-events-none"
+              [style.margin-top]="'calc(-0.15 * var(--cell-size, 96px))'">
+              
+              <div *ngIf="data!.gate!.label" 
+                class="px-2 py-0.5 rounded-sm text-[6px] font-black uppercase tracking-[0.2em] mb-1.5 shadow-sm border bg-white"
+                [class]="data!.gate!.label.toLowerCase().includes('exit') ? 'text-red-500 border-red-100' : 'text-slate-900 border-slate-100'">
+                {{data!.gate!.label}}
               </div>
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
+
+              <div class="flex items-start justify-center w-full overflow-visible">
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
+                <div [style]="getBarStyle(data!.gate!.type, data!.gate!.label)" class="grow max-w-[65%] rounded-full mt-1.5 flex items-center justify-center border-t border-white/20 shadow-inner relative" [style.height]="'calc(0.04 * var(--cell-size, 96px))'">
+                  <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
+                </div>
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-t border-white/30" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
+              </div>
             </div>
 
             <!-- BOTTOM Gate -->
             <div *ngIf="data!.gate!.position === 'bottom'"
-              class="absolute bottom-0 left-0 right-0 z-[100] flex items-end justify-center overflow-visible pointer-events-none"
-              [style.height]="'calc(0.18 * var(--cell-size, 96px))'"
-              [style.margin-bottom]="'calc(-0.09 * var(--cell-size, 96px))'">
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
-              <div [style]="getBarStyle(data!.gate!.type)" class="grow max-w-[65%] rounded-full mb-1.5 transition-all duration-500 relative flex items-center justify-center border-b border-black/20 shadow-inner" [style.height]="'calc(0.04 * var(--cell-size, 96px))'">
-                 <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  <span class="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 font-black uppercase tracking-[0.25em] text-slate-900 bg-white backdrop-blur-xl px-2 py-0.5 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.2)] whitespace-nowrap border border-slate-200 z-[200]"
-                   [style.font-size]="'calc(0.09 * var(--cell-size, 96px))'"
-                   [style.top]="'calc(150%)'">ENTRANCE</span>
+              class="absolute bottom-0 left-0 right-0 z-[100] flex flex-col items-center justify-end overflow-visible pointer-events-none"
+              [style.margin-bottom]="'calc(-0.15 * var(--cell-size, 96px))'">
+              
+              <div class="flex items-end justify-center w-full overflow-visible">
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
+                <div [style]="getBarStyle(data!.gate!.type, data!.gate!.label)" class="grow max-w-[65%] rounded-full mb-1.5 transition-all duration-500 relative flex items-center justify-center border-b border-black/20 shadow-inner" [style.height]="'calc(0.04 * var(--cell-size, 96px))'">
+                  <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
+                </div>
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
               </div>
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-b border-black/20" [style.width]="'calc(0.1 * var(--cell-size, 96px))'" [style.height]="'calc(0.18 * var(--cell-size, 96px))'"></div>
+
+              <div *ngIf="data!.gate!.label" 
+                class="px-2 py-0.5 rounded-sm text-[6px] font-black uppercase tracking-[0.2em] mt-1.5 shadow-sm border bg-white"
+                [class]="data!.gate!.label.toLowerCase().includes('exit') ? 'text-red-500 border-red-100' : 'text-slate-900 border-slate-100'">
+                {{data!.gate!.label}}
+              </div>
             </div>
 
             <!-- LEFT Gate -->
             <div *ngIf="data!.gate!.position === 'left'"
-              class="absolute left-0 top-0 bottom-0 z-[100] flex flex-col items-start justify-center overflow-visible pointer-events-none"
-              [style.width]="'calc(0.18 * var(--cell-size, 96px))'"
-              [style.margin-left]="'calc(-0.09 * var(--cell-size, 96px))'">
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width]="'calc(0.18 * var(--cell-size, 96px))'" [style.height]="'calc(0.1 * var(--cell-size, 96px))'"></div>
-              <div [style]="getBarStyle(data!.gate!.type)" class="grow max-h-[65%] rounded-full ml-1.5 transition-all duration-500 relative flex items-center justify-center border-l border-white/20 shadow-inner" [style.width]="'calc(0.04 * var(--cell-size, 96px))'">
-                 <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  <span class="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 font-black uppercase tracking-[0.25em] text-slate-900 bg-white backdrop-blur-xl px-2 py-0.5 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.2)] whitespace-nowrap border border-slate-200 z-[200]"
-                   [style.font-size]="'calc(0.09 * var(--cell-size, 96px))'"
-                   [style.right]="'calc(150%)'">ENTRANCE</span>
+              class="absolute left-0 top-0 bottom-0 z-[100] flex items-center justify-center overflow-visible pointer-events-none"
+              [style.margin-left]="'calc(-0.15 * var(--cell-size, 96px))'">
+              
+              <div *ngIf="data!.gate!.label" 
+                class="px-1.5 py-1 rounded-sm text-[6px] font-black uppercase tracking-[0.2em] mx-1 shadown-sm border bg-white whitespace-nowrap"
+                [class]="data!.gate!.label.toLowerCase().includes('exit') ? 'text-red-500 border-red-100' : 'text-slate-900 border-slate-100'"
+                style="writing-mode: vertical-rl; transform: rotate(180deg);">
+                {{data!.gate!.label}}
               </div>
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width]="'calc(0.18 * var(--cell-size, 96px))'" [style.height]="'calc(0.1 * var(--cell-size, 96px))'"></div>
+
+              <div class="flex flex-col items-center justify-center h-full overflow-visible">
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width]="'calc(0.12 * var(--cell-size, 96px))'" [style.height]="'calc(0.12 * var(--cell-size, 96px))'"></div>
+                <div [style]="getBarStyle(data!.gate!.type, data!.gate!.label)" class="grow max-h-[65%] rounded-full ml-1.5 transition-all duration-500 relative flex items-center justify-center border-l border-white/20 shadow-inner overflow-hidden" [style.width]="'calc(0.06 * var(--cell-size, 96px))'">
+                  <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-current opacity-40 blur-[2px]"></div>
+                </div>
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-l border-white/30" [style.width]="'calc(0.12 * var(--cell-size, 96px))'" [style.height]="'calc(0.12 * var(--cell-size, 96px))'"></div>
+              </div>
             </div>
 
             <!-- RIGHT Gate -->
             <div *ngIf="data!.gate!.position === 'right'"
-              class="absolute right-0 top-0 bottom-0 z-[100] flex flex-col items-end justify-center overflow-visible pointer-events-none"
-              [style.width]="'calc(0.18 * var(--cell-size, 96px))'"
-              [style.margin-right]="'calc(-0.09 * var(--cell-size, 96px))'">
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width]="'calc(0.18 * var(--cell-size, 96px))'" [style.height]="'calc(0.1 * var(--cell-size, 96px))'"></div>
-              <div [style]="getBarStyle(data!.gate!.type)" class="grow max-h-[65%] rounded-full mr-1.5 transition-all duration-500 relative flex items-center justify-center border-r border-black/20 shadow-inner" [style.width]="'calc(0.04 * var(--cell-size, 96px))'">
-                 <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-cyan-400/40 blur-[3px]"></div>
-                  <span class="absolute opacity-0 group-hover:opacity-100 transition-all duration-300 font-black uppercase tracking-[0.25em] text-slate-900 bg-white backdrop-blur-xl px-2 py-0.5 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.2)] whitespace-nowrap border border-slate-200 z-[200]"
-                   [style.font-size]="'calc(0.09 * var(--cell-size, 96px))'"
-                   [style.left]="'calc(150%)'">ENTRANCE</span>
+              class="absolute right-0 top-0 bottom-0 z-[100] flex items-center justify-center overflow-visible pointer-events-none"
+              [style.margin-right]="'calc(-0.15 * var(--cell-size, 96px))'">
+              
+              <div class="flex flex-col items-center justify-center h-full overflow-visible">
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width]="'calc(0.12 * var(--cell-size, 96px))'" [style.height]="'calc(0.12 * var(--cell-size, 96px))'"></div>
+                <div [style]="getBarStyle(data!.gate!.type, data!.gate!.label)" class="grow max-h-[65%] rounded-full mr-1.5 transition-all duration-500 relative flex items-center justify-center border-r border-black/20 shadow-inner overflow-hidden" [style.width]="'calc(0.06 * var(--cell-size, 96px))'">
+                  <div *ngIf="data!.gate!.type === 'cyber'" class="w-full h-full animate-pulse bg-current opacity-40 blur-[2px]"></div>
+                </div>
+                <div [style]="getPillarStyle(data!.gate!.type, data!.gate!.label)" class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width]="'calc(0.12 * var(--cell-size, 96px))'" [style.height]="'calc(0.12 * var(--cell-size, 96px))'"></div>
               </div>
-              <div [style]="getPillarStyle(data!.gate!.type)" class="rounded-sm shrink-0 shadow-xl border-r border-black/20" [style.width]="'calc(0.18 * var(--cell-size, 96px))'" [style.height]="'calc(0.1 * var(--cell-size, 96px))'"></div>
+
+              <div *ngIf="data!.gate!.label" 
+                class="px-1.5 py-1 rounded-sm text-[6px] font-black uppercase tracking-[0.2em] mx-1 shadow-sm border bg-white whitespace-nowrap"
+                [class]="data!.gate!.label.toLowerCase().includes('exit') ? 'text-red-500 border-red-100' : 'text-slate-900 border-slate-100'"
+                style="writing-mode: vertical-rl;">
+                {{data!.gate!.label}}
+              </div>
             </div>
           </ng-container>
         </div>
@@ -232,6 +262,7 @@ export class PlotCellComponent {
   @Input() plotKey: string = '';
   @Input() isSelected = false;
   @Input() selectedHalf: 'a' | 'b' | null = null;
+  @Input() hiddenHalf: 'a' | 'b' | null = null;
   @Input() isLarge = false;
   @Input() customClass = '';
   @Input() isGhost = false;
@@ -290,7 +321,7 @@ export class PlotCellComponent {
 
   getTypeTextClass(type: PlotType | undefined): string {
     if (type === 'road' || !type || type === 'vacant') return 'text-slate-600';
-    return 'text-white';
+    return 'text-slate-900';
   }
 
   getSplitHalfColor(half: 'a' | 'b'): string {
@@ -300,11 +331,11 @@ export class PlotCellComponent {
       case 'house': return '#f59e0b';
       case 'apartment': return '#2563eb';
       case 'park': return '#10b981';
-      case 'shop': return '#ec4899';
+      case 'shop': return '#06b6d4';
       case 'watertank': return '#0891b2';
       case 'hospital': return '#ef4444';
       case 'security': return '#8b5cf6';
-      default: return '#94a3b8';
+      default: return '#ffffff';
     }
   }
 
@@ -323,15 +354,23 @@ export class PlotCellComponent {
     this.onDropType.emit({ event: e, half });
   }
 
-  getPillarStyle(type: string): string {
-    switch (type) {
-      case 'cyber': return 'background: linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%); border: 1px solid #1e3a8a; box-shadow: 0 0 15px rgba(14,165,233,0.4);';
-      case 'side': return 'background: linear-gradient(135deg, #475569 0%, #1e293b 100%); border: 1px solid #0f172a;';
-      default: return 'background: #94a3b8;';
+  getPillarStyle(type: string | undefined, label?: string): string {
+    if (!type) return 'background: #94a3b8;';
+    const isExit = label?.toLowerCase().includes('exit');
+    const color = isExit ? '#ef4444' : (type === 'cyber' ? '#1d4ed8' : '#1e293b');
+    const accent = isExit ? '#fee2e2' : (type === 'cyber' ? '#38bdf8' : '#475569');
+    
+    if (type === 'cyber') {
+      return `background: linear-gradient(135deg, ${accent} 0%, ${color} 100%); border: 1px solid ${isExit ? '#991b1b' : '#1e3a8a'}; box-shadow: 0 0 15px ${isExit ? 'rgba(239,68,68,0.4)' : 'rgba(14,165,233,0.4)'};`;
     }
+    return `background: linear-gradient(135deg, ${accent} 0%, ${color} 100%); border: 1px solid ${isExit ? '#991b1b' : '#0f172a'};`;
   }
 
-  getBarStyle(type: string): string {
+  getBarStyle(type: string | undefined, label?: string): string {
+    if (!type) return 'background: #64748b;';
+    const isExit = label?.toLowerCase().includes('exit');
+    if (isExit) return 'background: linear-gradient(to bottom, #f87171, #ef4444); border: 1px solid #991b1b;';
+    
     switch (type) {
       case 'cyber': return 'background: linear-gradient(to bottom, #0ea5e9, #2563eb); border: 1px solid #1e40af;';
       case 'side': return 'background: linear-gradient(to bottom, #1e293b, #0f172a); border: 1px solid #020617;';

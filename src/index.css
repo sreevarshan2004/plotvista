@@ -153,9 +153,9 @@
     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
   }
   .plot-type-shop {
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border: 2px solid #ec4899 !important;
-    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.1);
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
+    border: 2px solid #06b6d4 !important;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.1);
   }
   .plot-type-watertank {
     background: linear-gradient(135deg, rgba(8, 145, 178, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
@@ -173,26 +173,14 @@
     box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
   }
 
-  /* --- Shop Specific Colors --- */
-  .plot-shop-gym, .plot-shop-clinic, .plot-shop-pharmacy {
+  /* --- Shop Specific Colors (Unified to Sky Blue) --- */
+  .plot-shop-gym, .plot-shop-clinic, .plot-shop-pharmacy,
+  .plot-shop-bakery, .plot-shop-grocery, .plot-shop-cafe, .plot-shop-restaurant, .plot-shop-stationery,
+  .plot-shop-boutique, .plot-shop-salon, .plot-shop-spa, .plot-shop-laundry, .plot-shop-tailoring,
+  .plot-shop-bank, .plot-shop-atm, .plot-shop-electronics,
+  .plot-shop-cinema, .plot-shop-playstation {
     background: linear-gradient(135deg, rgba(34, 211, 238, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
     border-color: #06b6d4 !important;
-  }
-  .plot-shop-bakery, .plot-shop-grocery, .plot-shop-cafe, .plot-shop-restaurant, .plot-shop-stationery {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #f59e0b !important;
-  }
-  .plot-shop-boutique, .plot-shop-salon, .plot-shop-spa, .plot-shop-laundry, .plot-shop-tailoring {
-    background: linear-gradient(135deg, rgba(217, 70, 239, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #d946ef !important;
-  }
-  .plot-shop-bank, .plot-shop-atm, .plot-shop-electronics {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #3b82f6 !important;
-  }
-  .plot-shop-cinema, .plot-shop-playstation {
-    background: linear-gradient(135deg, rgba(79, 70, 229, 0.4) 0%, rgba(255,255,255,1) 70%) !important;
-    border-color: #4f46e5 !important;
   }
 
   /* Make text black on white backgrounds */
@@ -412,27 +400,28 @@ body.light-theme {
   color: #334155;
 }
 
-/* Sidebar Specific - Deep Navy Theme */
+/* Sidebar Specific - Glass Arctic Theme */
 body.light-theme aside.glass-card {
-  background: #1e293b !important;
-  border-left: 1px solid rgba(71, 85, 105, 0.6) !important;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2) !important;
+  background: rgba(248, 250, 252, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  border-left: 1px solid rgba(226, 232, 240, 0.8) !important;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.04) !important;
 }
 
 body.light-theme aside * {
-  color: #e0f2fe !important;
+  color: #000000 !important;
 }
 
 body.light-theme aside .bg-slate-900\/60 {
-  background-color: #0f172a !important;
-  border-bottom: 1px solid rgba(71, 85, 105, 0.5) !important;
+  background-color: rgba(241, 245, 249, 0.5) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
 }
 
 body.light-theme aside button,
 body.light-theme aside input:not(.res-modal-input) {
-  background-color: rgba(51, 65, 85, 0.6) !important;
-  border: 1px solid rgba(71, 85, 105, 0.5) !important;
-  color: #e0f2fe !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
   transition: all 0.3s ease;
 }
 
@@ -463,16 +452,16 @@ body.light-theme .res-modal-input::placeholder {
 }
 
 body.light-theme aside button:hover {
-  background-color: rgba(71, 85, 105, 0.7) !important;
-  border-color: #22d3ee !important;
+  background-color: #f1f5f9 !important;
+  border-color: #2563eb !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(34, 211, 238, 0.15);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
 }
 
 body.light-theme aside .text-slate-400,
 body.light-theme aside .text-slate-500,
 body.light-theme aside h3 {
-  color: #38bdf8 !important;
+  color: #000000 !important;
   letter-spacing: 0.15em !important;
   font-weight: 800 !important;
   font-family: var(--font-sans) !important;
@@ -481,50 +470,50 @@ body.light-theme aside h3 {
 body.light-theme aside .text-xs,
 body.light-theme aside .text-\[9px\],
 body.light-theme aside .text-\[8px\] {
-  color: #bae6fd !important;
+  color: #000000 !important;
   letter-spacing: 0.05em !important;
   font-weight: 700 !important;
 }
 
 /* Section headers: Split Cell, Classification, Batch Tools */
 body.light-theme aside .text-amber-400 {
-  color: #38bdf8 !important;
+  color: #000000 !important;
 }
 
 body.light-theme aside .text-\[10px\] {
-  color: #38bdf8 !important;
+  color: #000000 !important;
   font-weight: 800 !important;
 }
 
 /* Split / Classification buttons */
 body.light-theme aside .text-amber-400.text-base {
-  color: #38bdf8 !important;
+  color: #2563eb !important;
 }
 
 body.light-theme aside h3 span.text-amber-400,
 body.light-theme aside h3 span.text-accent {
-  color: #38bdf8 !important;
+  color: #000000 !important;
 }
 
 body.light-theme aside .bg-amber-500\/10 {
-  background-color: rgba(56, 189, 248, 0.1) !important;
-  border-color: rgba(56, 189, 248, 0.3) !important;
+  background-color: rgba(37, 99, 235, 0.05) !important;
+  border-color: rgba(37, 99, 235, 0.2) !important;
 }
 
 body.light-theme aside .text-amber-400:not(.split-resident-badge) {
-  color: #38bdf8 !important;
+  color: #000000 !important;
 }
 
 body.light-theme aside .border-amber-500\/30 {
-  border-color: rgba(56, 189, 248, 0.3) !important;
+  border-color: rgba(37, 99, 235, 0.2) !important;
 }
 
 body.light-theme aside .hover\:bg-amber-500\/20:hover {
-  background-color: rgba(56, 189, 248, 0.2) !important;
+  background-color: rgba(37, 99, 235, 0.1) !important;
 }
 
 body.light-theme aside .hover\:border-amber-400\/50:hover {
-  border-color: rgba(56, 189, 248, 0.5) !important;
+  border-color: rgba(37, 99, 235, 0.4) !important;
 }
 
 body.light-theme .split-half {
@@ -552,7 +541,7 @@ body.light-theme .split-type {
   text-shadow: none;
 }
 
-/* â”€â”€ Navbar â”€â”€ */
+/* ── Navbar ── */
 body.light-theme nav,
 body.light-theme header {
   background: #1e293b !important;
@@ -560,7 +549,12 @@ body.light-theme header {
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* â”€â”€ Roads Reversion â€” dark navy + YELLOW centre dashes â”€â”€ */
+body.light-theme nav *,
+body.light-theme header * {
+  color: #ffffff !important;
+}
+
+/* ── Roads Reversion — dark navy + YELLOW centre dashes ── */
 body.light-theme .road-h {
   background: #64748b !important;
   border-top-color: rgba(255, 255, 255, 0.1) !important;
@@ -668,7 +662,7 @@ body.light-theme .stat-box .text-accent {
 /* Enhanced Typography for Sidebar Headers */
 body.light-theme aside h3,
 body.light-theme aside .text-\[10px\] {
-  color: #38bdf8 !important;
+  color: #000000 !important;
   letter-spacing: 0.2em !important;
   font-weight: 800 !important;
 }
